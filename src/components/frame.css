@@ -1,0 +1,48 @@
+/* Cyan corner brackets framing the main content area
+   (right of the sidebar). Each corner is an L-shape made
+   from two adjacent borders on a small empty box. */
+.frame {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  bottom: 24px;
+  left: 304px; /* sidebar (280) + 24 padding */
+  pointer-events: none;
+  z-index: var(--z-overlay);
+}
+
+.frame__corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 0 solid var(--color-cyan);
+  filter: drop-shadow(0 0 4px var(--color-cyan-glow));
+}
+
+.frame__corner--tl { top: 0;    left: 0;   border-top-width: 1.5px; border-left-width: 1.5px; }
+.frame__corner--tr { top: 0;    right: 0;  border-top-width: 1.5px; border-right-width: 1.5px; }
+.frame__corner--bl { bottom: 0; left: 0;   border-bottom-width: 1.5px; border-left-width: 1.5px; }
+.frame__corner--br { bottom: 0; right: 0;  border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+/* Tablet / small desktop: sidebar still visible, brackets sit just to
+   the right of it. */
+@media (max-width: 1100px) {
+  .frame {
+    left: 296px;
+  }
+}
+
+/* Mobile (< 768): no sidebar, top bar instead. Bracket sits inside
+   the available content area, just below the top bar. */
+@media (max-width: 767px) {
+  .frame {
+    top: 64px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+  .frame__corner {
+    width: 18px;
+    height: 18px;
+  }
+}

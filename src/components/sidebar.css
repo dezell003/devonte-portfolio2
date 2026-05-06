@@ -1,0 +1,100 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  padding: 56px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  z-index: var(--z-nav);
+}
+
+/* On mobile the top bar replaces the sidebar entirely. */
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+}
+
+/* ── Top: wordmark ──────────────────────────────────────── */
+.sidebar__wordmark {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.32em;
+  color: var(--color-cyan);
+  text-shadow: 0 0 14px var(--color-cyan-glow);
+  user-select: none;
+}
+
+/* ── Middle: metadata stack, right-aligned ──────────────── */
+.sidebar__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.meta__label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  color: var(--color-cyan);
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: uppercase;
+}
+
+.meta__values {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta__value {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+/* ── Bottom: page nav ───────────────────────────────────── */
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.nav-item {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  text-decoration: none;
+  transition: text-shadow var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
+}
+
+.nav-item__num {
+  color: var(--color-cyan);
+}
+
+.nav-item__label {
+  color: var(--color-text);
+}
+
+.nav-item:hover .nav-item__label {
+  text-shadow: 0 0 8px var(--color-cyan-glow);
+}
+
+.nav-item.is-active .nav-item__label {
+  color: var(--color-cyan);
+  text-shadow: 0 0 10px var(--color-cyan-glow);
+}

@@ -1,0 +1,189 @@
+.hud-panel {
+  position: relative;
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  padding: 28px 32px 32px;
+  /* faint cyan tint over the panel bg, behind the content */
+  background-image: linear-gradient(180deg, var(--color-panel-tint), transparent 60%);
+  box-shadow: var(--shadow-panel);
+  border-radius: var(--radius-0);
+  isolation: isolate;
+}
+
+/* Same L-bracket style as the viewport frame, but smaller and snug to
+   the panel's border. */
+.hud-panel__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.hud-panel__corner--tl { top: -1px; left: -1px;
+  border-top: 1.5px solid var(--color-cyan);
+  border-left: 1.5px solid var(--color-cyan); }
+.hud-panel__corner--tr { top: -1px; right: -1px;
+  border-top: 1.5px solid var(--color-cyan);
+  border-right: 1.5px solid var(--color-cyan); }
+.hud-panel__corner--bl { bottom: -1px; left: -1px;
+  border-bottom: 1.5px solid var(--color-cyan);
+  border-left: 1.5px solid var(--color-cyan); }
+.hud-panel__corner--br { bottom: -1px; right: -1px;
+  border-bottom: 1.5px solid var(--color-cyan);
+  border-right: 1.5px solid var(--color-cyan); }
+
+/* Decorative [X] marker, top-right inside the corner bracket. */
+.hud-panel__marker {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-cyan-dim);
+  user-select: none;
+  background: transparent;
+  border: 0;
+}
+
+/* Interactive variant — button. Bigger hit area (24×24-ish) via padding. */
+.hud-panel__marker--interactive {
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    text-shadow var(--duration-fast) var(--ease-out);
+}
+
+.hud-panel__marker--interactive:hover,
+.hud-panel__marker--interactive:focus-visible {
+  color: var(--color-cyan);
+  text-shadow: 0 0 10px var(--color-cyan-glow);
+  outline: none;
+}
+
+.hud-panel__marker--interactive:focus-visible {
+  outline: 1px solid var(--color-cyan);
+  outline-offset: 1px;
+}
+
+.hud-panel__head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hud-panel__label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+}
+
+.hud-panel__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  font-stretch: condensed; /* honored if Sora condensed is loaded; harmless fallback otherwise */
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.hud-panel__rule {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-cyan) 0%,
+    var(--color-cyan) 40%,
+    var(--color-panel-border) 100%
+  );
+  opacity: 0.7;
+  margin: 4px 0 0;
+}
+
+.hud-panel__body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+}
+
+/* ── Variant: callout — compact inline highlight ──────── */
+.hud-panel--callout {
+  padding: 18px 22px 20px;
+  background-image: linear-gradient(180deg, rgba(95, 221, 229, 0.06), transparent 70%);
+}
+.hud-panel--callout .hud-panel__head { margin-bottom: 12px; gap: 8px; }
+.hud-panel--callout .hud-panel__title { font-size: var(--font-size-lg); }
+.hud-panel--callout .hud-panel__label { font-size: 10px; }
+.hud-panel--callout .hud-panel__body { font-size: var(--font-size-sm); }
+.hud-panel--callout .hud-panel__corner { width: 10px; height: 10px; }
+.hud-panel--callout .hud-panel__marker { top: 7px; right: 12px; font-size: 9px; }
+
+/* ── Variant: warning — orange-tinted border ──────────── */
+.hud-panel--warning {
+  border-color: rgba(255, 138, 61, 0.55);
+  background-image: linear-gradient(180deg, rgba(255, 138, 61, 0.06), transparent 60%);
+}
+.hud-panel--warning .hud-panel__corner--tl,
+.hud-panel--warning .hud-panel__corner--tr,
+.hud-panel--warning .hud-panel__corner--bl,
+.hud-panel--warning .hud-panel__corner--br {
+  border-color: var(--color-warning-orange);
+}
+.hud-panel--warning .hud-panel__rule {
+  background: linear-gradient(
+    90deg,
+    var(--color-warning-orange) 0%,
+    var(--color-warning-orange) 40%,
+    rgba(255, 138, 61, 0.25) 100%
+  );
+}
+.hud-panel--warning .hud-panel__marker {
+  color: var(--color-warning-orange);
+}
+
+/* ── Mobile (< 768): scale down corner brackets, shrink text,
+       tighten padding. The page-level frame is preserved as the
+       signature element. ────────────────────────────────── */
+@media (max-width: 767px) {
+  .hud-panel {
+    padding: 18px 16px 18px;
+  }
+
+  /* Tiny corner brackets so the HUD aesthetic still reads but doesn't
+     dominate the small viewport. */
+  .hud-panel__corner {
+    width: 8px;
+    height: 8px;
+  }
+
+  .hud-panel__title {
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .hud-panel__label {
+    font-size: 10px;
+  }
+  .hud-panel__body {
+    font-size: 14px;
+  }
+  .hud-panel__marker {
+    top: 2px;
+    right: 4px;
+    padding: 4px 6px;
+    font-size: 9px;
+  }
+
+  .hud-panel--callout {
+    padding: 14px 14px 16px;
+  }
+  .hud-panel--callout .hud-panel__title {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,326 @@
+.section-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 128px);
+  gap: 28px;
+  /* The empty space inside the corner-bracket frame is clickable
+     and routes back to the hub. Children below override this so
+     real content shows its own cursor (text, default, etc.). */
+  cursor: pointer;
+}
+
+.section-view__image-col,
+.section-view__nav-row,
+.hud-panel {
+  cursor: auto;
+}
+
+/* ── Step container: a CSS grid with a single named area so old and
+       new step elements stack on top of each other during the slide
+       transition. The container sizes to whichever child is taller. */
+.section-view__step-container {
+  display: grid;
+  grid-template-areas: 'step';
+  position: relative;
+}
+
+.section-view__step {
+  grid-area: step;
+  display: grid;
+  grid-template-columns: 65fr 35fr;
+  gap: 32px;
+  align-items: center;
+  transition:
+    transform 280ms var(--ease-out),
+    opacity 280ms var(--ease-out);
+  will-change: transform, opacity;
+}
+
+/* Slide-in from the right when stepping forward (1 → 2). */
+.section-view__step.is-entering-from-right {
+  transform: translateX(40px);
+  opacity: 0;
+}
+/* Slide-in from the left when stepping backward (2 → 1). */
+.section-view__step.is-entering-from-left {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+.section-view__step.is-exiting-to-left {
+  transform: translateX(-40px);
+  opacity: 0;
+  pointer-events: none;
+}
+.section-view__step.is-exiting-to-right {
+  transform: translateX(40px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Image column (left ~65%): image + optional variant control ── */
+.section-view__image-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section-view__image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  overflow: hidden;
+}
+
+/* Images are stacked absolutely so an incoming and outgoing img can
+   crossfade in the same slot without affecting layout. */
+.section-view__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  opacity: 1;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.section-view__image.is-entering,
+.section-view__image.is-exiting {
+  opacity: 0;
+}
+
+.section-view__image[hidden] { display: none; }
+
+/* Loading skeleton — sits beneath the img layer. Removed (faded out)
+   when the image's `load` event fires. */
+.section-view__image-skeleton {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(95, 221, 229, 0.04) 0%,
+      rgba(95, 221, 229, 0.14) 50%,
+      rgba(95, 221, 229, 0.04) 100%
+    );
+  background-size: 200% 100%;
+  animation: image-skeleton-shimmer 1.6s linear infinite;
+  pointer-events: none;
+  transition: opacity 240ms var(--ease-out);
+  opacity: 1;
+}
+
+.section-view__image-skeleton.is-hidden {
+  opacity: 0;
+}
+
+@keyframes image-skeleton-shimmer {
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-view__image-skeleton {
+    animation: none;
+    background: rgba(95, 221, 229, 0.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-view__image {
+    transition: none !important;
+  }
+}
+
+/* Placeholder shown when the image fails to load. */
+.section-view__image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 24px;
+}
+
+.section-view__image-placeholder-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-cyan-dim);
+}
+
+.section-view__image-placeholder-path {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-mute);
+  word-break: break-all;
+}
+
+/* ── Panel column (right ~35%) ──────────────────────────── */
+.section-view__panel-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── Callouts inside the panel body ─────────────────────── */
+.section-callouts {
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-callout {
+  position: relative;
+  padding: 12px 16px;
+  background: rgba(255, 138, 61, 0.08);
+  border-left: 3px solid var(--color-warning-orange);
+}
+
+.section-callout__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+}
+
+.section-callout__body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* Warning sits at the top of the visual hierarchy: heavier tint + glow. */
+.section-callout--warning {
+  background: rgba(255, 138, 61, 0.16);
+  box-shadow: 0 0 18px rgba(255, 138, 61, 0.25);
+}
+
+.section-callout--warning .section-callout__label::after {
+  content: ' ⚠';
+}
+
+/* ── Methodology meta strip beneath callouts ────────────── */
+.section-meta {
+  margin: 22px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--color-panel-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-meta__row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.section-meta__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-cyan-dim);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section-meta__body {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-text-dim);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── Nav row: anchored beneath the panel column so it does not
+       slide with step transitions. ─────────────────────────── */
+.section-view__nav-row {
+  display: grid;
+  grid-template-columns: 65fr 35fr;
+  gap: 32px;
+}
+
+.section-view__nav {
+  grid-column: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Reduced motion: no slide, instant swap. ───────────── */
+@media (prefers-reduced-motion: reduce) {
+  .section-view__step,
+  .section-view__step.is-entering-from-right,
+  .section-view__step.is-entering-from-left,
+  .section-view__step.is-exiting-to-left,
+  .section-view__step.is-exiting-to-right {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ── Tablet / small desktop: stack image above panel. */
+@media (max-width: 1100px) {
+  .section-view__step,
+  .section-view__nav-row {
+    grid-template-columns: 1fr;
+  }
+  .section-view__nav {
+    grid-column: 1;
+  }
+}
+
+/* ── Mobile (< 768): single scrolling column with the panel ABOVE
+       the image, then the nav row at the bottom. Compact spacing. */
+@media (max-width: 767px) {
+  .section-view {
+    min-height: 0;
+    gap: 18px;
+    justify-content: flex-start;
+  }
+  .section-view__step {
+    gap: 18px;
+  }
+  /* Reorder via grid order: panel first, image second. */
+  .section-view__panel-col { order: 1; }
+  .section-view__image-col { order: 2; }
+
+  .section-view__nav {
+    justify-content: space-between;
+  }
+
+  /* Tighten the inline panel content. */
+  .section-callouts {
+    margin-top: 14px;
+    gap: 12px;
+  }
+  .section-callout {
+    padding-left: 12px;
+  }
+  .section-callout__body {
+    font-size: 13px;
+  }
+  .section-meta {
+    margin-top: 18px;
+  }
+  .section-meta__row {
+    grid-template-columns: 90px 1fr;
+    gap: 10px;
+  }
+}

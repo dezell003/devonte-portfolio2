@@ -1,0 +1,70 @@
+.playground {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  padding-bottom: 80px;
+}
+
+.playground__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.playground__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-cyan);
+}
+
+.playground__title {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  letter-spacing: 0.12em;
+  color: var(--color-text);
+}
+
+.playground__section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.playground__section-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+}
+
+/* Variant grids */
+.playground__panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.playground__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+}
+
+.playground__caption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.playground__cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

@@ -1,0 +1,64 @@
+.toggle-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  user-select: none;
+}
+
+/* Parallelogram chrome via a skewed pseudo-element — same pattern as
+   the TabStrip so both controls share the HUD aesthetic. */
+.toggle-pills__pill {
+  position: relative;
+  padding: 10px 22px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: uppercase;
+  color: var(--color-cyan);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.toggle-pills__pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-cyan);
+  background: transparent;
+  transform: skewX(-18deg);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+  z-index: 0;
+}
+
+.toggle-pills__pill:hover::before {
+  background: rgba(95, 221, 229, 0.10);
+}
+
+/* Active = filled cyan, dark label. */
+.toggle-pills__pill.is-active {
+  color: var(--color-space-black);
+}
+.toggle-pills__pill.is-active::before {
+  background: var(--color-cyan);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 18px var(--color-cyan-glow);
+}
+
+.toggle-pills__pill:focus-visible {
+  outline: none;
+}
+.toggle-pills__pill:focus-visible::before {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+/* The label sits above the skewed pseudo-element so it reads upright. */
+.toggle-pills__inner {
+  position: relative;
+  z-index: 1;
+}

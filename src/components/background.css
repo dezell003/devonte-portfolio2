@@ -1,0 +1,94 @@
+.bg {
+  position: fixed;
+  inset: 0;
+  background: var(--color-space-black);
+  z-index: var(--z-base);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Starfield: a 1px element whose box-shadow list paints every star. */
+.bg__starfield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  border-radius: 50%;
+  /* box-shadow injected by JS at mount */
+}
+
+/* Two diffuse nebula clouds. Heavy blur + screen blend keeps them subtle
+   over the black base while still tinting nearby stars. */
+.bg__nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  mix-blend-mode: screen;
+  opacity: 0.65;
+}
+
+.bg__nebula--orange {
+  width: 760px;
+  height: 760px;
+  top: -180px;
+  right: -120px;
+  background: radial-gradient(
+    circle,
+    var(--color-nebula-orange) 0%,
+    rgba(255, 138, 61, 0.15) 45%,
+    transparent 72%
+  );
+  animation: nebula-drift-orange 65s ease-in-out infinite alternate;
+}
+
+.bg__nebula--teal {
+  width: 880px;
+  height: 880px;
+  bottom: -240px;
+  left: 14%;
+  background: radial-gradient(
+    circle,
+    var(--color-nebula-teal) 0%,
+    rgba(47, 180, 166, 0.12) 50%,
+    transparent 75%
+  );
+  opacity: 0.55;
+  animation: nebula-drift-teal 80s ease-in-out infinite alternate;
+}
+
+/* A faint deep-blue wash near the top to anchor the cosmic feel. */
+.bg__nebula--blue {
+  width: 1200px;
+  height: 1200px;
+  top: -600px;
+  left: 30%;
+  background: radial-gradient(
+    circle,
+    var(--color-nebula-deep-blue) 0%,
+    transparent 65%
+  );
+  opacity: 0.55;
+  filter: blur(90px);
+  animation: nebula-drift-blue 95s ease-in-out infinite alternate;
+}
+
+/* Slow ambient drift on each cloud — different durations and vectors so
+   they never sync up. Opacity bobs slightly to add depth. */
+@keyframes nebula-drift-orange {
+  0%   { transform: translate(0, 0) scale(1);     opacity: 0.65; }
+  100% { transform: translate(-60px, 50px) scale(1.08); opacity: 0.50; }
+}
+@keyframes nebula-drift-teal {
+  0%   { transform: translate(0, 0) scale(1);     opacity: 0.55; }
+  100% { transform: translate(70px, -40px) scale(1.10); opacity: 0.40; }
+}
+@keyframes nebula-drift-blue {
+  0%   { transform: translate(0, 0) scale(1);     opacity: 0.55; }
+  100% { transform: translate(-40px, -30px) scale(1.06); opacity: 0.42; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg__nebula { animation: none !important; }
+}

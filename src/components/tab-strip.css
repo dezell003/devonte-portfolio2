@@ -1,0 +1,63 @@
+.tab-strip {
+  display: flex;
+  gap: 6px;
+  user-select: none;
+  flex-wrap: wrap;
+}
+
+/* Each tab is a parallelogram drawn by a skewed pseudo-element so the
+   label inside reads upright. Same pattern as the NavButton. */
+.tab-strip__tab {
+  position: relative;
+  padding: 10px 22px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: uppercase;
+  color: var(--color-cyan);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.tab-strip__tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-cyan);
+  background: transparent;
+  transform: skewX(-18deg);
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+  z-index: 0;
+}
+
+.tab-strip__tab:hover::before {
+  background: rgba(95, 221, 229, 0.10);
+}
+
+/* Active = filled cyan; the label flips to deep space black for contrast. */
+.tab-strip__tab.is-active {
+  color: var(--color-space-black);
+}
+.tab-strip__tab.is-active::before {
+  background: var(--color-cyan);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 18px var(--color-cyan-glow);
+}
+
+.tab-strip__tab:focus-visible {
+  outline: none;
+}
+.tab-strip__tab:focus-visible::before {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+}
+
+.tab-strip__inner {
+  position: relative;
+  z-index: 1;
+}

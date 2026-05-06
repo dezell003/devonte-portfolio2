@@ -1,0 +1,91 @@
+:root {
+  /* ── Color: base surfaces ─────────────────────────────── */
+  --color-space-black: #05060a;
+  --color-space-deep: #0a0d14;
+  --color-panel-bg: rgba(18, 26, 36, 0.72);
+  --color-panel-tint: rgba(95, 221, 229, 0.04);
+  --color-panel-border: rgba(95, 221, 229, 0.18);
+  --color-panel-border-strong: rgba(95, 221, 229, 0.45);
+
+  /* ── Color: cyan / accents ────────────────────────────── */
+  --color-cyan: #5fdde5;
+  --color-cyan-dim: #3a8e93;
+  --color-cyan-glow: rgba(95, 221, 229, 0.35);
+  --color-teal: #2fb4a6;
+  --color-warning-orange: #ff8a3d;
+
+  /* ── Color: text ──────────────────────────────────────── */
+  --color-text: #f1f5f7;
+  --color-text-dim: #7a8a96;
+  --color-text-mute: #4a5662;
+
+  /* ── Color: nebula background glows ───────────────────── */
+  --color-nebula-orange: rgba(255, 138, 61, 0.55);
+  --color-nebula-teal: rgba(47, 180, 166, 0.45);
+  --color-nebula-magenta: rgba(189, 64, 156, 0.30);
+  --color-nebula-deep-blue: rgba(28, 48, 110, 0.55);
+
+  /* ── Typography: families ─────────────────────────────── */
+  --font-heading: 'Sora', system-ui, -apple-system, sans-serif;
+  --font-body: 'Sora', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Zen Dots', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ── Typography: sizes ────────────────────────────────── */
+  --font-size-heading: 40px;
+  --font-size-body: 16px;
+  --font-size-mono: 12px;
+
+  /* Auxiliary scale (kept tight; extend as needed) */
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-md: 16px;
+  --font-size-lg: 22px;
+  --font-size-xl: 28px;
+  --font-size-2xl: 40px;
+  --font-size-3xl: 56px;
+
+  --line-height-tight: 1.15;
+  --line-height-normal: 1.5;
+  --letter-spacing-mono: 0.12em;
+  --letter-spacing-heading: -0.01em;
+
+  /* ── Spacing (8px base) ───────────────────────────────── */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+  --space-9: 128px;
+
+  /* ── Border radius (mostly 0 / angular) ───────────────── */
+  --radius-0: 0;
+  --radius-1: 2px;
+  --radius-pill: 999px;
+
+  /* ── Borders ──────────────────────────────────────────── */
+  --border-thin: 1px solid var(--color-panel-border);
+  --border-strong: 1px solid var(--color-panel-border-strong);
+
+  /* ── Z-index scale ────────────────────────────────────── */
+  --z-base: 0;
+  --z-content: 10;
+  --z-overlay: 100;
+  --z-nav: 200;
+  --z-modal: 1000;
+  --z-toast: 2000;
+  --z-tooltip: 3000;
+
+  /* ── Effects ──────────────────────────────────────────── */
+  --shadow-cyan-glow: 0 0 24px var(--color-cyan-glow);
+  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.55);
+
+  /* ── Motion ───────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 480ms;
+}

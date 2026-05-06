@@ -1,0 +1,312 @@
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 128px);
+  padding: 24px 0;
+}
+
+/* The orbital cluster. The whole thing translates with mouse parallax via
+   the --px / --py custom properties; CSS interpolates smoothly. */
+.orbital {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  --px: 0px;
+  --py: 0px;
+  transform: translate(var(--px), var(--py));
+  transition: transform 1.2s var(--ease-out);
+}
+
+/* ── Rotating dotted ring ──────────────────────────────── */
+.orbital__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: orbital-spin 90s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes orbital-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Central planet ─────────────────────────────────────
+   The "star" slot is now a layered lavender gas planet:
+     base sphere   — radial gradient with lit-side highlight + dark-side shading
+     ::before      — wispy cloud blobs rotating slowly
+     ::after       — second cloud layer rotating opposite at a different speed
+                     (creates parallax / turbulence)
+   The atmosphere halo is provided by stacked box-shadows. The planet's
+   overflow:hidden + border-radius:50% clips the rotating cloud layers
+   to the sphere shape. */
+.orbital__star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  background:
+    /* lit-side specular highlight */
+    radial-gradient(circle at 32% 28%,
+      rgba(255, 245, 255, 0.55) 0%,
+      transparent 40%),
+    /* terminator / dark-side shadow */
+    radial-gradient(circle at 78% 78%,
+      rgba(40, 25, 70, 0.55) 0%,
+      transparent 55%),
+    /* base lavender body */
+    radial-gradient(circle at 50% 50%,
+      #e8d8ff 0%,
+      #c4b0ee 38%,
+      #8d7bc4 78%,
+      #5e4d99 100%);
+  box-shadow:
+    0 0 28px rgba(196, 176, 238, 0.55),
+    0 0 70px rgba(196, 176, 238, 0.32),
+    0 0 140px rgba(150, 120, 210, 0.20),
+    0 0 220px rgba(120, 95, 180, 0.10),
+    inset -8px -12px 28px rgba(40, 25, 70, 0.45);
+  pointer-events: none;
+}
+
+/* Wispy cloud layer — large soft blobs rotating slowly. The element
+   extends past the sphere edges so the rotation never reveals empty
+   corners; overflow:hidden on the parent crops it to the circle. */
+.orbital__star::before {
+  content: '';
+  position: absolute;
+  inset: -22%;
+  background:
+    radial-gradient(ellipse 45% 22% at 25% 30%, rgba(255, 245, 255, 0.50), transparent 60%),
+    radial-gradient(ellipse 38% 20% at 72% 48%, rgba(220, 200, 255, 0.45), transparent 65%),
+    radial-gradient(ellipse 50% 18% at 50% 78%, rgba(240, 225, 255, 0.40), transparent 60%),
+    radial-gradient(ellipse 30% 14% at 88% 22%, rgba(200, 180, 240, 0.38), transparent 70%),
+    radial-gradient(ellipse 32% 14% at 10% 65%, rgba(230, 215, 250, 0.40), transparent 60%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  animation: planet-spin 80s linear infinite;
+}
+
+/* Counter-rotating cloud layer at a different speed → turbulence. */
+.orbital__star::after {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(ellipse 50% 18% at 60% 38%, rgba(255, 250, 255, 0.35), transparent 65%),
+    radial-gradient(ellipse 32% 12% at 28% 60%, rgba(180, 160, 220, 0.32), transparent 65%),
+    radial-gradient(ellipse 28% 11% at 80% 72%, rgba(160, 140, 200, 0.28), transparent 70%),
+    radial-gradient(ellipse 22% 9%  at 42% 18%, rgba(255, 250, 255, 0.30), transparent 65%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  animation: planet-spin 120s linear infinite reverse;
+}
+
+@keyframes planet-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Initial-mount stagger for orbital nodes + labels. Opacity-only so it
+   composes cleanly with the existing translate/scale transforms. */
+@keyframes orbital-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Flight-path lines connecting nodes ─────────────────── */
+.orbital__paths {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.orbital__path {
+  color: var(--color-cyan); /* stroke uses currentColor */
+  opacity: 0.55;
+  animation: orbital-flow 6s linear infinite;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+
+/* Highlighted when a node further along the path is hovered/focused. */
+.orbital__path.is-active {
+  color: var(--color-warning-orange);
+  opacity: 0.95;
+}
+
+@keyframes orbital-flow {
+  to { stroke-dashoffset: -80; }
+}
+
+/* ── Nodes ──────────────────────────────────────────────── */
+.orbital__node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%) translate(var(--tx), var(--ty));
+}
+
+/* Staggered fade-in only when the orbital is mounted for the first time
+   (class added by home.js). Returning from a section skips the animation
+   and shows nodes/labels at full opacity immediately. */
+.orbital--intro .orbital__node,
+.orbital--intro .orbital__label {
+  animation: orbital-enter 460ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 100ms + 280ms);
+}
+
+.orbital__node-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--color-cyan);
+  border-radius: 50%;
+  opacity: 0.6;
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.orbital__node-dot {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: var(--color-cyan);
+  box-shadow: 0 0 14px var(--color-cyan-glow);
+  transition:
+    background var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+/* Hover / focus: shift to warning orange and bloom. */
+.orbital__node:hover .orbital__node-ring,
+.orbital__node:focus-visible .orbital__node-ring {
+  border-color: var(--color-warning-orange);
+  opacity: 1;
+  transform: scale(1.35);
+  box-shadow: 0 0 22px rgba(255, 138, 61, 0.55);
+}
+
+.orbital__node:hover .orbital__node-dot,
+.orbital__node:focus-visible .orbital__node-dot {
+  background: var(--color-warning-orange);
+  box-shadow:
+    0 0 18px var(--color-warning-orange),
+    0 0 36px rgba(255, 138, 61, 0.45);
+}
+
+.orbital__node:focus-visible {
+  outline: none;
+}
+
+/* ── Labels (positioned outside each node) ──────────────── */
+.orbital__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  --scale: 1;
+  transform: translate(-50%, -50%) translate(var(--lx), var(--ly)) scale(var(--scale));
+  transform-origin: center center;
+  text-align: center;
+  width: max-content;
+  max-width: 240px;
+  pointer-events: none;
+  user-select: none;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+/* Mirrors the corresponding node's hover/focus state (toggled by JS). */
+.orbital__label.is-active {
+  --scale: 1.18;
+}
+
+.orbital__label-step {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+}
+
+.orbital__label-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  margin-top: 8px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Reduced motion: kill orbit spin, path flow, star pulse,
+       and the parallax transition. Hover affordances stay. ── */
+@media (prefers-reduced-motion: reduce) {
+  .orbital,
+  .orbital__ring,
+  .orbital__path,
+  .orbital__star,
+  .orbital__star::before,
+  .orbital__star::after,
+  .orbital__node,
+  .orbital__label {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Mobile (< 768): hide the orbital and kill its motion entirely.
+       The TimelineHub takes its place. ── */
+@media (max-width: 767px) {
+  .orbital {
+    display: none;
+  }
+  .orbital,
+  .orbital__ring,
+  .orbital__path,
+  .orbital__star,
+  .orbital__star::before,
+  .orbital__star::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .home {
+    /* let the timeline hub anchor at the top instead of vertically centering */
+    justify-content: flex-start;
+    min-height: 0;
+    padding: 8px 0 24px;
+    gap: 0;
+  }
+}
+
+/* ── Responsive: scale down on narrower viewports ──────── */
+@media (max-width: 1200px) {
+  .orbital {
+    transform: translate(var(--px), var(--py)) scale(0.82);
+  }
+}
+@media (max-width: 900px) {
+  .orbital {
+    transform: translate(var(--px), var(--py)) scale(0.6);
+  }
+}
