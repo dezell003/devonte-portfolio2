@@ -24,7 +24,7 @@ export function createTimelineHub() {
       ${PHASE_ORDER.map((slug) => {
         const cfg = sections[slug];
         return `
-          <a class="phase-card" href="#/${slug}/1">
+          <a class="phase-card" href="#/solace/${slug}/1">
             <div class="phase-card__label">${cfg.label}</div>
             <div class="phase-card__title">${cfg.phaseTitle}</div>
             <div class="phase-card__summary">${cfg.summary || ''}</div>

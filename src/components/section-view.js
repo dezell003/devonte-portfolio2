@@ -197,7 +197,7 @@ function buildStepElement(slug, stepNum, { initialVariant } = {}) {
       crossfadeToImage(imgWrap, variant.image, variant.imageAlt);
       activeVariantId = variant.id;
       // Reflect the active variant in the URL so deep links work.
-      router.replace(`#/${slug}/${stepNum}?v=${encodeURIComponent(variant.id)}`);
+      router.replace(`#/solace/${slug}/${stepNum}?v=${encodeURIComponent(variant.id)}`);
     };
 
     let ctrl;
@@ -236,7 +236,7 @@ function buildStepElement(slug, stepNum, { initialVariant } = {}) {
     label: cfg.label,
     title: step.panel.title,
     children: buildPanelBody(step.panel),
-    onClose: () => router.go('#/'),
+    onClose: () => router.go('#/solace'),
   });
   el.querySelector('.section-view__panel-col').appendChild(panel);
 
@@ -254,14 +254,14 @@ function buildNavButtons(slug, stepNum) {
     direction: 'prev',
     label: isFirst ? 'HUB' : '',
     variant: isFirst ? 'labeled' : 'prev',
-    onClick: () => router.go(isFirst ? '#/' : `#/${slug}/${stepNum - 1}`),
+    onClick: () => router.go(isFirst ? '#/solace' : `#/solace/${slug}/${stepNum - 1}`),
   });
 
   const next = createNavButton({
     direction: 'next',
     label: isLast ? 'HUB' : '',
     variant: isLast ? 'labeled' : 'next',
-    onClick: () => router.go(isLast ? '#/' : `#/${slug}/${stepNum + 1}`),
+    onClick: () => router.go(isLast ? '#/solace' : `#/solace/${slug}/${stepNum + 1}`),
   });
 
   return [prev, next];
@@ -301,13 +301,14 @@ export function createSection(slug) {
   root.appendChild(navRow);
   root.appendChild(announcer);
 
-  // Click anywhere outside the panel / image / nav to return to the hub.
-  // The [X] on the panel handles its own click via createHUDPanel's onClose.
+  // Click anywhere outside the panel / image / nav to return to the
+  // Solace hub. The [X] on the panel handles its own click via
+  // createHUDPanel's onClose.
   root.addEventListener('click', (e) => {
     if (e.target.closest('.hud-panel, .section-view__image-col, .section-view__nav-row')) {
       return;
     }
-    router.go('#/');
+    router.go('#/solace');
   });
 
   let currentStep = null;

@@ -24,10 +24,10 @@ let hasIntroPlayed = false;
    Angles in degrees: 0° = right, 90° = down, -90° = up. All four
    nodes still sit on the same r=NODE_RADIUS circle. */
 const PHASES = [
-  { num: '01', label: 'RESEARCH',   title: 'EXPLORING MENTAL HEALTH', angle:  -60, route: '#/research/1'   },
-  { num: '02', label: 'DESIGN',     title: 'CRAFTING THE SOLUTION',   angle: -140, route: '#/design/1'     },
-  { num: '03', label: 'TESTING',    title: 'FEEDBACK & REVISION',     angle:   40, route: '#/testing/1'    },
-  { num: '04', label: 'NEXT STEPS', title: 'MOVING FORWARD',          angle:  120, route: '#/next-steps/1' },
+  { num: '01', label: 'RESEARCH',   title: 'EXPLORING MENTAL HEALTH', angle:  -60, route: '#/solace/research/1'   },
+  { num: '02', label: 'DESIGN',     title: 'CRAFTING THE SOLUTION',   angle: -140, route: '#/solace/design/1'     },
+  { num: '03', label: 'TESTING',    title: 'FEEDBACK & REVISION',     angle:   40, route: '#/solace/testing/1'    },
+  { num: '04', label: 'NEXT STEPS', title: 'MOVING FORWARD',          angle:  120, route: '#/solace/next-steps/1' },
 ];
 
 const NODE_RADIUS = 240;
