@@ -6,7 +6,7 @@
   top: 24px;
   right: 24px;
   bottom: 24px;
-  left: 304px; /* sidebar (280) + 24 padding */
+  left: 296px; /* aligns with chapter rail nodes */
   pointer-events: none;
   z-index: var(--z-overlay);
 }

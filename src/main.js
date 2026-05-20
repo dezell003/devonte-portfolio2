@@ -2,11 +2,11 @@ import './style.css';
 import { router } from './router.js';
 import { mountShell } from './components/shell.js';
 import { createPlayground } from './components/playground.js';
-import { createHome } from './components/home.js';
-import { createSection } from './components/section-view.js';
+import { createCaseStudy } from './components/home-v2.js';
 import { createLanding } from './components/landing.js';
 import { createAbout } from './components/about.js';
-import { sections } from './sections.js';
+import solaceData from './case-studies/solace.js';
+import atlasData from './case-studies/atlas.js';
 
 const app = document.getElementById('app');
 
@@ -23,6 +23,7 @@ const setTitle = (suffix) => {
    each route own its own content. */
 
 let currentWorld = null;            // 'landing' | 'solace'
+let currentShellKey = null;          // identifies the active sidebar config
 let landingInstance = null;          // { element, destroy } from createLanding
 let solaceView = null;               // inner view returned by mountShell
 let activeSection = null;            // current cached section component (for /solace/:slug/:step)
@@ -37,16 +38,21 @@ function teardown() {
   // its contents are managed via solaceView.innerHTML. Just drop refs.
   solaceView = null;
   activeSection = null;
+  currentShellKey = null;
   app.innerHTML = '';
   currentWorld = null;
 }
 
-/* Ensure the Solace shell is mounted and return its view element. */
-function ensureSolaceShell() {
-  if (currentWorld !== 'solace') {
+/* Ensure the case-study shell is mounted with the given sidebar config
+   and return its inner view element. Rebuilds the shell when switching
+   between case studies (different sidebar metadata). */
+function ensureCaseStudyShell(sidebar) {
+  const key = sidebar?.wordmark || 'default';
+  if (currentWorld !== 'solace' || currentShellKey !== key) {
     teardown();
-    solaceView = mountShell(app);
+    solaceView = mountShell(app, { sidebar });
     currentWorld = 'solace';
+    currentShellKey = key;
   }
   return solaceView;
 }
@@ -69,7 +75,8 @@ function mountAbout() {
 }
 
 router
-  .add('/', () => {
+  .add('/', () => router.go('#/home'))
+  .add('/home', () => {
     mountLanding();
     setTitle();
   })
@@ -77,66 +84,46 @@ router
     mountAbout();
     setTitle('About');
   })
-  .add('/solace', () => {
-    const view = ensureSolaceShell();
+  // Legacy URLs redirect to the canonical Solace case-study path.
+  .add('/solace', () => router.go('#/solace-v2'))
+  .add('/solace/:slug/:step', () => router.go('#/solace-v2'))
+  .add('/solace-v2', () => {
+    const view = ensureCaseStudyShell(solaceData.sidebar);
     view.innerHTML = '';
     activeSection = null;
-    view.appendChild(createHome());
+    view.appendChild(createCaseStudy(solaceData));
     setTitle('Solace');
   })
+  .add('/atlas', () => {
+    const view = ensureCaseStudyShell(atlasData.sidebar);
+    view.innerHTML = '';
+    activeSection = null;
+    view.appendChild(createCaseStudy(atlasData));
+    setTitle('Atlas');
+  })
   .add('/dev', () => {
-    const view = ensureSolaceShell();
+    const view = ensureCaseStudyShell(solaceData.sidebar);
     view.innerHTML = '';
     activeSection = null;
     view.appendChild(createPlayground());
     setTitle('Component playground');
   })
-  // Solace section view — handles /solace/research/:step etc.
-  .add('/solace/:slug/:step', ({ params, search }) => {
-    const slug = params.slug;
-    const step = parseInt(params.step, 10);
-    const cfg = sections[slug];
-
-    if (!cfg || Number.isNaN(step) || step < 1 || step > cfg.steps.length) {
-      router.go('#/solace');
-      return;
-    }
-
-    const view = ensureSolaceShell();
-    const initialVariant = search.v;
-
-    if (activeSection?.slug === slug && activeSection.element.isConnected) {
-      activeSection.goToStep(step, { initialVariant });
-    } else {
-      view.innerHTML = '';
-      activeSection = createSection(slug);
-      view.appendChild(activeSection.element);
-      activeSection.goToStep(step, { initialVariant, skipTransition: true });
-    }
-
-    setTitle(`${cfg.phaseTitle} · Step ${step} of ${cfg.steps.length}`);
-  })
   .add('*', () => {
-    // Any other unmatched hash → fall back to landing.
-    router.go('#/');
+    // Any other unmatched hash → land on the home page.
+    router.go('#/home');
   })
   .start();
 
-/* ── Global keyboard: Esc returns to the current mode's hub ──────
-   - From a Solace section → #/solace
-   - From #/about         → #/
-   - From a hub (#/, #/solace) → no-op */
+/* ── Global keyboard: Esc returns from /about → /home. */
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
   if (document.body.classList.contains('mobile-nav-open')) return;
   const tag = document.activeElement?.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-  const hash = window.location.hash || '#/';
+  const hash = window.location.hash || '#/home';
 
-  if (hash.startsWith('#/solace/')) {
-    router.go('#/solace');
-  } else if (hash === '#/about') {
-    router.go('#/');
+  if (hash === '#/about') {
+    router.go('#/home');
   }
 });

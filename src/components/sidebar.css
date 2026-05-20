@@ -4,10 +4,10 @@
   left: 0;
   bottom: 0;
   width: 280px;
-  padding: 56px 32px 40px;
+  padding: 32px 24px 32px;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 24px;
   z-index: var(--z-nav);
 }
 
@@ -16,58 +16,61 @@
   .sidebar { display: none; }
 }
 
-/* ── Top: wordmark ──────────────────────────────────────── */
-.sidebar__wordmark {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  letter-spacing: 0.32em;
-  color: var(--color-cyan);
-  text-shadow: 0 0 14px var(--color-cyan-glow);
-  user-select: none;
-}
-
-/* ── Middle: metadata stack, right-aligned ──────────────── */
+/* ── Metadata stack at the top: case-study title + fields ──
+   Structure matches the Figma meta block (node 862:1216):
+   a cyan title, then label/value rows split left↔right with a
+   faint cyan underline. */
 .sidebar__meta {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  margin-top: auto;
-  margin-bottom: auto;
+  gap: 8px;
+}
+
+.sidebar__title {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.11em;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  text-shadow: 0 0 14px var(--color-cyan-glow);
+  user-select: none;
+  margin-bottom: 16px;
 }
 
 .meta {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-align: right;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(95, 221, 229, 0.15);
 }
 
 .meta__label {
+  flex-shrink: 0;
   font-family: var(--font-mono);
-  font-size: var(--font-size-mono);
+  font-size: 10px;
   color: var(--color-cyan);
-  letter-spacing: var(--letter-spacing-mono);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .meta__values {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.meta__value {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 10px;
   color: var(--color-text);
-  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  text-align: right;
 }
 
-/* ── Bottom: page nav ───────────────────────────────────── */
+/* ── Page nav, spaced beneath the meta block ────────────── */
 .sidebar__nav {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin-top: 32px;
 }
 
 .nav-item {

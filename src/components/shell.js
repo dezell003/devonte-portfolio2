@@ -15,7 +15,7 @@ import { createMobileShell } from './mobile-shell.js';
  *   4. mobile-shell  (top bar + drawer, hidden ≥ 768)
  *   5. frame         (corner brackets, pointer-events:none)
  */
-export function mountShell(root) {
+export function mountShell(root, { sidebar } = {}) {
   root.innerHTML = '';
 
   root.appendChild(createBackground());
@@ -28,8 +28,8 @@ export function mountShell(root) {
   main.appendChild(view);
   root.appendChild(main);
 
-  root.appendChild(createSidebar());
-  root.appendChild(createMobileShell());
+  root.appendChild(createSidebar(sidebar));
+  root.appendChild(createMobileShell(sidebar));
   root.appendChild(createFrame());
 
   return view;

@@ -4,7 +4,7 @@
   position: relative;
   margin-left: 280px;
   min-height: 100vh;
-  padding: 64px 64px 64px 32px;
+  padding: 34px 34px 34px 26px;
   z-index: var(--z-content);
 }
 

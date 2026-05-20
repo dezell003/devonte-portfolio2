@@ -8,7 +8,7 @@ import { META, NAV } from '../site-meta.js';
  * a scrim, and a slide-in nav drawer containing the metadata block
  * and the page nav. The whole subtree is hidden above 768px via CSS.
  */
-export function createMobileShell() {
+export function createMobileShell({ wordmark = 'SOLACE', meta = META, nav = NAV } = {}) {
   const root = document.createElement('div');
   root.className = 'mobile-shell';
 
@@ -16,7 +16,7 @@ export function createMobileShell() {
   const bar = document.createElement('header');
   bar.className = 'top-bar';
   bar.innerHTML = `
-    <a class="top-bar__wordmark" href="#/">SOLACE</a>
+    <a class="top-bar__wordmark" href="#/home">${wordmark}</a>
     <button type="button" class="top-bar__menu"
             aria-label="Open menu" aria-expanded="false"
             aria-controls="mobile-nav">
@@ -39,14 +39,14 @@ export function createMobileShell() {
   drawer.setAttribute('aria-label', 'Site navigation');
   drawer.innerHTML = `
     <div class="mobile-nav__head">
-      <div class="mobile-nav__wordmark">SOLACE</div>
+      <div class="mobile-nav__wordmark">${wordmark}</div>
       <button type="button" class="mobile-nav__close" aria-label="Close menu">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
     <div class="mobile-nav__meta">
-      ${META.map(({ label, values }) => `
+      ${meta.map(({ label, values }) => `
         <div class="mobile-nav__meta-item">
           <div class="mobile-nav__meta-label">${label}</div>
           <div class="mobile-nav__meta-values">
@@ -57,7 +57,7 @@ export function createMobileShell() {
     </div>
 
     <nav class="mobile-nav__nav" aria-label="Pages">
-      ${NAV.map(({ num, label, href }) => `
+      ${nav.map(({ num, label, href }) => `
         <a class="mobile-nav__nav-item" href="${href}">
           <span class="mobile-nav__nav-item-num">${num}.</span>
           <span class="mobile-nav__nav-item-label">${label}</span>

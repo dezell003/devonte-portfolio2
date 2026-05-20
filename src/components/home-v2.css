@@ -1,0 +1,761 @@
+/* ── Root wrapper ─────────────────────────────────────────
+   Sits inside .shell__main which already has margin-left: 280px
+   (the existing sidebar) and 64px right padding. We carve out
+   space on the left for the chapter rail (clears the sidebar
+   wordmark/meta column) and on the right for the orbital peek. */
+.home-v2 {
+  position: relative;
+  min-height: calc(100vh - 128px);
+}
+
+/* ── Chapter rail: lives in the sidebar's lower-left area,
+       below the site nav (mobile rule overrides to a bottom strip). ── */
+.chapter-rail {
+  position: fixed;
+  left: 24px;             /* matches the sidebar's 24px padding */
+  bottom: 40px;
+  top: auto;
+  transform: none;
+  z-index: calc(var(--z-nav) + 1);
+  pointer-events: none;   /* enable per-button */
+}
+
+.chapter-rail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.chapter-rail__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* The connector line between adjacent nodes. */
+.chapter-rail__connector {
+  display: block;
+  width: 1px;
+  height: 40px;
+  margin-left: 11px;       /* aligns with dot center (24px node, 1px line) */
+  background: linear-gradient(
+    to bottom,
+    rgba(95, 221, 229, 0.0) 0%,
+    rgba(95, 221, 229, 0.45) 50%,
+    rgba(95, 221, 229, 0.0) 100%
+  );
+}
+
+.chapter-node {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: 0;
+  padding: 6px 0;
+  cursor: pointer;
+  pointer-events: auto;
+  font: inherit;
+  color: inherit;
+}
+
+.chapter-node__dot {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-cyan);
+  background: rgba(7, 14, 24, 0.85);
+  box-shadow: 0 0 12px rgba(95, 221, 229, 0.35);
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.chapter-node__dot::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--color-cyan);
+  opacity: 0.35;
+  transition: opacity var(--duration-base) var(--ease-out),
+              background var(--duration-base) var(--ease-out);
+}
+
+.chapter-node__label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  opacity: 1;
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.chapter-node__num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-cyan);
+  text-transform: uppercase;
+}
+
+.chapter-rail__item.is-active .chapter-node__num {
+  color: var(--color-warning-orange);
+}
+
+.chapter-node__title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  margin-top: 2px;
+}
+
+/* Hover state */
+.chapter-node:hover .chapter-node__dot,
+.chapter-node:focus-visible .chapter-node__dot {
+  transform: scale(1.18);
+  border-color: var(--color-warning-orange);
+  box-shadow:
+    0 0 14px var(--color-warning-orange),
+    0 0 28px rgba(255, 138, 61, 0.45);
+}
+
+.chapter-node:hover .chapter-node__dot::after,
+.chapter-node:focus-visible .chapter-node__dot::after {
+  background: var(--color-warning-orange);
+  opacity: 1;
+}
+
+.chapter-node:hover .chapter-node__title,
+.chapter-node:focus-visible .chapter-node__title {
+  color: var(--color-warning-orange);
+  text-shadow: 0 0 12px rgba(255, 138, 61, 0.4);
+}
+
+.chapter-node:focus-visible {
+  outline: none;
+}
+
+/* Active (scroll-spied) state */
+.chapter-rail__item.is-active .chapter-node__dot {
+  border-color: var(--color-warning-orange);
+  box-shadow:
+    0 0 14px var(--color-warning-orange),
+    0 0 28px rgba(255, 138, 61, 0.45);
+}
+
+.chapter-rail__item.is-active .chapter-node__dot::after {
+  background: var(--color-warning-orange);
+  opacity: 1;
+}
+
+.chapter-rail__item.is-active .chapter-node__title {
+  color: var(--color-warning-orange);
+  text-shadow: 0 0 12px rgba(255, 138, 61, 0.5);
+}
+
+/* ── Orbital backdrop ─────────────────────────────────────
+   Fixed; peeks in from the right edge as a persistent visual
+   anchor. Non-interactive and dimmed so the middle column
+   remains the focus. */
+.home-v2__orbital {
+  position: fixed;
+  top: 50%;
+  right: -30vh;            /* pulled in: planet center sits near right edge of frame */
+  transform: translateY(-50%);
+  width: 110vh;
+  height: 110vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.25;
+}
+
+.home-v2__orbital .orbital__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: orbital-spin 90s linear infinite;
+  transform-origin: center;
+}
+
+.home-v2__orbital .orbital__star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(46vh, 520px);
+  height: min(46vh, 520px);
+  transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-v2__orbital .orbital__ring {
+    animation: none;
+  }
+}
+
+/* ── Long-scroll content column ──────────────────────────
+   Pushed right of the chapter rail; capped width so it
+   stays a readable column. Sits above the orbital backdrop. */
+.case-scroll {
+  position: relative;
+  z-index: 2;
+  margin-left: 0;          /* chapter rail now lives in the sidebar */
+  display: flex;
+  flex-direction: column;
+  gap: 88px;
+  padding-bottom: 80px;
+}
+
+.case-chapter {
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+  scroll-margin-top: 32px;
+}
+
+/* ── Per-chapter trade-off: Considered · Chose · Cut ───── */
+.case-chapter__tradeoff {
+  margin-top: -32px;            /* tighten under header */
+  padding: 16px 20px;
+  border-left: 3px solid var(--color-warning-orange);
+  background: rgba(255, 138, 61, 0.05);
+  max-width: 720px;
+}
+
+.case-chapter__tradeoff-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.case-chapter__tradeoff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.tradeoff__row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.tradeoff__row dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.tradeoff__row dd {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.tradeoff__row--chose dd {
+  font-weight: 600;
+}
+
+/* ── Case-study header (intro section) ──────────────────── */
+.cs-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.cs-header__title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(40px, 6.5vw, 72px);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cs-header__subtitle {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-cyan);
+  max-width: 64ch;
+  margin: 14px 0 0;
+}
+
+/* Context blurb — bracket-framed box */
+.cs-context {
+  position: relative;
+  margin-top: 32px;
+  max-width: 960px;
+  padding: 24px 28px;
+  border: 1px solid var(--color-panel-border);
+  background: linear-gradient(180deg, rgba(95, 221, 229, 0.03), rgba(255, 138, 61, 0.02));
+}
+
+.cs-context__br {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--color-cyan);
+}
+.cs-context__br--tl { top: -1px; left: -1px;  border-top-width: 2px; border-left-width: 2px; }
+.cs-context__br--tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
+.cs-context__br--bl { bottom: -1px; left: -1px;  border-bottom-width: 2px; border-left-width: 2px; }
+.cs-context__br--br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+.cs-context__body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+}
+.cs-context__body p { margin: 0; }
+.cs-context__body p + p { margin-top: 12px; }
+.cs-context__body em { color: var(--color-cyan); font-style: normal; }
+.cs-context__body code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-cyan-dim);
+}
+
+/* Hero media */
+.cs-hero {
+  margin: 32px 0 0;
+}
+
+.cs-hero__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: transparent;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-hero__media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cs-hero__lottie {
+  overflow: hidden;
+}
+.cs-hero__lottie svg {
+  display: block;
+}
+
+/* Lottie step image — fills the image-wrap like a static image would. */
+.section-view__lottie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.section-view__lottie svg {
+  display: block;
+}
+
+.cs-hero__placeholder {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-text-mute);
+}
+
+/* Key Outcomes */
+.cs-outcomes {
+  margin-top: 36px;
+}
+
+.cs-outcomes__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.cs-outcomes__label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-warning-orange), transparent);
+}
+
+.cs-outcomes__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.cs-stat {
+  position: relative;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(95, 221, 229, 0.04), rgba(95, 221, 229, 0.01));
+  border: 1px solid var(--color-panel-border);
+  border-left: 3px solid var(--color-cyan);
+}
+
+.cs-stat__figure {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--color-cyan);
+  margin-bottom: 8px;
+}
+
+.cs-stat__unit {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text-dim);
+}
+
+.cs-stat__descriptor {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+.cs-stat__implication {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-panel-border);
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--color-text-dim);
+}
+
+@media (min-width: 1100px) {
+  .cs-outcomes__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.case-chapter__header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-panel-border);
+}
+
+.case-chapter__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  color: var(--color-warning-orange);
+  text-transform: uppercase;
+}
+
+.case-chapter__title {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.case-chapter__summary {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-text-dim);
+  max-width: 70ch;
+  margin: 0;
+}
+
+/* ── Inline step (reuses .section-view__* classes for image + panel) ──
+   Narrow text panel on the left, image-dominant column on the right.
+   Both columns scroll together — no sticky pinning. */
+.home-v2__step {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) 1fr;
+  gap: 48px;
+  align-items: stretch;
+}
+
+.home-v2__step .section-view__image-col {
+  align-self: stretch;
+}
+
+/* Image frame fills the column height so it matches the text panel. */
+.home-v2__step .section-view__image-wrap {
+  aspect-ratio: auto;
+  flex: 1;
+}
+
+.home-v2__step .section-view__image-wrap {
+  cursor: zoom-in;
+}
+
+.home-v2__step .section-view__image-wrap:focus-visible {
+  outline: 2px solid var(--color-warning-orange);
+  outline-offset: 4px;
+}
+
+/* ── Insight reveal button (one per step) ───────────────── */
+.insight-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--color-warning-orange);
+  color: var(--color-warning-orange);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-mono);
+  letter-spacing: var(--letter-spacing-mono);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.insight-toggle__chevron {
+  font-size: 14px;
+  line-height: 1;
+  width: 12px;
+  text-align: center;
+}
+
+.insight-toggle:hover,
+.insight-toggle:focus-visible {
+  color: var(--color-warning-orange);
+  border-color: var(--color-warning-orange);
+  box-shadow: 0 0 16px rgba(255, 138, 61, 0.35);
+  outline: none;
+}
+
+.insight-toggle.is-open {
+  color: var(--color-warning-orange);
+  border-color: var(--color-warning-orange);
+  background: rgba(255, 138, 61, 0.08);
+}
+
+.section-callouts[hidden],
+.section-meta[hidden] {
+  display: none;
+}
+
+/* Hide the decorative [X] marker on the HUD panel inside v2 only.
+   The shared component still renders it for other routes. */
+.home-v2 .hud-panel__marker {
+  display: none;
+}
+
+/* ── Image zoom overlay ───────────────────────────────────
+   Constrained to the area inside the four L-bracket corners
+   (matches .frame inset: top/right/bottom 24, left 236). */
+.image-zoom__overlay {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  bottom: 24px;
+  left: 296px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.image-zoom__overlay[hidden] {
+  display: none;
+}
+
+/* Image scales to fill the full height of the frame (the area inside the
+   L-corners); width follows aspect ratio and is capped so it never
+   overflows the frame horizontally. */
+.image-zoom__image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: auto;
+  cursor: zoom-out;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+}
+
+/* Lottie variant of the zoom — fills the overlay's content area. */
+.image-zoom__lottie {
+  width: 100%;
+  height: 100%;
+  cursor: zoom-out;
+}
+.image-zoom__lottie[hidden] { display: none; }
+.image-zoom__lottie svg { display: block; }
+.image-zoom__image[hidden] { display: none; }
+
+.image-zoom__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: var(--letter-spacing-mono);
+  background: transparent;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out);
+}
+
+.image-zoom__close:hover,
+.image-zoom__close:focus-visible {
+  color: var(--color-warning-orange);
+  border-color: var(--color-warning-orange);
+  outline: none;
+}
+
+body.image-zoom-open {
+  overflow: hidden;
+}
+
+/* Prev / next arrows for carousel-variant zooms. */
+.image-zoom__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  cursor: pointer;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out);
+}
+
+.image-zoom__nav--prev { left: 24px; }
+.image-zoom__nav--next { right: 24px; }
+
+.image-zoom__nav[hidden] { display: none; }
+
+.image-zoom__nav:hover,
+.image-zoom__nav:focus-visible {
+  color: var(--color-warning-orange);
+  border-color: var(--color-warning-orange);
+  background: rgba(255, 138, 61, 0.08);
+  outline: none;
+}
+
+@media (max-width: 1100px) {
+  .home-v2__step {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .home-v2__step .section-view__image-col {
+    position: static;
+    margin-right: 0;
+  }
+  .home-v2__orbital {
+    opacity: 0.3;
+  }
+}
+
+/* ── Mobile (< 768): rail collapses to a fixed top strip ── */
+@media (max-width: 767px) {
+  .chapter-rail {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    transform: none;
+    background: rgba(7, 14, 24, 0.85);
+    border-top: 1px solid var(--color-panel-border);
+    backdrop-filter: blur(8px);
+    padding: 10px 16px;
+  }
+  .chapter-rail__list {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .chapter-rail__connector {
+    width: 24px;
+    height: 1px;
+    margin: 0;
+    background: linear-gradient(
+      to right,
+      rgba(95, 221, 229, 0.0) 0%,
+      rgba(95, 221, 229, 0.45) 50%,
+      rgba(95, 221, 229, 0.0) 100%
+    );
+  }
+  .chapter-node__label {
+    display: none;
+  }
+  .case-scroll {
+    margin-left: 0;
+    gap: 64px;
+    padding-bottom: 96px;
+  }
+  .case-chapter {
+    gap: 36px;
+  }
+  .home-v2__orbital {
+    display: none;
+  }
+}

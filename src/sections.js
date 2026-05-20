@@ -26,10 +26,16 @@ export const sections = {
     label: 'P01_01 // RESEARCH',
     phaseTitle: 'EXPLORING MENTAL HEALTH',
     summary: 'User interviews on how people choose coping techniques under stress — and why most apps overwhelm them.',
+    tradeoff: {
+      considered: 'Building a richer technique library with smarter filters',
+      chose: 'Reframing the entry point from technique-first to emotion-first',
+      cut: 'Catalog browsing UI; deferred until trust in the guided flow is proven',
+    },
     steps: [
       // Step 1 — Too many options
       {
         image: '/assets/too-many-options.webp',
+        lottie: '/assets/too-many-options.json',
         imageAlt:
           'Comparison of Headspace, Calm, and How We Feel mobile apps showing dense feature menus',
         panel: {
@@ -60,7 +66,7 @@ export const sections = {
             <p>Users didn&rsquo;t want to search for solutions while stressed. They wanted guidance.</p>
             <p>That told me this wasn&rsquo;t a discovery problem. It was a decision problem under emotional strain.</p>
           `,
-          callouts: [
+          meta: [
             { label: 'Methods', body: 'User Interviews &amp; Lightweight Surveys' },
             { label: 'Participants', body: '5 individuals actively managing stress, anxiety, or burnout' },
             { label: 'Focus', body: 'How users identified emotions and chose successful coping strategies' },
@@ -99,6 +105,11 @@ export const sections = {
     label: 'P01_02 // DESIGN',
     phaseTitle: 'CRAFTING THE SOLUTION',
     summary: 'Designing an emotion-first flow that reduces decision overhead in the moment of need.',
+    tradeoff: {
+      considered: 'Power-user discovery: branching paths, custom playlists, filters',
+      chose: 'A single guided check-in → recommend → guide flow with limited branching',
+      cut: 'Custom playlist creation and filter UI; revisited as v2 scope after retention validation',
+    },
     steps: [
       // Step 1 — Tension between guidance and control
       {
@@ -123,6 +134,7 @@ export const sections = {
       // Step 2 — Experience flow
       {
         image: '/assets/experience-flow.webp',
+        lottie: '/assets/experience-flow.json',
         imageAlt:
           'Flowchart of the Solace experience: Start → Check-in form → Check-in complete → Personalized recommendations → branching into Physical Movement, Breathing, or Mindfulness Techniques → Technique complete',
         panel: {
@@ -182,6 +194,11 @@ export const sections = {
     label: 'P01_03 // TESTING',
     phaseTitle: 'FEEDBACK & REVISION',
     summary: 'Five usability tests surfaced four targeted improvements — each tightening clarity without adding complexity.',
+    tradeoff: {
+      considered: 'A/B testing the emotion-first flow against a free-browse baseline',
+      chose: 'Moderated qualitative testing with 5 participants for directional signal',
+      cut: 'Quantitative comparison; sample too small to be meaningful at this stage',
+    },
     steps: [
       // Step 1 — Reality check (variants: 3 screens via CarouselDots)
       {
@@ -283,6 +300,11 @@ export const sections = {
     label: 'P01_04 // NEXT STEPS',
     phaseTitle: 'MOVING FORWARD',
     summary: 'Outcomes, lessons, and what the next iteration of Solace would look like.',
+    tradeoff: {
+      considered: 'Layering in social and community features to drive engagement',
+      chose: 'Doubling down on the emotion-first signal and personalization depth',
+      cut: 'Community/sharing — would dilute the calm, supportive register the brand depends on',
+    },
     steps: [
       // Step 1 — A calmer path to support
       {
@@ -306,6 +328,8 @@ export const sections = {
       // Step 2 — Designing for human moments
       {
         image: '/assets/designing-for-human-moments.webp',
+        lottie: '/assets/designing-for-human-moments.json',
+        lottieLoop: true,
         imageAlt:
           'Three Solace mobile screens shown in 3D perspective: Mood Check, Emotional Symptoms, and Physical Symptoms',
         panel: {

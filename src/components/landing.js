@@ -26,7 +26,7 @@ export function createLanding() {
     <header class="landing__top-nav">
       <span class="landing__top-nav-brand">Devonte Ezell</span>
       <ul class="landing__top-nav-links">
-        <li><a href="#/" class="active">01. Home</a></li>
+        <li><a href="#/home" class="active">01. Home</a></li>
         <li><a href="#/about">02. About</a></li>
         <li><a href="#contact">03. Contact</a></li>
       </ul>
@@ -36,7 +36,7 @@ export function createLanding() {
     </header>
 
     <nav class="landing__nav-drawer" aria-hidden="true">
-      <a href="#/" class="active">01. Home</a>
+      <a href="#/home" class="active">01. Home</a>
       <a href="#/about">02. About</a>
       <a href="#contact">03. Contact</a>
     </nav>
@@ -65,7 +65,7 @@ export function createLanding() {
         <nav class="landing__nav">
           <ul class="landing__nav-list">
             <li class="landing__nav-item">
-              <a href="#/" class="landing__nav-link">
+              <a href="#/home" class="landing__nav-link">
                 <span class="landing__nav-bracket">[ ]</span>
                 <span class="landing__nav-label landing__nav-label--active">01. HOME</span>
               </a>
@@ -145,7 +145,7 @@ export function createLanding() {
 
         <div class="landing__cta-wrap">
           <div class="br br-tl"></div>
-          <a class="landing__cta-btn" href="#/solace">
+          <a class="landing__cta-btn" href="#/solace-v2">
             Explore Work
             <img src="${ARROW_SVG_DATA_URI}" alt="" />
           </a>
@@ -180,7 +180,7 @@ export function createLanding() {
           </div>
 
           <!-- Solace (live) -->
-          <a class="landing__project-card" href="#/solace">
+          <a class="landing__project-card" href="#/solace-v2">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <video class="landing__project-video" src="/assets/solace-preview.webm" muted loop playsinline preload="none"></video>

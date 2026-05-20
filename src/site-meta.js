@@ -8,7 +8,7 @@ export const META = [
 
 /* Page-level navigation, also shared between sidebar and drawer. */
 export const NAV = [
-  { num: '01', label: 'HOME',    href: '#/' },
+  { num: '01', label: 'HOME',    href: '#/home' },
   { num: '02', label: 'ABOUT',   href: '#/about' },
   { num: '03', label: 'CONTACT', href: '#/contact' },
 ];
