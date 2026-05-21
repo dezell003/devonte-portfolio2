@@ -710,6 +710,13 @@ body.image-zoom-open {
     position: static;
     margin-right: 0;
   }
+  /* Single-column layout: no stretch coupling to a sibling text panel, so
+     give the image-wrap an explicit aspect-ratio (otherwise its flex:1
+     resolves to 0px tall and the image is invisible). */
+  .home-v2__step .section-view__image-wrap {
+    aspect-ratio: 16 / 10;
+    flex: 0 0 auto;
+  }
   .home-v2__orbital {
     opacity: 0.3;
   }
