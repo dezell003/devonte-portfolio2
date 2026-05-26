@@ -1,6 +1,5 @@
 import './shell.css';
 import { createBackground } from './background.js';
-import { createFrame } from './frame.js';
 import { createSidebar } from './sidebar.js';
 import { createMobileShell } from './mobile-shell.js';
 
@@ -30,7 +29,6 @@ export function mountShell(root, { sidebar } = {}) {
 
   root.appendChild(createSidebar(sidebar));
   root.appendChild(createMobileShell(sidebar));
-  root.appendChild(createFrame());
 
   return view;
 }

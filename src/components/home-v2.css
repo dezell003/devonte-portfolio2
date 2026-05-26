@@ -627,6 +627,21 @@
   background: rgba(18, 26, 36, 0.45);
 }
 
+/* Body prose elements explicitly render at normal weight (the Sora face
+   was reading semibold without this override). Headings/labels keep
+   their own weights. */
+.home-v2 .hud-panel__body,
+.home-v2 .hud-panel__body p,
+.home-v2 .cs-header__subtitle,
+.home-v2 .cs-context__body,
+.home-v2 .cs-context__body p,
+.home-v2 .section-callout__body,
+.home-v2 .section-meta__body,
+.home-v2 .cs-stat__descriptor,
+.home-v2 .cs-stat__implication {
+  font-weight: 400;
+}
+
 /* ── Image zoom overlay ───────────────────────────────────
    Constrained to the area inside the four L-bracket corners
    (matches .frame inset: top/right/bottom 24, left 236). */

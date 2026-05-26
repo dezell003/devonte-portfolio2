@@ -85,12 +85,20 @@
               opacity var(--duration-fast) var(--ease-out);
 }
 
-.nav-item__num {
+.nav-item__bracket {
   color: var(--color-cyan);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 
 .nav-item__label {
   color: var(--color-text);
+}
+
+.nav-item:hover .nav-item__bracket,
+.nav-item:focus-visible .nav-item__bracket,
+.nav-item.is-active .nav-item__bracket {
+  opacity: 1;
 }
 
 .nav-item:hover .nav-item__label {

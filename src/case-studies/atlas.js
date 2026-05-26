@@ -1,12 +1,12 @@
 /**
- * Case-study data bundle for Atlas — a music-discovery project.
+ * Case-study data bundle for Atlas, a music-discovery project.
  * Consumed by the scrolling case-study layout (`createCaseStudy`).
  *
  * Same shape as case-studies/solace.js:
- *   phases  — ordered chapters [{ slug, code, label, title }]
- *   sections — per-slug content { label, phaseTitle, steps[] }
- *   sidebar — { wordmark, meta, nav }
- *   title   — visually-hidden page <h1>
+ *   phases , ordered chapters [{ slug, code, label, title }]
+ *   sections, per-slug content { label, phaseTitle, steps[] }
+ *   sidebar, { wordmark, meta, nav }
+ *   title  , visually-hidden page <h1>
  *
  * Drop matching .webp assets into /public/assets/.
  */
@@ -21,18 +21,18 @@ const META = [
 
 const sections = {
   // ──────────────────────────────────────────────────────────
-  // P02_01 — RESEARCH
+  // P02_01, RESEARCH
   // ──────────────────────────────────────────────────────────
   research: {
     label: 'P02_01 // RESEARCH',
     phaseTitle: 'MEANINGFUL DISCOVERY',
-    summary: 'Interviews on how listeners decide what is worth playing — and why fast discovery rarely means confident discovery.',
+    summary: 'Interviews on how listeners decide what is worth playing, and why fast discovery rarely means confident discovery.',
     steps: [
-      // Step 1 — Discovery feels fast, but decisions don’t
+      // Step 1, Discovery feels fast, but decisions don’t
       {
         image: '/assets/discovery-comparison.webp',
         imageAlt:
-          'Comparison labeled “Fast Discovery ≠ Good Discovery” — fast-discovery surfaces (infinite scroll, autoplay playlists, algorithmic feeds, personalized surfaces) paired with their failures (skip within seconds, unclear relevance, distrust recommendations, lose promising tracks later)',
+          'Comparison labeled “Fast Discovery ≠ Good Discovery”, fast-discovery surfaces (infinite scroll, autoplay playlists, algorithmic feeds, personalized surfaces) paired with their failures (skip within seconds, unclear relevance, distrust recommendations, lose promising tracks later)',
         panel: {
           title: 'DISCOVERY FEELS FAST, BUT DECISIONS DON&rsquo;T',
           body: `
@@ -48,11 +48,11 @@ const sections = {
         },
       },
 
-      // Step 2 — Signals that shaped direction
+      // Step 2, Signals that shaped direction
       {
         image: '/assets/research-signals.webp',
         imageAlt:
-          'Insights-to-direction diagram — four research insights (skipping creates fatigue, mood drives discovery entry, discovery windows are short, people trust context not algorithms) each mapped to a design direction',
+          'Insights-to-direction diagram, four research insights (skipping creates fatigue, mood drives discovery entry, discovery windows are short, people trust context not algorithms) each mapped to a design direction',
         panel: {
           title: 'SIGNALS THAT SHAPED DIRECTION',
           body: `
@@ -71,11 +71,11 @@ const sections = {
         },
       },
 
-      // Step 3 — Framing the design strategy
+      // Step 3, Framing the design strategy
       {
         image: '/assets/design-priorities.webp',
         imageAlt:
-          '“Three Priorities That Guided Every Decision” — three columns (Start With Intent, Evaluate Faster, Capture Without Committing) each with supporting bullet points',
+          '“Three Priorities That Guided Every Decision”, three columns (Start With Intent, Evaluate Faster, Capture Without Committing) each with supporting bullet points',
         panel: {
           title: 'FRAMING THE DESIGN STRATEGY',
           body: `
@@ -93,14 +93,14 @@ const sections = {
   },
 
   // ──────────────────────────────────────────────────────────
-  // P02_02 — DESIGN
+  // P02_02, DESIGN
   // ──────────────────────────────────────────────────────────
   design: {
     label: 'P02_02 // DESIGN',
     phaseTitle: 'CRAFTING CONFIDENCE',
     summary: 'Reframing discovery from a browsing surface into a sequence of confident decisions.',
     steps: [
-      // Step 1 — The discovery model
+      // Step 1, The discovery model
       {
         image: '/assets/discovery-models.webp',
         imageAlt:
@@ -120,11 +120,11 @@ const sections = {
         },
       },
 
-      // Step 2 — Restructuring discovery
+      // Step 2, Restructuring discovery
       {
         image: '/assets/discovery-flow.webp',
         imageAlt:
-          'Side-by-side flow diagrams — Traditional Models (open app to browse feed to skip to browse to maybe play, “hesitation disguised as exploration”) versus the Atlas Model (open app, curiosity, intent, results, test, decide, play, save)',
+          'Side-by-side flow diagrams, Traditional Models (open app to browse feed to skip to browse to maybe play, “hesitation disguised as exploration”) versus the Atlas Model (open app, curiosity, intent, results, test, decide, play, save)',
         panel: {
           title: 'RESTRUCTURING DISCOVERY',
           body: `
@@ -142,7 +142,7 @@ const sections = {
         },
       },
 
-      // Step 3 — Interaction that improved confidence (variants: 5 features)
+      // Step 3, Interaction that improved confidence (variants: 5 features)
       {
         panel: {
           title: 'INTERACTION THAT IMPROVED CONFIDENCE',
@@ -162,7 +162,7 @@ const sections = {
         variantControl: 'TabStrip',
         variants: [
           { id: 'intent-cards',       label: 'Intent Cards',       image: '/assets/confidence-intent-cards.webp',       imageAlt: 'Atlas Discovery Mode screen with the Intent Cards feature highlighted' },
-          { id: 'novelty-slider',     label: 'Novelty Slider',     image: '/assets/confidence-novelty-slider.webp',     imageAlt: 'Atlas Discovery Mode screen with the Familiar–Brand New novelty slider highlighted' },
+          { id: 'novelty-slider',     label: 'Novelty Slider',     image: '/assets/confidence-novelty-slider.webp',     imageAlt: 'Atlas Discovery Mode screen with the Familiar,Brand New novelty slider highlighted' },
           { id: 'highlight-previews', label: 'Highlight Previews', image: '/assets/confidence-highlight-previews.webp', imageAlt: 'Atlas Discovery Mode screen with the Highlight Previews feature highlighted' },
           { id: 'element-tags',       label: 'Element Tags',       image: '/assets/confidence-element-tags.webp',       imageAlt: 'Atlas Discovery Mode screen with the Element Tags feature highlighted' },
           { id: 'temporary-save',     label: 'Temporary Save',     image: '/assets/confidence-temporary-save.webp',     imageAlt: 'Atlas Discovery Mode screen with the Temporary Save feature highlighted' },
@@ -172,14 +172,14 @@ const sections = {
   },
 
   // ──────────────────────────────────────────────────────────
-  // P02_03 — TESTING
+  // P02_03, TESTING
   // ──────────────────────────────────────────────────────────
   testing: {
     label: 'P02_03 // TESTING',
     phaseTitle: 'ACCORDING TO USERS',
     summary: 'Moderated usability tests validated the guided decision flow and surfaced targeted refinements.',
     steps: [
-      // Step 1 — Can listeners find something worth playing faster? (variants: 3 screens)
+      // Step 1, Can listeners find something worth playing faster? (variants: 3 screens)
       {
         panel: {
           title: 'CAN LISTENERS FIND SOMETHING WORTH PLAYING FASTER?',
@@ -207,7 +207,7 @@ const sections = {
         ],
       },
 
-      // Step 2 — Designing through feedback (variants: 4 changes)
+      // Step 2, Designing through feedback (variants: 4 changes)
       {
         panel: {
           title: 'DESIGNING THROUGH FEEDBACK',
@@ -236,14 +236,14 @@ const sections = {
   },
 
   // ──────────────────────────────────────────────────────────
-  // P02_04 — NEXT STEPS
+  // P02_04, NEXT STEPS
   // ──────────────────────────────────────────────────────────
   'next-steps': {
     label: 'P02_04 // NEXT STEPS',
     phaseTitle: 'MOVING FORWARD',
     summary: 'Outcomes of Atlas and what designing for the moment before play taught me.',
     steps: [
-      // Step 1 — A faster path to first play
+      // Step 1, A faster path to first play
       {
         image: '/assets/atlas-in-hand.webp',
         imageAlt: 'A person holds a phone displaying the Atlas Discovery Mode screen',
@@ -261,7 +261,7 @@ const sections = {
         },
       },
 
-      // Step 2 — Designing for the moment before play
+      // Step 2, Designing for the moment before play
       {
         image: '/assets/atlas-moment-before-play.webp',
         imageAlt: 'Closing reflection panel for the Atlas case study',
@@ -282,13 +282,13 @@ const sections = {
 };
 
 export default {
-  title: 'Atlas — Confident Music Discovery (scroll layout)',
+  title: 'Atlas, Confident Music Discovery (scroll layout)',
   header: {
     eyebrow: 'P02 // CASE_STUDY // PRJ.AX-99',
     title: 'ATLAS',
-    subtitle: 'Confident music discovery — helping listeners reach a worthwhile first play, faster.',
+    subtitle: 'Confident music discovery, helping listeners reach a worthwhile first play, faster.',
     context: `
-      <p><em>[Placeholder]</em> A short context blurb explaining the Atlas project — what it is, who it is for, and the core problem it solves. Replace this copy in <code>src/case-studies/atlas.js</code>.</p>
+      <p><em>[Placeholder]</em> A short context blurb explaining the Atlas project, what it is, who it is for, and the core problem it solves. Replace this copy in <code>src/case-studies/atlas.js</code>.</p>
       <p><em>[Placeholder]</em> A second sentence framing scope: research, design, testing, and outcomes across the project.</p>
     `,
     hero: {
@@ -298,9 +298,9 @@ export default {
       caption: '[ FIG_00 // FINAL_PROTOTYPE ]',
     },
     outcomes: [
-      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome — replace in atlas.js', caption: '// metric pending' },
-      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome — replace in atlas.js', caption: '// metric pending' },
-      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome — replace in atlas.js', caption: '// metric pending' },
+      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome, replace in atlas.js', caption: '// metric pending' },
+      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome, replace in atlas.js', caption: '// metric pending' },
+      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome, replace in atlas.js', caption: '// metric pending' },
     ],
   },
   phases: [

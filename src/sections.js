@@ -8,31 +8,31 @@
  *   next-steps  → P01_04
  *
  * A step may declare:
- *   image / imageAlt              — single image
+ *   image / imageAlt             , single image
  *   variants / defaultVariant /
- *     variantControl              — multiple swappable images with a
+ *     variantControl             , multiple swappable images with a
  *                                   selector (TogglePills | CarouselDots | TabStrip)
- *   panel.body                    — narrative HTML
- *   panel.callouts                — emphasized list items (optional warning variant)
- *   panel.meta                    — small methodology strip at the bottom
+ *   panel.body                   , narrative HTML
+ *   panel.callouts               , emphasized list items (optional warning variant)
+ *   panel.meta                   , small methodology strip at the bottom
  *
  * Drop matching .webp files into /public/assets/.
  */
 export const sections = {
   // ──────────────────────────────────────────────────────────
-  // P01_01 — RESEARCH
+  // P01_01, RESEARCH
   // ──────────────────────────────────────────────────────────
   research: {
     label: 'P01_01 // RESEARCH',
     phaseTitle: 'EXPLORING MENTAL HEALTH',
-    summary: 'User interviews on how people choose coping techniques under stress — and why most apps overwhelm them.',
+    summary: 'User interviews on how people choose coping techniques under stress, and why most apps overwhelm them.',
     tradeoff: {
       considered: 'Building a richer technique library with smarter filters',
       chose: 'Reframing the entry point from technique-first to emotion-first',
       cut: 'Catalog browsing UI; deferred until trust in the guided flow is proven',
     },
     steps: [
-      // Step 1 — Too many options
+      // Step 1, Too many options
       {
         image: '/assets/too-many-options.webp',
         lottie: '/assets/too-many-options.json',
@@ -53,7 +53,7 @@ export const sections = {
         },
       },
 
-      // Step 2 — Pattern in interviews
+      // Step 2, Pattern in interviews
       {
         image: '/assets/pattern-in-interviews.webp',
         imageAlt:
@@ -74,7 +74,7 @@ export const sections = {
         },
       },
 
-      // Step 3 — Emotion first
+      // Step 3, Emotion first
       {
         image: '/assets/emotion-first.webp',
         imageAlt:
@@ -83,7 +83,7 @@ export const sections = {
           title: 'WHAT IF RELIEF STARTED WITH EMOTION?',
           body: `
             <p>At this point, I had to make a choice.</p>
-            <p>I could improve how techniques were organized &mdash; or I could change where the experience began.</p>
+            <p>I could improve how techniques were organized, or I could change where the experience began.</p>
             <p>I chose to shift the starting point.</p>
             <p>This reframed the product from a tool library into a guided support experience.</p>
             <p>While this meant reducing user control, it also meant reducing cognitive load.</p>
@@ -99,7 +99,7 @@ export const sections = {
   },
 
   // ──────────────────────────────────────────────────────────
-  // P01_02 — DESIGN
+  // P01_02, DESIGN
   // ──────────────────────────────────────────────────────────
   design: {
     label: 'P01_02 // DESIGN',
@@ -111,7 +111,7 @@ export const sections = {
       cut: 'Custom playlist creation and filter UI; revisited as v2 scope after retention validation',
     },
     steps: [
-      // Step 1 — Tension between guidance and control
+      // Step 1, Tension between guidance and control
       {
         image: '/assets/tension-guidance-control.webp',
         imageAlt:
@@ -131,7 +131,7 @@ export const sections = {
         },
       },
 
-      // Step 2 — Experience flow
+      // Step 2, Experience flow
       {
         image: '/assets/experience-flow.webp',
         lottie: '/assets/experience-flow.json',
@@ -151,7 +151,7 @@ export const sections = {
         },
       },
 
-      // Step 3 — From concept to interaction (variants: wireframes ↔ prototype)
+      // Step 3, From concept to interaction (variants: wireframes ↔ prototype)
       {
         panel: {
           title: 'FROM CONCEPT TO INTERACTION',
@@ -188,19 +188,19 @@ export const sections = {
   },
 
   // ──────────────────────────────────────────────────────────
-  // P01_03 — TESTING
+  // P01_03, TESTING
   // ──────────────────────────────────────────────────────────
   testing: {
     label: 'P01_03 // TESTING',
     phaseTitle: 'FEEDBACK & REVISION',
-    summary: 'Five usability tests surfaced four targeted improvements — each tightening clarity without adding complexity.',
+    summary: 'Five usability tests surfaced four targeted improvements, each tightening clarity without adding complexity.',
     tradeoff: {
       considered: 'A/B testing the emotion-first flow against a free-browse baseline',
       chose: 'Moderated qualitative testing with 5 participants for directional signal',
       cut: 'Quantitative comparison; sample too small to be meaningful at this stage',
     },
     steps: [
-      // Step 1 — Reality check (variants: 3 screens via CarouselDots)
+      // Step 1, Reality check (variants: 3 screens via CarouselDots)
       {
         panel: {
           title: 'REALITY CHECK',
@@ -241,7 +241,7 @@ export const sections = {
         ],
       },
 
-      // Step 2 — Designing through feedback (variants: 4 changes via TabStrip)
+      // Step 2, Designing through feedback (variants: 4 changes via TabStrip)
       {
         panel: {
           title: 'DESIGNING THROUGH FEEDBACK',
@@ -265,7 +265,7 @@ export const sections = {
             label: 'Navigation',
             image: '/assets/designing-through-feedback1.webp',
             imageAlt:
-              'Before/after comparison showing the navigation improvement — adding a primary Next button to clarify next steps',
+              'Before/after comparison showing the navigation improvement, adding a primary Next button to clarify next steps',
           },
           {
             id: 'symptoms',
@@ -294,7 +294,7 @@ export const sections = {
   },
 
   // ──────────────────────────────────────────────────────────
-  // P01_04 — NEXT STEPS
+  // P01_04, NEXT STEPS
   // ──────────────────────────────────────────────────────────
   'next-steps': {
     label: 'P01_04 // NEXT STEPS',
@@ -303,10 +303,10 @@ export const sections = {
     tradeoff: {
       considered: 'Layering in social and community features to drive engagement',
       chose: 'Doubling down on the emotion-first signal and personalization depth',
-      cut: 'Community/sharing — would dilute the calm, supportive register the brand depends on',
+      cut: 'Community/sharing, would dilute the calm, supportive register the brand depends on',
     },
     steps: [
-      // Step 1 — A calmer path to support
+      // Step 1, A calmer path to support
       {
         image: '/assets/calmer-path.webp',
         imageAlt: 'A person holds a phone displaying the Solace welcome screen',
@@ -325,7 +325,7 @@ export const sections = {
         },
       },
 
-      // Step 2 — Designing for human moments
+      // Step 2, Designing for human moments
       {
         image: '/assets/designing-for-human-moments.webp',
         lottie: '/assets/designing-for-human-moments.json',

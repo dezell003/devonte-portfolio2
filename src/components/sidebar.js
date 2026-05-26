@@ -21,9 +21,9 @@ export function createSidebar({ wordmark = 'SOLACE', meta = META, nav = NAV } = 
     </div>
 
     <nav class="sidebar__nav">
-      ${nav.map(({ num, label, href }) => `
+      ${nav.map(({ label, href }) => `
         <a class="nav-item" href="${href}" data-href="${href}">
-          <span class="nav-item__num">${num}.</span>
+          <span class="nav-item__bracket" aria-hidden="true">[ ]</span>
           <span class="nav-item__label">${label}</span>
         </a>
       `).join('')}
