@@ -385,10 +385,9 @@
    then clips the residual Figma chrome on both edges. */
 .section-view__figma {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: -44px;
-  height: calc(100% + 88px);  /* symmetric 44px crop top + bottom */
+  inset: -44px 0 -44px 0;     /* symmetric 44px crop top + bottom */
+  width: 100%;
+  height: calc(100% + 88px);
   border: 0;
   display: block;
   background: transparent;
@@ -839,6 +838,14 @@ body.image-zoom-open {
   .home-v2__step .section-view__image-wrap {
     aspect-ratio: 16 / 10;
     flex: 0 0 auto;
+  }
+  /* Mobile/tablet frame is small enough that the desktop chrome-clip
+     (top:-44, +88 height) over-crops the canvas. Use the full wrap and
+     rely on `hide-ui=1` to keep most chrome out. */
+  .section-view__figma {
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
   .home-v2__orbital {
     opacity: 0.3;
