@@ -379,15 +379,16 @@
 }
 
 /* Figma prototype iframe — fills the image-wrap.
-   The iframe extends slightly past the wrap on top and bottom, and the
-   wrap's `overflow: hidden` crops it so Figma's residual chrome
-   (toolbar pill on top, "Open in Figma" badge on bottom) gets clipped. */
+   The iframe extends symmetrically past the wrap on top and bottom so
+   the prototype canvas (which Figma centers inside the iframe) lands
+   in the visual center of the wrap; the wrap's `overflow: hidden`
+   then clips the residual Figma chrome on both edges. */
 .section-view__figma {
   position: absolute;
   left: 0;
   right: 0;
   top: -44px;
-  height: calc(100% + 76px);  /* 44 top crop + 32 bottom crop */
+  height: calc(100% + 88px);  /* symmetric 44px crop top + bottom */
   border: 0;
   display: block;
   background: transparent;
