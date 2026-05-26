@@ -172,7 +172,7 @@ export const sections = {
             id: 'wireframes',
             label: 'Wireframes',
             image: '/assets/from-concept-to-interaction1.webp',
-            figmaEmbed: '', // TODO: paste the Wireframes Figma share URL here
+            figmaEmbed: 'https://embed.figma.com/proto/diUuG1oPg9pDB4RRC6yAmP/wireframe?node-id=1-256&p=f&viewport=607%2C104%2C0.14&scaling=contain&content-scaling=fixed&starting-point-node-id=1%3A256&page-id=0%3A1&embed-host=share',
             imageAlt:
               'Five low-fidelity wireframe screens showing the check-in flow from welcome through technique completion',
           },
