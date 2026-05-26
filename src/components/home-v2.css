@@ -378,12 +378,16 @@
   display: block;
 }
 
-/* Figma prototype iframe — fills the image-wrap. */
+/* Figma prototype iframe — fills the image-wrap.
+   The iframe extends slightly past the wrap on top and bottom, and the
+   wrap's `overflow: hidden` crops it so Figma's residual chrome
+   (toolbar pill on top, "Open in Figma" badge on bottom) gets clipped. */
 .section-view__figma {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  top: -44px;
+  height: calc(100% + 76px);  /* 44 top crop + 32 bottom crop */
   border: 0;
   display: block;
   background: transparent;
