@@ -93,8 +93,10 @@
 .chapter-node__label {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   line-height: 1.15;
   opacity: 1;
+  text-align: left;
   transition:
     opacity var(--duration-base) var(--ease-out),
     color var(--duration-base) var(--ease-out);
@@ -313,21 +315,13 @@
   position: relative;
   margin-top: 32px;
   max-width: 960px;
-  padding: 24px 28px;
-  border: 1px solid var(--color-panel-border);
-  background: linear-gradient(180deg, rgba(95, 221, 229, 0.03), rgba(255, 138, 61, 0.02));
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
-.cs-context__br {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border: 0 solid var(--color-cyan);
-}
-.cs-context__br--tl { top: -1px; left: -1px;  border-top-width: 2px; border-left-width: 2px; }
-.cs-context__br--tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
-.cs-context__br--bl { bottom: -1px; left: -1px;  border-bottom-width: 2px; border-left-width: 2px; }
-.cs-context__br--br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+/* Decorative corner brackets are no longer rendered. */
+.cs-context__br { display: none; }
 
 .cs-context__body {
   font-family: var(--font-body);
@@ -422,10 +416,9 @@
 
 .cs-stat {
   position: relative;
-  padding: 20px;
-  background: linear-gradient(135deg, rgba(95, 221, 229, 0.04), rgba(95, 221, 229, 0.01));
-  border: 1px solid var(--color-panel-border);
-  border-left: 3px solid var(--color-cyan);
+  padding: 8px 0;
+  background: transparent;
+  border: 0;
 }
 
 .cs-stat__figure {
@@ -546,7 +539,7 @@
   margin-top: 18px;
   padding: 10px 16px;
   background: transparent;
-  border: 1px solid var(--color-warning-orange);
+  border: 0;
   color: var(--color-warning-orange);
   font-family: var(--font-mono);
   font-size: var(--font-size-mono);
@@ -590,6 +583,48 @@
    The shared component still renders it for other routes. */
 .home-v2 .hud-panel__marker {
   display: none;
+}
+
+/* Hide the per-step eyebrow (e.g. "P01_03 // TESTING") inside the HUD
+   panel — the chapter-level eyebrow at the section header already
+   communicates this. */
+.home-v2 .hud-panel__label {
+  display: none;
+}
+
+/* Callout body text reads at the same size as the panel body. */
+.home-v2 .section-callout__body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+}
+
+/* P01_03 (testing) callouts adopt the cyan treatment instead of the
+   default warning-orange tint. Left border kept; background opacity
+   dialled down. */
+#chapter-testing .section-callout {
+  background: rgba(95, 221, 229, 0.05);
+  border-left: 3px solid var(--color-cyan);
+  box-shadow: none;
+}
+#chapter-testing .section-callout__label {
+  color: var(--color-cyan);
+}
+#chapter-testing .section-callout--warning {
+  background: rgba(95, 221, 229, 0.05);
+  border-left: 3px solid var(--color-cyan);
+  box-shadow: none;
+}
+#chapter-testing .section-callout--warning .section-callout__label {
+  color: var(--color-cyan);
+}
+#chapter-testing .section-callout--warning .section-callout__label::after {
+  content: none;
+}
+
+/* Lower the image-wrap background opacity slightly for a softer panel
+   tone behind the images. */
+.home-v2 .section-view__image-wrap {
+  background: rgba(18, 26, 36, 0.45);
 }
 
 /* ── Image zoom overlay ───────────────────────────────────
