@@ -172,6 +172,7 @@ export const sections = {
             id: 'wireframes',
             label: 'Wireframes',
             image: '/assets/from-concept-to-interaction1.webp',
+            figmaEmbed: '', // TODO: paste the Wireframes Figma share URL here
             imageAlt:
               'Five low-fidelity wireframe screens showing the check-in flow from welcome through technique completion',
           },
@@ -179,6 +180,7 @@ export const sections = {
             id: 'prototype',
             label: 'Prototype',
             image: '/assets/from-concept-to-interaction2.webp',
+            figmaEmbed: '', // TODO: paste the Prototype Figma share URL here
             imageAlt:
               'The same five screens rendered as a high-fidelity prototype with the Solace visual design',
           },

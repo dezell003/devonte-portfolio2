@@ -151,21 +151,49 @@ function buildStep(step, ctx = {}) {
 
     let externalUpdate = null; // set by carousel/tabs/pills to reflect index changes
 
+    // Swap the media element inside the wrap based on the active variant.
+    // A variant with `figmaEmbed` (URL) renders as an <iframe>; otherwise
+    // the standard <img> path is used. Lets a step mix media types per
+    // variant without conditional markup at build time.
+    const applyVariantMedia = (variant) => {
+      imgWrap.querySelectorAll('.section-view__image, .section-view__figma').forEach((n) => n.remove());
+      if (variant.figmaEmbed) {
+        const iframe = document.createElement('iframe');
+        iframe.className = 'section-view__figma';
+        iframe.src = variant.figmaEmbed;
+        iframe.setAttribute('loading', 'lazy');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('referrerpolicy', 'no-referrer');
+        iframe.setAttribute('title', variant.imageAlt || variant.label || 'Figma prototype');
+        iframe.addEventListener('load', hideSkeleton, { once: true });
+        imgWrap.appendChild(iframe);
+      } else {
+        const el2 = document.createElement('img');
+        el2.className = 'section-view__image';
+        el2.src = variant.image || '';
+        el2.alt = variant.imageAlt || '';
+        el2.decoding = 'async';
+        el2.addEventListener('load', hideSkeleton, { once: true });
+        el2.addEventListener('error', hideSkeleton, { once: true });
+        imgWrap.appendChild(el2);
+      }
+    };
+
+    // Render the initial variant immediately, replacing the template <img>.
+    applyVariantMedia(variants[currentIndex]);
+
     const setIndex = (i) => {
       const next = Math.max(0, Math.min(variants.length - 1, i));
       if (next === currentIndex) return;
       currentIndex = next;
-      const variant = variants[next];
-      img.src = variant.image;
-      img.alt = variant.imageAlt || '';
+      applyVariantMedia(variants[next]);
       if (externalUpdate) externalUpdate(next);
     };
 
     const onChange = (variant) => {
       const idx = variants.indexOf(variant);
       if (idx >= 0) currentIndex = idx;
-      img.src = variant.image;
-      img.alt = variant.imageAlt || '';
+      applyVariantMedia(variant);
     };
     let ctrl;
     switch (step.variantControl) {
@@ -640,6 +668,29 @@ export function createCaseStudy(data) {
     scroll.appendChild(section);
     sectionRefs.set(phase.slug, section);
   });
+
+  // Bottom case-study navigation (prev/next project).
+  if (data.prev || data.next) {
+    const nav = document.createElement('nav');
+    nav.className = 'case-nav';
+    nav.setAttribute('aria-label', 'Other case studies');
+    const link = (item, dir) => {
+      if (!item) return '<span class="case-nav__link case-nav__link--empty"></span>';
+      const arrow = dir === 'prev' ? '←' : '→';
+      const cls = `case-nav__link case-nav__link--${dir}`;
+      return dir === 'prev'
+        ? `<a class="${cls}" href="${item.href}">
+             <span class="case-nav__arrow" aria-hidden="true">${arrow}</span>
+             <span class="case-nav__label">${item.label}</span>
+           </a>`
+        : `<a class="${cls}" href="${item.href}">
+             <span class="case-nav__label">${item.label}</span>
+             <span class="case-nav__arrow" aria-hidden="true">${arrow}</span>
+           </a>`;
+    };
+    nav.innerHTML = `${link(data.prev, 'prev')}${link(data.next, 'next')}`;
+    scroll.appendChild(nav);
+  }
 
   root.appendChild(scroll);
 
