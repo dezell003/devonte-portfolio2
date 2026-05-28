@@ -59,6 +59,7 @@ function buildStep(step, ctx = {}) {
   // Text panel first, image second (image is sticky on the right via CSS).
   // A Lottie step renders an animation mount instead of an <img>, and is
   // not zoomable (no button affordance).
+  const stepIframe = step.iframe;
   el.innerHTML = step.lottie
     ? `
     <div class="section-view__panel-col"></div>
@@ -67,6 +68,28 @@ function buildStep(step, ctx = {}) {
            aria-label="Click to enlarge animation" data-lottie-src="${step.lottie}">
         <div class="section-view__image-skeleton" aria-hidden="true"></div>
         <div class="section-view__lottie"></div>
+      </div>
+    </div>
+  `
+    : stepIframe
+    ? `
+    <div class="section-view__panel-col"></div>
+    <div class="section-view__image-col">
+      <div class="section-view__image-wrap section-view__image-wrap--iframe">
+        <div class="section-view__image-skeleton" aria-hidden="true"></div>
+        <iframe class="section-view__figma" src="${stepIframe}" loading="lazy"
+                allowfullscreen referrerpolicy="no-referrer"
+                title="${activeAlt || 'Live prototype'}"></iframe>
+      </div>
+    </div>
+  `
+    : step.component
+    ? `
+    <div class="section-view__panel-col"></div>
+    <div class="section-view__image-col">
+      <div class="section-view__image-wrap section-view__image-wrap--component">
+        <div class="section-view__image-skeleton" aria-hidden="true"></div>
+        ${step.component}
       </div>
     </div>
   `
@@ -83,6 +106,12 @@ function buildStep(step, ctx = {}) {
   `;
 
   const imgWrap = el.querySelector('.section-view__image-wrap');
+  if (step.caption) {
+    const cap = document.createElement('div');
+    cap.className = 'section-view__caption';
+    cap.textContent = step.caption;
+    el.querySelector('.section-view__image-col').insertBefore(cap, imgWrap);
+  }
   const skeleton = imgWrap.querySelector('.section-view__image-skeleton');
   const hideSkeleton = () => skeleton.classList.add('is-hidden');
   const img = el.querySelector('.section-view__image'); // null for Lottie steps
@@ -136,6 +165,29 @@ function buildStep(step, ctx = {}) {
         });
       })
       .catch(hideSkeleton);
+  } else if (step.component) {
+    hideSkeleton();
+  } else if (stepIframe) {
+    const ifr = imgWrap.querySelector('iframe');
+    if (ifr) {
+      ifr.addEventListener('load', hideSkeleton, { once: true });
+      ifr.addEventListener('error', hideSkeleton, { once: true });
+      const NATIVE_WIDTH = 1280;
+      const HEADER_CROP  = 64;
+      const FOOTER_CROP  = 96;
+      const apply = () => {
+        const w = imgWrap.clientWidth;
+        const h = imgWrap.clientHeight;
+        if (!w || !h) return;
+        const scale = w / NATIVE_WIDTH;
+        ifr.style.setProperty('--iframe-scale', String(scale));
+        ifr.style.setProperty('--iframe-native-h', `${(h / scale) + HEADER_CROP + FOOTER_CROP}px`);
+        ifr.style.setProperty('--header-crop', `${HEADER_CROP}px`);
+      };
+      const ro = new ResizeObserver(apply);
+      ro.observe(imgWrap);
+      apply();
+    }
   } else {
     if (img.complete && img.naturalWidth > 0) hideSkeleton();
     else {
@@ -157,14 +209,15 @@ function buildStep(step, ctx = {}) {
     // variant without conditional markup at build time.
     const applyVariantMedia = (variant) => {
       imgWrap.querySelectorAll('.section-view__image, .section-view__figma').forEach((n) => n.remove());
-      if (variant.figmaEmbed) {
+      const embedUrl = variant.iframe || variant.figmaEmbed;
+      if (embedUrl) {
         const iframe = document.createElement('iframe');
         iframe.className = 'section-view__figma';
-        iframe.src = variant.figmaEmbed;
+        iframe.src = embedUrl;
         iframe.setAttribute('loading', 'lazy');
         iframe.setAttribute('allowfullscreen', '');
         iframe.setAttribute('referrerpolicy', 'no-referrer');
-        iframe.setAttribute('title', variant.imageAlt || variant.label || 'Figma prototype');
+        iframe.setAttribute('title', variant.imageAlt || variant.label || 'Embedded prototype');
         iframe.addEventListener('load', hideSkeleton, { once: true });
         imgWrap.appendChild(iframe);
       } else {
@@ -487,9 +540,10 @@ function buildHeader(header) {
           });
           anim.addEventListener('DOMLoaded', () => {
             // The exported scene carries a near-white full-canvas backdrop.
-            // Strip any large light-filled path so the hero reads transparent.
+            // Strip any large light-filled path so the hero reads transparent —
+            // unless the hero config opts to keep its background.
             const svg = mount.querySelector('svg');
-            if (svg) {
+            if (svg && !header.hero.keepBackground) {
               const vb = (svg.getAttribute('viewBox') || '0 0 0 0').split(/\s+/).map(Number);
               const cw = vb[2] || 0;
               const ch = vb[3] || 0;
@@ -505,8 +559,8 @@ function buildHeader(header) {
                 }
               });
             }
-            // Play once from frame 0 to 192 (3.2s @ 60fps), then rest.
-            anim.playSegments([0, 192], true);
+            // Play the full animation once (no loop).
+            anim.play();
           });
         })
         .catch(showPlaceholder);
@@ -570,7 +624,7 @@ export function createCaseStudy(data) {
   const { phases, sections } = data;
 
   const root = document.createElement('div');
-  root.className = 'home-v2';
+  root.className = 'home-v2' + (data.modifier ? ` home-v2--${data.modifier}` : '');
 
   // ── Orbital backdrop (peeks from right) ──
   root.appendChild(buildOrbitalBackdrop());

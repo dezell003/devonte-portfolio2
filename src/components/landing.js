@@ -214,23 +214,22 @@ export function createLanding() {
             <div class="br br-br"></div>
           </div>
 
-          <!-- Paiwares (coming soon) -->
-          <div class="landing__project-card landing__project-card--soon" title="Coming soon" aria-disabled="true">
+          <!-- Paiwares (live) -->
+          <a class="landing__project-card" href="#/paiwares">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="Paiwares" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='%234ae2f2' opacity='0.85'><rect x='18' y='55' width='10' height='22'/><rect x='34' y='45' width='10' height='32'/><rect x='50' y='35' width='10' height='42'/><rect x='66' y='22' width='10' height='55'/></g><path d='M22 50 L40 38 L58 28 L78 18' stroke='%2389cff0' stroke-width='1.8' fill='none' stroke-linecap='round'/><circle cx='78' cy='18' r='2' fill='%2389cff0'/><text x='50' y='93' text-anchor='middle' font-family='monospace' font-size='7' fill='%234ae2f2' letter-spacing='1'>PAIWARES</text></svg>" />
             </div>
             <div class="landing__project-info">
               <div class="landing__project-code">PRJ.NX-78</div>
-              <div class="landing__project-name">Paiwares</div>
+              <div class="landing__project-name">pAIwares</div>
               <div class="landing__project-tags">
                 <span class="landing__tag">Fintech</span>
-                <span class="landing__tag">Dashboard</span>
-                <span class="landing__tag landing__tag--soon">Soon</span>
+                <span class="landing__tag">Onboarding</span>
               </div>
             </div>
             <div class="br br-br"></div>
-          </div>
+          </a>
 
         </div>
       </aside>

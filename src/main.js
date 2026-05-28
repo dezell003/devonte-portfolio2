@@ -7,6 +7,7 @@ import { createLanding } from './components/landing.js';
 import { createAbout } from './components/about.js';
 import solaceData from './case-studies/solace.js';
 import atlasData from './case-studies/atlas.js';
+import paiwaresData from './case-studies/paiwares.js';
 
 const app = document.getElementById('app');
 
@@ -100,6 +101,13 @@ router
     activeSection = null;
     view.appendChild(createCaseStudy(atlasData));
     setTitle('Atlas');
+  })
+  .add('/paiwares', () => {
+    const view = ensureCaseStudyShell(paiwaresData.sidebar);
+    view.innerHTML = '';
+    activeSection = null;
+    view.appendChild(createCaseStudy(paiwaresData));
+    setTitle('pAIwares');
   })
   .add('/dev', () => {
     const view = ensureCaseStudyShell(solaceData.sidebar);
