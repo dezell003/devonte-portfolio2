@@ -172,15 +172,16 @@ function buildStep(step, ctx = {}) {
     if (ifr) {
       ifr.addEventListener('load', hideSkeleton, { once: true });
       ifr.addEventListener('error', hideSkeleton, { once: true });
-      const NATIVE_WIDTH = 1280;
-      const HEADER_CROP  = 64;
-      const FOOTER_CROP  = 96;
+      const NATIVE_WIDTH = step.iframeNativeWidth ?? 1280;
+      const HEADER_CROP  = step.iframeHeaderCrop ?? 64;
+      const FOOTER_CROP  = step.iframeFooterCrop ?? 96;
       const apply = () => {
         const w = imgWrap.clientWidth;
         const h = imgWrap.clientHeight;
         if (!w || !h) return;
         const scale = w / NATIVE_WIDTH;
         ifr.style.setProperty('--iframe-scale', String(scale));
+        ifr.style.setProperty('--iframe-native-w', `${NATIVE_WIDTH}px`);
         ifr.style.setProperty('--iframe-native-h', `${(h / scale) + HEADER_CROP + FOOTER_CROP}px`);
         ifr.style.setProperty('--header-crop', `${HEADER_CROP}px`);
       };
@@ -207,8 +208,21 @@ function buildStep(step, ctx = {}) {
     // A variant with `figmaEmbed` (URL) renders as an <iframe>; otherwise
     // the standard <img> path is used. Lets a step mix media types per
     // variant without conditional markup at build time.
+    let variantRO = null;
     const applyVariantMedia = (variant) => {
       imgWrap.querySelectorAll('.section-view__image, .section-view__figma').forEach((n) => n.remove());
+      if (variantRO) { variantRO.disconnect(); variantRO = null; }
+      // Live (non-Figma) iframe: drop the desktop chrome-clip + scale to fit.
+      imgWrap.classList.toggle('section-view__image-wrap--iframe', !!variant.iframe);
+      const fixed = !!(variant.iframe && variant.iframeWidth && variant.iframeHeight);
+      imgWrap.classList.toggle('section-view__image-wrap--iframe-fixed', fixed);
+      if (fixed) {
+        imgWrap.style.width = `${variant.iframeWidth}px`;
+        imgWrap.style.height = `${variant.iframeHeight}px`;
+      } else {
+        imgWrap.style.width = '';
+        imgWrap.style.height = '';
+      }
       const embedUrl = variant.iframe || variant.figmaEmbed;
       if (embedUrl) {
         const iframe = document.createElement('iframe');
@@ -220,6 +234,24 @@ function buildStep(step, ctx = {}) {
         iframe.setAttribute('title', variant.imageAlt || variant.label || 'Embedded prototype');
         iframe.addEventListener('load', hideSkeleton, { once: true });
         imgWrap.appendChild(iframe);
+        if (variant.iframe && !fixed) {
+          const NATIVE_WIDTH = variant.iframeNativeWidth ?? step.iframeNativeWidth ?? 1280;
+          const HEADER_CROP  = variant.iframeHeaderCrop  ?? step.iframeHeaderCrop  ?? 0;
+          const FOOTER_CROP  = variant.iframeFooterCrop  ?? step.iframeFooterCrop  ?? 0;
+          const apply = () => {
+            const w = imgWrap.clientWidth;
+            const h = imgWrap.clientHeight;
+            if (!w || !h) return;
+            const scale = w / NATIVE_WIDTH;
+            iframe.style.setProperty('--iframe-scale', String(scale));
+            iframe.style.setProperty('--iframe-native-w', `${NATIVE_WIDTH}px`);
+            iframe.style.setProperty('--iframe-native-h', `${(h / scale) + HEADER_CROP + FOOTER_CROP}px`);
+            iframe.style.setProperty('--header-crop', `${HEADER_CROP}px`);
+          };
+          variantRO = new ResizeObserver(apply);
+          variantRO.observe(imgWrap);
+          apply();
+        }
       } else {
         const el2 = document.createElement('img');
         el2.className = 'section-view__image';
@@ -559,8 +591,14 @@ function buildHeader(header) {
                 }
               });
             }
-            // Play the full animation once (no loop).
-            anim.play();
+            // Play once. If `header.hero.pauseAt` (seconds) is set, stop
+            // the animation at that frame instead of playing through.
+            if (header.hero.pauseAt != null) {
+              const endFrame = Math.min(anim.totalFrames, header.hero.pauseAt * anim.frameRate);
+              anim.playSegments([0, endFrame], true);
+            } else {
+              anim.play();
+            }
           });
         })
         .catch(showPlaceholder);

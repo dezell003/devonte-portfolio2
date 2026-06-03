@@ -26,9 +26,9 @@ export function createLanding() {
     <header class="landing__top-nav">
       <span class="landing__top-nav-brand">Devonte Ezell</span>
       <ul class="landing__top-nav-links">
-        <li><a href="#/home" class="active">01. Home</a></li>
-        <li><a href="#/about">02. About</a></li>
-        <li><a href="#contact">03. Contact</a></li>
+        <li><a href="#/home" class="active">Home</a></li>
+        <li><a href="#/about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
       <button class="landing__nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -36,28 +36,25 @@ export function createLanding() {
     </header>
 
     <nav class="landing__nav-drawer" aria-hidden="true">
-      <a href="#/home" class="active">01. Home</a>
-      <a href="#/about">02. About</a>
-      <a href="#contact">03. Contact</a>
+      <a href="#/home" class="active">Home</a>
+      <a href="#/about">About</a>
+      <a href="#contact">Contact</a>
     </nav>
 
     <div class="landing">
       <div class="landing__canvas" aria-hidden="true"></div>
 
       <aside class="landing__aside-left">
-        <div class="landing__role-label">UX/UI DESIGNER</div>
+        <div class="landing__role-label">PRODUCT DESIGNER</div>
 
         <div class="landing__attr-list">
           <div class="landing__attr-row">
-            <span class="landing__attr-key">AESTHETIC</span>
             <span class="landing__attr-val">INTENTIONAL</span>
           </div>
           <div class="landing__attr-row">
-            <span class="landing__attr-key">FOCUS</span>
             <span class="landing__attr-val">USER-CENTERED</span>
           </div>
           <div class="landing__attr-row">
-            <span class="landing__attr-key">TRAJECTORY</span>
             <span class="landing__attr-val">MEDIA EXPERIENCES</span>
           </div>
         </div>
@@ -67,19 +64,19 @@ export function createLanding() {
             <li class="landing__nav-item">
               <a href="#/home" class="landing__nav-link">
                 <span class="landing__nav-bracket">[ ]</span>
-                <span class="landing__nav-label landing__nav-label--active">01. HOME</span>
+                <span class="landing__nav-label landing__nav-label--active">HOME</span>
               </a>
             </li>
             <li class="landing__nav-item">
               <a href="#/about" class="landing__nav-link">
                 <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
-                <span class="landing__nav-label">02. ABOUT</span>
+                <span class="landing__nav-label">ABOUT</span>
               </a>
             </li>
             <li class="landing__nav-item">
               <a href="#contact" class="landing__nav-link">
                 <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
-                <span class="landing__nav-label">03. CONTACT</span>
+                <span class="landing__nav-label">CONTACT</span>
               </a>
             </li>
           </ul>
@@ -128,7 +125,7 @@ export function createLanding() {
       <main class="landing__main-hero">
         <div class="landing__hero-attribution">
           <div class="landing__hero-line"></div>
-          <span class="landing__hero-attr-text">Devonte Ezell // UX Designer</span>
+          <span class="landing__hero-attr-text">Devonte Ezell // Product Designer</span>
         </div>
 
         <h1 class="landing__hero-headline">
@@ -138,8 +135,7 @@ export function createLanding() {
 
         <div class="landing__hero-subhead-wrap">
           <p class="landing__hero-subhead">
-            Translating complex requirements into frictionless, high-fidelity user experiences.<br />
-            Specializing in entertainment, tech, and media platforms
+            Translating complex requirements into frictionless, high-fidelity user experiences.
           </p>
         </div>
 
@@ -168,7 +164,6 @@ export function createLanding() {
               <img alt="Atlas" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='%234ae2f2'><rect x='18' y='55' width='8' height='22'/><rect x='32' y='42' width='8' height='35'/><rect x='46' y='28' width='8' height='49'/><rect x='60' y='38' width='8' height='39'/><rect x='74' y='52' width='8' height='25'/></g><text x='50' y='92' text-anchor='middle' font-family='monospace' font-size='8' fill='%234ae2f2' letter-spacing='2'>ATLAS</text></svg>" />
             </div>
             <div class="landing__project-info">
-              <div class="landing__project-code">PRJ.AX-99</div>
               <div class="landing__project-name">Atlas</div>
               <div class="landing__project-tags">
                 <span class="landing__tag">Music Discovery</span>
@@ -186,7 +181,6 @@ export function createLanding() {
               <video class="landing__project-video" src="/assets/solace-preview.webm" muted loop playsinline preload="none"></video>
             </div>
             <div class="landing__project-info">
-              <div class="landing__project-code">PRJ.VR-02</div>
               <div class="landing__project-name">Solace</div>
               <div class="landing__project-tags">
                 <span class="landing__tag">Mental Health</span>
@@ -196,23 +190,21 @@ export function createLanding() {
             <div class="br br-br"></div>
           </a>
 
-          <!-- The Santos Podcast (coming soon) -->
-          <div class="landing__project-card landing__project-card--soon" title="Coming soon" aria-disabled="true">
+          <!-- The Santos Podcast (live) -->
+          <a class="landing__project-card" href="#/santos">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="The Santos Podcast" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='none' stroke='%234ae2f2' stroke-width='2.5' stroke-linecap='round'><rect x='42' y='18' width='16' height='34' rx='8'/><path d='M28 44 a22 22 0 0 0 44 0'/><line x1='50' y1='66' x2='50' y2='78'/><line x1='38' y1='78' x2='62' y2='78'/></g><text x='50' y='93' text-anchor='middle' font-family='monospace' font-size='7' fill='%234ae2f2' letter-spacing='1'>SANTOS</text></svg>" />
             </div>
             <div class="landing__project-info">
-              <div class="landing__project-code">PRJ.NX-77</div>
               <div class="landing__project-name">The Santos Podcast</div>
               <div class="landing__project-tags">
                 <span class="landing__tag">Podcast</span>
                 <span class="landing__tag">Website</span>
-                <span class="landing__tag landing__tag--soon">Soon</span>
               </div>
             </div>
             <div class="br br-br"></div>
-          </div>
+          </a>
 
           <!-- Paiwares (live) -->
           <a class="landing__project-card" href="#/paiwares">
@@ -221,7 +213,6 @@ export function createLanding() {
               <img alt="Paiwares" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='%234ae2f2' opacity='0.85'><rect x='18' y='55' width='10' height='22'/><rect x='34' y='45' width='10' height='32'/><rect x='50' y='35' width='10' height='42'/><rect x='66' y='22' width='10' height='55'/></g><path d='M22 50 L40 38 L58 28 L78 18' stroke='%2389cff0' stroke-width='1.8' fill='none' stroke-linecap='round'/><circle cx='78' cy='18' r='2' fill='%2389cff0'/><text x='50' y='93' text-anchor='middle' font-family='monospace' font-size='7' fill='%234ae2f2' letter-spacing='1'>PAIWARES</text></svg>" />
             </div>
             <div class="landing__project-info">
-              <div class="landing__project-code">PRJ.NX-78</div>
               <div class="landing__project-name">pAIwares</div>
               <div class="landing__project-tags">
                 <span class="landing__tag">Fintech</span>
@@ -264,6 +255,41 @@ export function createLanding() {
       video.currentTime = 0;
     });
   });
+
+  // ── Freeze the TRANSMITTING wave GIF to its first frame ──
+  const wave = root.querySelector('.landing__pc-wave-top');
+  if (wave) {
+    wave.setAttribute('crossorigin', 'anonymous');
+    const freeze = () => {
+      try {
+        const w = wave.naturalWidth, h = wave.naturalHeight;
+        if (!w || !h) return;
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(wave, 0, 0);
+        wave.src = canvas.toDataURL('image/png');
+      } catch { /* CORS taint — leave the GIF animated as a silent fallback */ }
+    };
+    if (wave.complete && wave.naturalWidth > 0) freeze();
+    else wave.addEventListener('load', freeze, { once: true });
+  }
+
+  // ── Align portrait top with hero eyebrow ────────────────
+  const portrait = root.querySelector('.landing__portrait');
+  const eyebrow = root.querySelector('.landing__hero-attribution');
+  if (portrait && eyebrow) {
+    const alignPortrait = () => {
+      portrait.style.marginTop = '0px';
+      const dy = eyebrow.getBoundingClientRect().top - portrait.getBoundingClientRect().top;
+      portrait.style.marginTop = `${Math.max(0, dy)}px`;
+    };
+    requestAnimationFrame(alignPortrait);
+    window.addEventListener('resize', alignPortrait);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(alignPortrait).observe(eyebrow);
+    }
+  }
 
   // ── Three.js scene mount (lazy) ─────────────────────────
   // Add the body class first so any overflow rules apply before the

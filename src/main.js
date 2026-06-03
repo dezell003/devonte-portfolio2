@@ -8,6 +8,7 @@ import { createAbout } from './components/about.js';
 import solaceData from './case-studies/solace.js';
 import atlasData from './case-studies/atlas.js';
 import paiwaresData from './case-studies/paiwares.js';
+import santosData from './case-studies/santos.js';
 
 const app = document.getElementById('app');
 
@@ -108,6 +109,13 @@ router
     activeSection = null;
     view.appendChild(createCaseStudy(paiwaresData));
     setTitle('pAIwares');
+  })
+  .add('/santos', () => {
+    const view = ensureCaseStudyShell(santosData.sidebar);
+    view.innerHTML = '';
+    activeSection = null;
+    view.appendChild(createCaseStudy(santosData));
+    setTitle('Dropping Wisdom with Santos');
   })
   .add('/dev', () => {
     const view = ensureCaseStudyShell(solaceData.sidebar);

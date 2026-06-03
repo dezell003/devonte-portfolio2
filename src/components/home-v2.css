@@ -399,12 +399,31 @@
 .section-view__image-wrap--iframe {
   overflow: hidden;
 }
+
+/* Fixed-size iframe wrap (e.g. mobile phone frame at exactly 393×852).
+   Breaks out of the flex stretch and disables the scaler. Double-class
+   bumps specificity above `.home-v2__step .section-view__image-wrap`. */
+.home-v2__step .section-view__image-wrap.section-view__image-wrap--iframe-fixed {
+  flex: 0 0 auto;
+  aspect-ratio: auto;
+  min-width: 0;
+  min-height: 0;
+  align-self: center;     /* horizontal center within image-col */
+  margin: auto;           /* vertical center within image-col flex space */
+}
+.home-v2__step .section-view__image-wrap.section-view__image-wrap--iframe-fixed .section-view__figma {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
 .section-view__image-wrap--iframe .section-view__figma {
   position: absolute;
   top: calc(-1 * var(--header-crop, 64px) * var(--iframe-scale, 1));
   left: 0;
   inset: auto;
-  width: 1280px;
+  width: var(--iframe-native-w, 1280px);
   height: var(--iframe-native-h, 100%);
   transform: scale(var(--iframe-scale, 1));
   transform-origin: top left;
@@ -1201,12 +1220,19 @@ body.image-zoom-open {
   .chapter-rail__list {
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-start;
+  }
+  .chapter-rail__item {
     align-items: center;
+    flex-shrink: 0;
   }
   .chapter-rail__connector {
-    width: 24px;
+    flex: 1;
+    min-width: 16px;
+    width: auto;
     height: 1px;
-    margin: 0;
+    margin: 11px 6px 0;       /* vertical align with dot center (22px node) */
+    align-self: flex-start;
     background: linear-gradient(
       to right,
       rgba(95, 221, 229, 0.0) 0%,
@@ -1214,8 +1240,24 @@ body.image-zoom-open {
       rgba(95, 221, 229, 0.0) 100%
     );
   }
+  .chapter-node {
+    flex-direction: column;
+    gap: 6px;
+  }
   .chapter-node__label {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    white-space: normal;
+  }
+  .chapter-node__num {
     display: none;
+  }
+  .chapter-node__title {
+    font-size: 10px;
+    text-align: center;
+    margin-top: 1px;
+    text-shadow: none;
   }
   .case-scroll {
     margin-left: 0;

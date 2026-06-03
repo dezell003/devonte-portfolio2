@@ -57,9 +57,8 @@ export function createMobileShell({ wordmark = 'SOLACE', meta = META, nav = NAV 
     </div>
 
     <nav class="mobile-nav__nav" aria-label="Pages">
-      ${nav.map(({ num, label, href }) => `
+      ${nav.map(({ label, href }) => `
         <a class="mobile-nav__nav-item" href="${href}">
-          <span class="mobile-nav__nav-item-num">${num}.</span>
           <span class="mobile-nav__nav-item-label">${label}</span>
         </a>
       `).join('')}

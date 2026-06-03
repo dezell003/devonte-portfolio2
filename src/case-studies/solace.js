@@ -32,6 +32,7 @@ export default {
     hero: {
       type: 'lottie',
       src: '/assets/solace-hero.json',
+      pauseAt: 3,
     },
     outcomes: [
       {

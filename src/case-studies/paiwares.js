@@ -383,5 +383,5 @@ export default {
   sections,
   sidebar: { wordmark: 'PAIWARES', meta: META, nav: NAV },
   prev: { label: 'Solace', href: '#/solace-v2' },
-  next: { label: 'Atlas',  href: '#/atlas'     },
+  next: { label: 'Santos', href: '#/santos'    },
 };

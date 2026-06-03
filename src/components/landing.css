@@ -94,16 +94,14 @@ body.is-landing {
   border-bottom: 1px solid var(--cyan-15);
 }
 
-.landing__attr-key,
 .landing__attr-val {
   font-family: var(--font-sora);
   font-weight: 400;
   font-size: 10.4px;
   letter-spacing: 1.56px;
   text-transform: uppercase;
+  color: white;
 }
-.landing__attr-key { color: var(--cyan); }
-.landing__attr-val { color: white; }
 
 .landing__nav { padding-top: 32px; }
 .landing__nav-list { list-style: none; display: flex; flex-direction: column; gap: 16px; padding: 0; margin: 0; }
@@ -182,6 +180,7 @@ body.is-landing {
   display: block;
   flex-shrink: 0;
   align-self: stretch;
+  margin-bottom: 4px;
 }
 
 .landing__pc-hud {
@@ -380,7 +379,8 @@ body.is-landing {
 
 .landing__hero-headline {
   font-family: var(--font-zen);
-  font-size: clamp(40px, 5.5vw, 76.8px);
+  /* Caps at 76.8px on viewports ≥ 1559px, scales down linearly below that. */
+  font-size: clamp(28px, 4.93vw, 76.8px);
   line-height: 1.1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -524,7 +524,7 @@ body.is-landing {
   flex-shrink: 0;
   width: 100px;
   height: 100px;
-  border: 1px solid var(--cyan-40);
+  border: 0;
   overflow: hidden;
 }
 
@@ -575,7 +575,7 @@ body.is-landing {
   font-family: var(--font-sora);
   font-size: 9.6px;
   text-transform: uppercase;
-  color: var(--white-40);
+  color: white;
   white-space: nowrap;
 }
 
@@ -675,7 +675,7 @@ body.is-landing {
 .landing__nav-drawer a.active { color: var(--baby-blue); }
 
 /* ══════════════════════ TABLET (768–1023px) ══════════════════════ */
-@media (max-width: 1023px) {
+@media (max-width: 1535px) {
   body.is-landing { overflow-y: auto; overflow-x: hidden; }
 
   .landing {
@@ -700,9 +700,14 @@ body.is-landing {
   .landing__aside-right {
     width: 300px;
     padding: 16px 10px 16px 20px;
+    margin-right: 24px;
   }
 
   .landing__project-card { width: 100%; }
+
+  .landing__hero-headline {
+    font-size: clamp(28px, 5vw, 56px);
+  }
 }
 
 /* ══════════════════════ MOBILE (<768px) ══════════════════════ */
@@ -728,7 +733,7 @@ body.is-landing {
   }
 
   .landing__hero-headline {
-    font-size: clamp(32px, 10vw, 52px);
+    font-size: clamp(24px, 5vw, 56px);
   }
 
   .landing__hero-subhead-wrap {
