@@ -1,73 +1,421 @@
-.about {
+/* ══════════════════════ ROOT + BACKDROP ══════════════════════ */
+.about-root {
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 56px 24px;
-  background: #030509;
+  height: 100dvh;
+  background: #020a12;
   color: white;
-  font-family: 'Sora', system-ui, sans-serif;
+  overflow: hidden;
 }
 
-.about__panel {
+/* Fixed Three.js layer — sits behind everything. */
+.about__canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.about {
   position: relative;
-  max-width: 480px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  height: 100dvh;
+}
+
+.about__aside {
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  padding: 24px 16px;
+  flex-shrink: 0;
+}
+
+/* Left-align the attr values (keys removed). */
+.about__aside .landing__attr-row { justify-content: flex-start; }
+
+/* ══════════════════════ MAIN GRID ══════════════════════
+   Desktop: 5 panels placed via grid-areas. Row 1 (auto) sizes to the
+   taller of profile/bio so they match height; row 2 (1fr) fills the
+   remaining viewport so tools/strengths align at the top edge and the
+   whole page fits one screen with no scroll. The .about__col wrappers
+   are flattened with display:contents so panels are direct grid items. */
+.about__main {
+  flex: 1;
+  min-width: 0;
+  height: 100dvh;
+  box-sizing: border-box;
+  padding: 28px 40px;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr) 300px;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "profile bio       pipeline"
+    "tools   strengths pipeline";
+  gap: 22px 28px;
+}
+
+.about__col { display: contents; }
+
+.about-profile          { grid-area: profile; }
+.about-panel--tools     { grid-area: tools; }
+.about-panel--bio       { grid-area: bio; }
+.about-panel--strengths { grid-area: strengths; }
+.about-panel--pipeline  { grid-area: pipeline; }
+
+/* Panels that live in row 2 must not overflow the row. */
+.about-panel--tools,
+.about-panel--strengths,
+.about-panel--pipeline {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.about-panel--tools .about-panel__body,
+.about-panel--strengths .about-panel__body,
+.about-panel--pipeline .about-panel__body {
+  flex: 1;
+  min-height: 0;
+}
+
+/* On shorter desktops row 2 squeezes the tools/strengths content. Rather
+   than shrink the cards to illegibility, let those bodies scroll. */
+.about-panel--tools .about-panel__body,
+.about-panel--strengths .about-panel__body {
+  overflow-y: auto;
+}
+.about-panel--tools .about-panel__body::-webkit-scrollbar,
+.about-panel--strengths .about-panel__body::-webkit-scrollbar { width: 3px; }
+.about-panel--tools .about-panel__body::-webkit-scrollbar-thumb,
+.about-panel--strengths .about-panel__body::-webkit-scrollbar-thumb {
+  background: rgba(74, 226, 242, 0.3);
+}
+
+/* ══════════════════════ PANEL PRIMITIVE ══════════════════════ */
+.about-panel {
+  position: relative;
+  background: linear-gradient(to bottom, rgba(6, 20, 30, 0.9), rgba(0, 0, 0, 0.95));
+  border: 1px solid rgba(74, 226, 242, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.about-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 42px;
+  padding: 0 16px;
+  background: rgba(74, 226, 242, 0.05);
+  border-bottom: 1px solid rgba(74, 226, 242, 0.2);
+}
+
+.about-panel__dot {
+  width: 6px;
+  height: 6px;
+  background: #4ae2f2;
+  box-shadow: 0 0 6px #4ae2f2;
+  flex-shrink: 0;
+}
+
+.about-panel__title {
+  font-family: var(--font-zen, 'Zen Dots', monospace);
+  font-size: 14px;
+  letter-spacing: 2.1px;
+  color: white;
+}
+
+.about-panel__body {
+  padding: 20px 24px 24px;
+}
+
+/* Corner brackets — scoped so they don't conflict with the global .br helper. */
+.about-panel > .br,
+.about-strength > .br,
+.about-step > .br,
+.about-profile > .br {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(74, 226, 242, 0.7);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+}
+.about-panel > .br.br-tl,
+.about-strength > .br.br-tl,
+.about-step > .br.br-tl,
+.about-profile > .br.br-tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+.about-panel > .br.br-tr,
+.about-strength > .br.br-tr,
+.about-step > .br.br-tr,
+.about-profile > .br.br-tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+.about-panel > .br.br-bl,
+.about-strength > .br.br-bl,
+.about-step > .br.br-bl,
+.about-profile > .br.br-bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+.about-panel > .br.br-br,
+.about-strength > .br.br-br,
+.about-step > .br.br-br,
+.about-profile > .br.br-br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* ══════════════════════ PROFILE CARD ══════════════════════ */
+.about-profile {
+  position: relative;
+  background: #000;
+  border: 1px solid rgba(74, 226, 242, 0.25);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.about-profile__media { position: absolute; inset: 0; }
+
+.about-profile__img {
   width: 100%;
-  padding: 40px 36px 36px;
-  border: 1px solid rgba(74, 226, 242, 0.40);
-  background: rgba(0, 0, 0, 0.6);
+  height: 100%;
+  object-fit: cover;
+  object-position: 22% 28%;
+  display: block;
+}
+
+.about-profile__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(76, 87, 124, 0.15), rgba(0, 0, 0, 0.85) 75%, #000);
+}
+
+.about-profile__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   text-align: center;
 }
 
-.about__panel .br {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-color: #4ae2f2;
-  border-style: solid;
-  border-width: 0;
-}
-.about__panel .br-tl { top: -1px; left: -1px;   border-top-width: 1px; border-left-width: 1px; }
-.about__panel .br-tr { top: -1px; right: -1px;  border-top-width: 1px; border-right-width: 1px; }
-.about__panel .br-bl { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
-.about__panel .br-br { bottom: -1px; right: -1px;border-bottom-width: 1px; border-right-width: 1px; }
-
-.about__kicker {
-  font-family: 'Sora', system-ui, sans-serif;
-  font-size: 11px;
-  letter-spacing: 1.56px;
-  text-transform: uppercase;
-  color: #4ae2f2;
-}
-
-.about__title {
-  font-family: 'Zen Dots', sans-serif;
-  font-size: 28px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #89cff0;
-  margin: 12px 0 16px 0;
-}
-
-.about__body {
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.80);
-  margin: 0 0 24px 0;
-}
-
-.about__back {
-  display: inline-block;
-  font-family: 'Sora', system-ui, sans-serif;
-  font-size: 12px;
+.about-profile__name {
+  font-family: var(--font-zen, 'Zen Dots', monospace);
+  font-size: 24px;
   letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #4ae2f2;
-  text-decoration: none;
-  border: 1px solid #4ae2f2;
-  padding: 10px 20px;
-  background: rgba(74, 226, 242, 0.05);
-  transition: background 0.2s;
+  line-height: 1.2;
+  color: white;
 }
-.about__back:hover { background: rgba(74, 226, 242, 0.12); }
+
+.about-profile__role {
+  font-family: var(--font-zen, 'Zen Dots', monospace);
+  font-size: 14px;
+  letter-spacing: 4.2px;
+  color: #4ae2f2;
+}
+
+/* ══════════════════════ TOOLS ══════════════════════ */
+.about-tools { display: flex; flex-direction: column; gap: 18px; }
+.about-tools__group { display: flex; flex-direction: column; gap: 8px; }
+.about-tools__label {
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 14px;
+  color: white;
+}
+.about-tools__chips { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.about-chip {
+  background: rgba(74, 226, 242, 0.05);
+  border: 1px solid rgba(74, 226, 242, 0.35);
+  padding: 4px 16px;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 14px;
+  color: white;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+.about-chip:hover {
+  background: rgba(74, 226, 242, 0.12);
+  border-color: rgba(74, 226, 242, 0.6);
+}
+
+/* ══════════════════════ BIO ══════════════════════ */
+.about-bio { display: flex; flex-direction: column; gap: 20px; }
+.about-bio p {
+  margin: 0;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 16px;
+  line-height: 1.49;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ══════════════════════ STRENGTHS ══════════════════════ */
+.about-strengths {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  min-height: 0;
+}
+
+.about-strength {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 92px;
+  background: #000;
+  border: 1px solid rgba(74, 226, 242, 0.2);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.about-strength__head { display: flex; align-items: center; gap: 10px; }
+.about-strength__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: block;
+}
+.about-strength__title {
+  margin: 0;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 1.4px;
+  color: white;
+}
+.about-strength__body {
+  margin: 0;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 16px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ══════════════════════ PROCESS PIPELINE ══════════════════════ */
+.about-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  min-height: 0;
+}
+
+.about-step {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(74, 226, 242, 0.25);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.about-step__head { display: flex; align-items: center; }
+
+.about-step__numwrap { position: relative; width: 32px; height: 32px; }
+
+.about-step__num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(74, 226, 242, 0.1);
+  border: 1px solid #4ae2f2;
+  font-family: var(--font-zen, 'Zen Dots', monospace);
+  font-size: 14px;
+  color: #4ae2f2;
+}
+
+.about-step__numframe {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  top: -3px;
+  left: -3px;
+  border: 1px solid rgba(74, 226, 242, 0.4);
+  transform: rotate(112deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.about-step__title {
+  margin: 0;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1.8px;
+  color: white;
+}
+.about-step__body {
+  margin: 0;
+  font-family: var(--font-sora, 'Sora', sans-serif);
+  font-size: 16px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.about-panel--pipeline .about-panel__body { padding: 16px; }
+
+/* ══════════════════════ RESPONSIVE ══════════════════════
+   At ≤1535 the persistent aside hides and the global .landing__top-nav
+   takes over (same as the other pages). The page is allowed to scroll
+   below desktop, so we release the 100dvh lock and overflow:hidden. */
+@media (max-width: 1535px) {
+  .about-root { height: auto; min-height: 100dvh; overflow: visible; }
+  .about { height: auto; min-height: 100dvh; padding-top: 56px; }
+  .about__aside { display: none; }
+
+  /* Two columns — pipeline drops beneath strengths in the mid column. */
+  .about__main {
+    height: auto;
+    grid-template-columns: 360px minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "profile bio"
+      "tools   strengths"
+      "tools   pipeline";
+    gap: 24px 28px;
+  }
+  /* Release the row-fill / clip behaviour from desktop. */
+  .about-panel--tools,
+  .about-panel--strengths,
+  .about-panel--pipeline { overflow: visible; }
+  .about-strength,
+  .about-step { flex: 0 0 auto; }
+  .about-strengths,
+  .about-pipeline { height: auto; }
+}
+
+/* Narrow tablet + mobile — single column, panels reordered so BIO
+   sits above TOOLS. display:contents on the col wrappers lets us order
+   the individual panels directly. */
+@media (max-width: 1023px) {
+  .about__main {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+  }
+  .about-profile          { order: 1; min-height: 360px; }
+  .about-panel--bio       { order: 2; }
+  .about-panel--tools     { order: 3; }
+  .about-panel--strengths { order: 4; }
+  .about-panel--pipeline  { order: 5; }
+}
+
+/* Mobile. */
+@media (max-width: 767px) {
+  .about { padding-top: 56px; }
+  .about__main { padding: 16px; gap: 20px; }
+  .about-profile { min-height: 300px; }
+  .about-profile__name { font-size: 20px; }
+  .about-profile__role { font-size: 12px; letter-spacing: 3px; }
+}

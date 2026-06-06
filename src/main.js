@@ -24,9 +24,10 @@ const setTitle = (suffix) => {
    This keeps the swap-on-mode-change logic in one place while letting
    each route own its own content. */
 
-let currentWorld = null;            // 'landing' | 'solace'
+let currentWorld = null;            // 'landing' | 'about' | 'solace'
 let currentShellKey = null;          // identifies the active sidebar config
 let landingInstance = null;          // { element, destroy } from createLanding
+let aboutInstance = null;            // { element, destroy } from createAbout
 let solaceView = null;               // inner view returned by mountShell
 let activeSection = null;            // current cached section component (for /solace/:slug/:step)
 
@@ -35,6 +36,10 @@ function teardown() {
   if (landingInstance) {
     landingInstance.destroy();
     landingInstance = null;
+  }
+  if (aboutInstance) {
+    aboutInstance.destroy();
+    aboutInstance = null;
   }
   // Solace shell uses no animation/listeners we need to abort here —
   // its contents are managed via solaceView.innerHTML. Just drop refs.
@@ -69,11 +74,13 @@ function mountLanding() {
   currentWorld = 'landing';
 }
 
-/* Mount the about placeholder as a standalone screen (no shell). */
+/* Mount the about page. Owns its own Three.js scene, so we keep the
+   instance handle around for `teardown()` to dispose. */
 function mountAbout() {
   teardown();
-  app.appendChild(createAbout());
-  currentWorld = 'landing'; // shares the "no Solace shell" world
+  aboutInstance = createAbout();
+  app.appendChild(aboutInstance.element);
+  currentWorld = 'about';
 }
 
 router

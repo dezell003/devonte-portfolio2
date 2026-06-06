@@ -495,19 +495,23 @@ body.is-landing {
   position: relative;
   display: flex;
   gap: 16px;
-  align-items: flex-start;
-  padding: 17px;
+  align-items: stretch;
+  padding: 0;
   background: var(--white-02);
   border: 1px solid var(--cyan-15);
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s, background 0.2s;
+  overflow: hidden;
+  transform-origin: center;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
 }
 
 .landing__project-card:hover {
   border-color: var(--cyan-40);
   background: rgba(74, 226, 242, 0.03);
+  transform: scale(1.02);
+  z-index: 1;
 }
 
 /* "Coming soon" cards — inert + dimmed. */
@@ -518,12 +522,13 @@ body.is-landing {
 .landing__project-card--soon:hover {
   border-color: var(--cyan-15);
   background: var(--white-02);
+  transform: none;
 }
 
 .landing__project-thumb {
   flex-shrink: 0;
-  width: 100px;
-  height: 100px;
+  align-self: stretch;
+  width: 120px;
   border: 0;
   overflow: hidden;
 }
@@ -542,7 +547,7 @@ body.is-landing {
   flex-direction: column;
   justify-content: center;
   gap: 4px;
-  padding: 12px 0;
+  padding: 14px 17px 14px 0;
   min-width: 0;
 }
 
@@ -565,15 +570,16 @@ body.is-landing {
 .landing__project-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin-top: 4px;
 }
 
 .landing__tag {
   border: 1px solid var(--cyan-15);
-  padding: 3px 6px;
+  padding: 2px 5px;
   font-family: var(--font-sora);
-  font-size: 9.6px;
+  font-size: 8.8px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: white;
   white-space: nowrap;

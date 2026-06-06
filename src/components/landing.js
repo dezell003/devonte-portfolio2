@@ -161,7 +161,7 @@ export function createLanding() {
           <div class="landing__project-card landing__project-card--soon" title="Coming soon" aria-disabled="true">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
-              <img alt="Atlas" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='%234ae2f2'><rect x='18' y='55' width='8' height='22'/><rect x='32' y='42' width='8' height='35'/><rect x='46' y='28' width='8' height='49'/><rect x='60' y='38' width='8' height='39'/><rect x='74' y='52' width='8' height='25'/></g><text x='50' y='92' text-anchor='middle' font-family='monospace' font-size='8' fill='%234ae2f2' letter-spacing='2'>ATLAS</text></svg>" />
+              <img alt="Atlas" src="/assets/atlas-card.webp" loading="lazy" decoding="async" />
             </div>
             <div class="landing__project-info">
               <div class="landing__project-name">Atlas</div>
@@ -178,7 +178,7 @@ export function createLanding() {
           <a class="landing__project-card" href="#/solace-v2">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
-              <video class="landing__project-video" src="/assets/solace-preview.webm" muted loop playsinline preload="none"></video>
+              <img alt="Solace" src="/assets/solace-card.webp" loading="lazy" decoding="async" />
             </div>
             <div class="landing__project-info">
               <div class="landing__project-name">Solace</div>
@@ -194,7 +194,7 @@ export function createLanding() {
           <a class="landing__project-card" href="#/santos">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
-              <img alt="The Santos Podcast" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='none' stroke='%234ae2f2' stroke-width='2.5' stroke-linecap='round'><rect x='42' y='18' width='16' height='34' rx='8'/><path d='M28 44 a22 22 0 0 0 44 0'/><line x1='50' y1='66' x2='50' y2='78'/><line x1='38' y1='78' x2='62' y2='78'/></g><text x='50' y='93' text-anchor='middle' font-family='monospace' font-size='7' fill='%234ae2f2' letter-spacing='1'>SANTOS</text></svg>" />
+              <img alt="The Santos Podcast" src="/assets/santos-card.webp" loading="lazy" decoding="async" />
             </div>
             <div class="landing__project-info">
               <div class="landing__project-name">The Santos Podcast</div>
@@ -210,7 +210,7 @@ export function createLanding() {
           <a class="landing__project-card" href="#/paiwares">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
-              <img alt="Paiwares" src="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a1a26'/><g fill='%234ae2f2' opacity='0.85'><rect x='18' y='55' width='10' height='22'/><rect x='34' y='45' width='10' height='32'/><rect x='50' y='35' width='10' height='42'/><rect x='66' y='22' width='10' height='55'/></g><path d='M22 50 L40 38 L58 28 L78 18' stroke='%2389cff0' stroke-width='1.8' fill='none' stroke-linecap='round'/><circle cx='78' cy='18' r='2' fill='%2389cff0'/><text x='50' y='93' text-anchor='middle' font-family='monospace' font-size='7' fill='%234ae2f2' letter-spacing='1'>PAIWARES</text></svg>" />
+              <img alt="pAIwares" src="/assets/paiwares-card.webp" loading="lazy" decoding="async" />
             </div>
             <div class="landing__project-info">
               <div class="landing__project-name">pAIwares</div>
@@ -245,18 +245,7 @@ export function createLanding() {
     });
   });
 
-  // ── Solace card video on hover ──────────────────────────
-  root.querySelectorAll('.landing__project-card').forEach((card) => {
-    const video = card.querySelector('.landing__project-video');
-    if (!video) return;
-    card.addEventListener('mouseenter', () => video.play().catch(() => {}));
-    card.addEventListener('mouseleave', () => {
-      video.pause();
-      video.currentTime = 0;
-    });
-  });
-
-  // ── Freeze the TRANSMITTING wave GIF to its first frame ──
+// ── Freeze the TRANSMITTING wave GIF to its first frame ──
   const wave = root.querySelector('.landing__pc-wave-top');
   if (wave) {
     wave.setAttribute('crossorigin', 'anonymous');
