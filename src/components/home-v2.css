@@ -256,6 +256,16 @@
   margin: 0;
 }
 
+/* Single-statement trade-off (replaces the considered/chose/cut list). */
+.case-chapter__tradeoff-statement {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text);
+  max-width: 680px;
+}
+
 .tradeoff__row {
   display: grid;
   grid-template-columns: 110px 1fr;
@@ -846,9 +856,9 @@
 
 .cs-stat__descriptor {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--color-text);
 }
 
@@ -1280,5 +1290,9 @@ body.image-zoom-open {
   }
   .home-v2__orbital {
     display: none;
+  }
+  /* Image zoom is disabled on mobile — drop the zoom affordance. */
+  .home-v2 .section-view__image-wrap {
+    cursor: default;
   }
 }

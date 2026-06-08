@@ -88,6 +88,14 @@
   transition: opacity 200ms var(--ease-out);
 }
 
+/* Trim a sliver off the bottom of an image (e.g. a stray white bar in the
+   source). Anchored to the top so the crop comes off the bottom edge;
+   the wrap's overflow:hidden clips the overflow. */
+.section-view__image--crop-bottom {
+  transform: scale(1.04);
+  transform-origin: top center;
+}
+
 .section-view__image.is-entering,
 .section-view__image.is-exiting {
   opacity: 0;

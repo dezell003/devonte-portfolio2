@@ -24,7 +24,7 @@ export default {
   header: {
     eyebrow: 'P01 // CASE_STUDY // PRJ.VR-02',
     title: 'SOLACE',
-    subtitle: 'Guided support for emotional wellness, turning overwhelmed users into supported ones in under 30 seconds.',
+    subtitle: 'Guided support for emotional wellness, turning overwhelmed users into supported ones.',
     context: `
       <p>Solace is a mobile experience that reframes mental-health support around <em>emotion</em> rather than technique. Instead of asking overwhelmed users to browse a library of coping exercises, it guides them from a quick emotional check-in straight to relief.</p>
       <p>The goal was to remove decisions at the exact moment decisions feel hardest. This case study walks through the research, design, testing, and outcomes across an 8-week project.</p>

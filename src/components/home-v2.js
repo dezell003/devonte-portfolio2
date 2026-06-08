@@ -99,7 +99,7 @@ function buildStep(step, ctx = {}) {
       <div class="section-view__image-wrap" tabindex="0" role="button"
            aria-label="Click to enlarge image">
         <div class="section-view__image-skeleton" aria-hidden="true"></div>
-        <img class="section-view__image" src="${activeSrc || ''}" alt="${activeAlt || ''}"
+        <img class="section-view__image${step.imageClass ? ' ' + step.imageClass : ''}" src="${activeSrc || ''}" alt="${activeAlt || ''}"
              width="1280" height="800" loading="lazy" decoding="async" />
       </div>
     </div>
@@ -738,14 +738,18 @@ export function createCaseStudy(data) {
     if (cfg.tradeoff) {
       const t = document.createElement('aside');
       t.className = 'case-chapter__tradeoff';
-      t.innerHTML = `
-        <div class="case-chapter__tradeoff-label">Trade-off</div>
-        <dl class="case-chapter__tradeoff-list">
-          <div class="tradeoff__row"><dt>Considered</dt><dd>${cfg.tradeoff.considered || ''}</dd></div>
-          <div class="tradeoff__row tradeoff__row--chose"><dt>Chose</dt><dd>${cfg.tradeoff.chose || ''}</dd></div>
-          <div class="tradeoff__row"><dt>Cut</dt><dd>${cfg.tradeoff.cut || ''}</dd></div>
-        </dl>
-      `;
+      // A string renders as a single concise statement; the legacy object
+      // form ({ considered, chose, cut }) still renders as a labelled list.
+      const body = typeof cfg.tradeoff === 'string'
+        ? `<p class="case-chapter__tradeoff-statement">${cfg.tradeoff}</p>`
+        : `
+          <dl class="case-chapter__tradeoff-list">
+            <div class="tradeoff__row"><dt>Considered</dt><dd>${cfg.tradeoff.considered || ''}</dd></div>
+            <div class="tradeoff__row tradeoff__row--chose"><dt>Chose</dt><dd>${cfg.tradeoff.chose || ''}</dd></div>
+            <div class="tradeoff__row"><dt>Cut</dt><dd>${cfg.tradeoff.cut || ''}</dd></div>
+          </dl>
+        `;
+      t.innerHTML = `<div class="case-chapter__tradeoff-label">Trade-off</div>${body}`;
       section.appendChild(t);
     }
 
@@ -800,11 +804,16 @@ export function createCaseStudy(data) {
     }
     return false;
   };
+  // Image zoom is disabled on mobile (≤767) — touch users scroll past
+  // images rather than tapping to enlarge.
+  const zoomDisabled = () => window.matchMedia('(max-width: 767px)').matches;
   scroll.addEventListener('click', (e) => {
+    if (zoomDisabled()) return;
     const wrap = e.target.closest('.section-view__image-wrap');
     if (wrap) openZoomFor(wrap);
   });
   scroll.addEventListener('keydown', (e) => {
+    if (zoomDisabled()) return;
     if (e.key !== 'Enter' && e.key !== ' ') return;
     const wrap = e.target.closest('.section-view__image-wrap');
     if (wrap && openZoomFor(wrap)) e.preventDefault();

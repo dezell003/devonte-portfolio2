@@ -26,11 +26,7 @@ export const sections = {
     label: 'P01_01 // RESEARCH',
     phaseTitle: 'EXPLORING MENTAL HEALTH',
     summary: 'User interviews on how people choose coping techniques under stress, and why most apps overwhelm them.',
-    tradeoff: {
-      considered: 'Building a richer technique library with smarter filters',
-      chose: 'Reframing the entry point from technique-first to emotion-first',
-      cut: 'Catalog browsing UI; deferred until trust in the guided flow is proven',
-    },
+    tradeoff: 'Chose to move the entry point from technique-first to emotion-first, deferring catalog browsing until the guided flow earns trust.',
     steps: [
       // Step 1, Too many options
       {
@@ -67,9 +63,9 @@ export const sections = {
             <p>That told me this wasn&rsquo;t a discovery problem. It was a decision problem under emotional strain.</p>
           `,
           meta: [
-            { label: 'Methods', body: 'User Interviews &amp; Lightweight Surveys' },
-            { label: 'Participants', body: '5 individuals actively managing stress, anxiety, or burnout' },
-            { label: 'Focus', body: 'How users identified emotions and chose successful coping strategies' },
+            { label: 'Who', body: '5 individuals actively managing stress, anxiety, or burnout' },
+            { label: 'What', body: 'How users identified emotions and chose successful coping strategies' },
+            { label: 'How', body: 'User Interviews &amp; Lightweight Surveys' },
           ],
         },
       },
@@ -105,11 +101,7 @@ export const sections = {
     label: 'P01_02 // DESIGN',
     phaseTitle: 'CRAFTING THE SOLUTION',
     summary: 'Designing an emotion-first flow that reduces decision overhead in the moment of need.',
-    tradeoff: {
-      considered: 'Power-user discovery: branching paths, custom playlists, filters',
-      chose: 'A single guided check-in → recommend → guide flow with limited branching',
-      cut: 'Custom playlist creation and filter UI; revisited as v2 scope after retention validation',
-    },
+    tradeoff: 'Chose one guided check-in → recommend → guide flow over power-user branching, deferring custom playlists and filters to a later version.',
     steps: [
       // Step 1, Tension between guidance and control
       {
@@ -146,7 +138,7 @@ export const sections = {
             <p>The goal wasn&rsquo;t to eliminate choice. It was to make each choice feel manageable.</p>
           `,
           callouts: [
-            { body: 'Check-in &rarr; Clarify &rarr; Recommend &rarr; Guide' },
+            { body: 'In heightened emotional states, the pacing of information is just as critical as the information itself.' },
           ],
         },
       },
@@ -198,11 +190,7 @@ export const sections = {
     label: 'P01_03 // TESTING',
     phaseTitle: 'FEEDBACK & REVISION',
     summary: 'Five usability tests surfaced four targeted improvements, each tightening clarity without adding complexity.',
-    tradeoff: {
-      considered: 'A/B testing the emotion-first flow against a free-browse baseline',
-      chose: 'Moderated qualitative testing with 5 participants for directional signal',
-      cut: 'Quantitative comparison; sample too small to be meaningful at this stage',
-    },
+    tradeoff: 'Chose moderated qualitative testing with five users for directional signal over an underpowered A/B test.',
     steps: [
       // Step 1, Reality check (variants: 3 screens via CarouselDots)
       {
@@ -216,9 +204,9 @@ export const sections = {
             { label: 'Accessibility', variant: 'warning', body: '3/5 users struggled with button and text size' },
           ],
           meta: [
-            { label: 'Methods',      body: 'Moderated remote usability tests' },
-            { label: 'Participants', body: '5 users with varying levels of mental health app experience' },
-            { label: 'Focus',        body: 'Validating the key flow and navigation' },
+            { label: 'Who',  body: '5 users with varying levels of mental health app experience' },
+            { label: 'What', body: 'Validating the key flow and navigation' },
+            { label: 'How',  body: 'Moderated remote usability tests' },
           ],
         },
         defaultVariant: 'screen-1',
@@ -304,15 +292,12 @@ export const sections = {
     label: 'P01_04 // NEXT STEPS',
     phaseTitle: 'MOVING FORWARD',
     summary: 'Outcomes, lessons, and what the next iteration of Solace would look like.',
-    tradeoff: {
-      considered: 'Layering in social and community features to drive engagement',
-      chose: 'Doubling down on the emotion-first signal and personalization depth',
-      cut: 'Community/sharing, would dilute the calm, supportive register the brand depends on',
-    },
+    tradeoff: 'Chose to deepen the emotion-first signal and personalization over social features that would dilute the calm, supportive tone.',
     steps: [
       // Step 1, A calmer path to support
       {
         image: '/assets/calmer-path.webp',
+        imageClass: 'section-view__image--crop-bottom',
         imageAlt: 'A person holds a phone displaying the Solace welcome screen',
         panel: {
           title: 'A CALMER PATH TO SUPPORT',
