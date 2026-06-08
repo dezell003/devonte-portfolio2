@@ -935,14 +935,6 @@
   flex: 1;
 }
 
-.home-v2__step .section-view__image-wrap {
-  cursor: zoom-in;
-}
-
-.home-v2__step .section-view__image-wrap:focus-visible {
-  outline: 2px solid var(--color-warning-orange);
-  outline-offset: 4px;
-}
 
 /* ── Insight reveal button (one per step) ───────────────── */
 .insight-toggle {
@@ -1290,9 +1282,5 @@ body.image-zoom-open {
   }
   .home-v2__orbital {
     display: none;
-  }
-  /* Image zoom is disabled on mobile — drop the zoom affordance. */
-  .home-v2 .section-view__image-wrap {
-    cursor: default;
   }
 }

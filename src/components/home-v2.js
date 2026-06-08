@@ -64,8 +64,7 @@ function buildStep(step, ctx = {}) {
     ? `
     <div class="section-view__panel-col"></div>
     <div class="section-view__image-col">
-      <div class="section-view__image-wrap" tabindex="0" role="button"
-           aria-label="Click to enlarge animation" data-lottie-src="${step.lottie}">
+      <div class="section-view__image-wrap" data-lottie-src="${step.lottie}">
         <div class="section-view__image-skeleton" aria-hidden="true"></div>
         <div class="section-view__lottie"></div>
       </div>
@@ -96,8 +95,7 @@ function buildStep(step, ctx = {}) {
     : `
     <div class="section-view__panel-col"></div>
     <div class="section-view__image-col">
-      <div class="section-view__image-wrap" tabindex="0" role="button"
-           aria-label="Click to enlarge image">
+      <div class="section-view__image-wrap">
         <div class="section-view__image-skeleton" aria-hidden="true"></div>
         <img class="section-view__image${step.imageClass ? ' ' + step.imageClass : ''}" src="${activeSrc || ''}" alt="${activeAlt || ''}"
              width="1280" height="800" loading="lazy" decoding="async" />
@@ -209,8 +207,21 @@ function buildStep(step, ctx = {}) {
     // the standard <img> path is used. Lets a step mix media types per
     // variant without conditional markup at build time.
     let variantRO = null;
+    // Shared Lottie playhead so toggling between lottie variants resumes at
+    // the same loop fraction (keeps the two animations visually in sync).
+    let variantLottie = null;
+    let lottieProgress = 0;
+    let lottieToken = 0;
+    const captureLottieProgress = () => {
+      if (!variantLottie) return;
+      const total = variantLottie.totalFrames || 0;
+      if (total) lottieProgress = variantLottie.currentFrame / total;
+      variantLottie.destroy();
+      variantLottie = null;
+    };
     const applyVariantMedia = (variant) => {
-      imgWrap.querySelectorAll('.section-view__image, .section-view__figma').forEach((n) => n.remove());
+      captureLottieProgress();
+      imgWrap.querySelectorAll('.section-view__image, .section-view__figma, .section-view__lottie').forEach((n) => n.remove());
       if (variantRO) { variantRO.disconnect(); variantRO = null; }
       // Live (non-Figma) iframe: drop the desktop chrome-clip + scale to fit.
       imgWrap.classList.toggle('section-view__image-wrap--iframe', !!variant.iframe);
@@ -223,6 +234,38 @@ function buildStep(step, ctx = {}) {
         imgWrap.style.width = '';
         imgWrap.style.height = '';
       }
+      imgWrap.style.cursor = variant.lottie ? 'default' : '';
+
+      // Looping Lottie variant — seek to the shared playhead and play.
+      if (variant.lottie) {
+        const mount = document.createElement('div');
+        mount.className = 'section-view__lottie';
+        imgWrap.appendChild(mount);
+        const token = ++lottieToken;
+        const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        import('lottie-web')
+          .then(({ default: lottie }) => {
+            if (token !== lottieToken || !mount.isConnected) return;
+            const anim = lottie.loadAnimation({
+              container: mount,
+              renderer: 'svg',
+              loop: true,
+              autoplay: !reduced,
+              path: variant.lottie,
+              rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
+            });
+            variantLottie = anim;
+            anim.addEventListener('DOMLoaded', () => {
+              hideSkeleton();
+              const start = lottieProgress * (anim.totalFrames || 0);
+              if (reduced) anim.goToAndStop(start, true);
+              else anim.goToAndPlay(start, true);
+            });
+          })
+          .catch(hideSkeleton);
+        return;
+      }
+
       const embedUrl = variant.iframe || variant.figmaEmbed;
       if (embedUrl) {
         const iframe = document.createElement('iframe');
@@ -790,34 +833,7 @@ export function createCaseStudy(data) {
 
   root.appendChild(scroll);
 
-  // ── Image zoom: one shared overlay, delegated click handler. ──
-  const zoom = createImageZoom(root);
-  const openZoomFor = (wrap) => {
-    if (wrap.dataset.lottieSrc) {
-      zoom.open({ source: wrap, lottie: wrap.dataset.lottieSrc });
-      return true;
-    }
-    const img = wrap.querySelector('.section-view__image');
-    if (img?.src) {
-      zoom.open({ src: img.src, alt: img.alt, source: wrap, binding: variantBindings.get(wrap) });
-      return true;
-    }
-    return false;
-  };
-  // Image zoom is disabled on mobile (≤767) — touch users scroll past
-  // images rather than tapping to enlarge.
-  const zoomDisabled = () => window.matchMedia('(max-width: 767px)').matches;
-  scroll.addEventListener('click', (e) => {
-    if (zoomDisabled()) return;
-    const wrap = e.target.closest('.section-view__image-wrap');
-    if (wrap) openZoomFor(wrap);
-  });
-  scroll.addEventListener('keydown', (e) => {
-    if (zoomDisabled()) return;
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const wrap = e.target.closest('.section-view__image-wrap');
-    if (wrap && openZoomFor(wrap)) e.preventDefault();
-  });
+  // Image zoom removed — images/animations are static, no enlarge-on-click.
 
   // ── Rail click → smooth scroll ──
   rail.addEventListener('click', (e) => {
