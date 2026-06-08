@@ -9,7 +9,7 @@ const TOOL_GROUPS = [
 ];
 
 const BIO_PARAGRAPHS = [
-  `Before I became a Product Designer, I built my career in high pressure, performance-forward environments as a musician and cook. Calm execution under pressure, fast iteration, strong collaboration, and attention to craft; all skills that show up in how I work as designer.`,
+  `Before I became a Product Designer, I built my career in high pressure, performance-forward environments as a musician and cook. Calm execution under pressure, fast iteration, strong collaboration, and attention to craft; all skills that show up in how I work as a designer.`,
   `Now as a Product Designer, I love exploring how users find their next favorite song, diving deep into cross-platform continuity, and designing tools that feel effortless in users' hands.`,
   `I've delivered end-to-end web and mobile design work for small businesses and early-stage teams, owning projects from early research through to dev-ready handoff.`,
   `My approach is research-informed and iterative. I talk to people and understand what they really need, then design a solution that helps them achieve their goals.`,
@@ -120,7 +120,7 @@ function processPipeline() {
 function topNav() {
   return `
     <header class="landing__top-nav">
-      <span class="landing__top-nav-brand">Devonte Ezell</span>
+      <a class="landing__top-nav-brand" href="#/home">Devonte Ezell</a>
       <ul class="landing__top-nav-links">
         <li><a href="#/home">Home</a></li>
         <li><a href="#/about" class="active">About</a></li>
@@ -142,7 +142,7 @@ function topNav() {
 function aside() {
   return `
     <aside class="landing__aside-left about__aside">
-      <div class="landing__role-label">PRODUCT DESIGNER</div>
+      <a href="#/home" class="landing__role-label about__home-link">DEVONTE EZELL</a>
 
       <div class="landing__attr-list">
         <div class="landing__attr-row">

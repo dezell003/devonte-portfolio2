@@ -1178,6 +1178,17 @@ body.image-zoom-open {
     opacity: 0.3;
   }
 
+  /* Condense the chapter rail so its stack of nodes stops bleeding up
+     into the sidebar nav on shorter/narrower viewports. */
+  .chapter-rail__connector { height: 18px; }
+  .chapter-node { padding: 2px 0; gap: 10px; }
+  .chapter-node__dot { width: 18px; height: 18px; }
+  .chapter-node__num { font-size: 9px; }
+  .chapter-node__title { font-size: 11px; margin-top: 1px; }
+
+  /* px the rail to the condensed dot centre (18px node, 1px line). */
+  .chapter-rail__connector { margin-left: 9px; }
+
   /* pAIwares: match the base single-column collapse at this breakpoint. */
   .home-v2--paiwares .home-v2__step {
     grid-template-columns: 1fr;

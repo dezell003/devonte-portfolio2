@@ -77,12 +77,13 @@ body.is-landing {
 }
 
 .landing__role-label {
-  font-family: var(--font-sora);
-  font-weight: 700;
+  font-family: var(--font-zen);
+  font-weight: 400;
   font-size: 14px;
-  letter-spacing: 1.56px;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--cyan);
+  text-shadow: 0 0 14px rgba(74, 226, 242, 0.4);
 }
 
 .landing__attr-list { display: flex; flex-direction: column; gap: 8px; }
@@ -609,13 +610,17 @@ body.is-landing {
 }
 
 .landing__top-nav-brand {
-  font-family: var(--font-sora);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 1.56px;
+  font-family: var(--font-zen);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--cyan);
+  text-shadow: 0 0 14px rgba(74, 226, 242, 0.4);
+  text-decoration: none;
+  transition: color 0.2s;
 }
+.landing__top-nav-brand:hover { color: var(--baby-blue); }
 
 .landing__top-nav-links {
   display: flex;

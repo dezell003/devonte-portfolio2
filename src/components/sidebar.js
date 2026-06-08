@@ -11,11 +11,11 @@ export function createSidebar({ wordmark = 'SOLACE', meta = META, nav = NAV } = 
   el.className = 'sidebar';
   el.innerHTML = `
     <div class="sidebar__meta">
-      <div class="sidebar__title">${wordmark}</div>
-      ${meta.map(({ label, values }) => `
+      <a class="sidebar__title" href="#/home">Devonte Ezell</a>
+      ${meta.filter(({ label }) => label.toUpperCase() !== 'TOOLS').map(({ label, values }) => `
         <div class="meta">
           <div class="meta__label">${label}</div>
-          <div class="meta__values">${values.join(', ')}</div>
+          <div class="meta__values">${values.join('<br>')}</div>
         </div>
       `).join('')}
     </div>

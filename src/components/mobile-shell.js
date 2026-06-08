@@ -16,7 +16,7 @@ export function createMobileShell({ wordmark = 'SOLACE', meta = META, nav = NAV 
   const bar = document.createElement('header');
   bar.className = 'top-bar';
   bar.innerHTML = `
-    <a class="top-bar__wordmark" href="#/home">${wordmark}</a>
+    <a class="top-bar__wordmark" href="#/home">Devonte Ezell</a>
     <button type="button" class="top-bar__menu"
             aria-label="Open menu" aria-expanded="false"
             aria-controls="mobile-nav">

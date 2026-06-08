@@ -40,6 +40,8 @@ function resolve() {
     if (m) {
       keys.forEach((k, i) => (ctx.params[k] = decodeURIComponent(m[i + 1])));
       handler({ ...ctx, pattern });
+      // Every navigation lands at the top of the new page.
+      window.scrollTo(0, 0);
       return;
     }
   }

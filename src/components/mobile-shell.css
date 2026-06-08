@@ -27,11 +27,14 @@
 .top-bar__wordmark {
   font-family: var(--font-mono);
   font-size: 14px;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   color: var(--color-cyan);
-  text-shadow: 0 0 8px var(--color-cyan-glow);
+  text-shadow: 0 0 14px var(--color-cyan-glow);
   text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
 }
+.top-bar__wordmark:hover { color: var(--color-text); }
 
 .top-bar__menu {
   width: 40px;

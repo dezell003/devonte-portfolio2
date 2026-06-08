@@ -24,7 +24,7 @@ export function createLanding() {
   root.className = 'landing-root';
   root.innerHTML = `
     <header class="landing__top-nav">
-      <span class="landing__top-nav-brand">Devonte Ezell</span>
+      <a class="landing__top-nav-brand" href="#/home">Devonte Ezell</a>
       <ul class="landing__top-nav-links">
         <li><a href="#/home" class="active">Home</a></li>
         <li><a href="#/about">About</a></li>
@@ -45,7 +45,7 @@ export function createLanding() {
       <div class="landing__canvas" aria-hidden="true"></div>
 
       <aside class="landing__aside-left">
-        <div class="landing__role-label">PRODUCT DESIGNER</div>
+        <div class="landing__role-label">DEVONTE EZELL</div>
 
         <div class="landing__attr-list">
           <div class="landing__attr-row">
