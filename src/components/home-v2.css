@@ -430,13 +430,17 @@
 }
 .section-view__image-wrap--iframe .section-view__figma {
   position: absolute;
-  top: calc(-1 * var(--header-crop, 64px) * var(--iframe-scale, 1));
+  /* `zoom` (not `transform: scale`) keeps the iframe crisp — transform
+     rasterizes the iframe into a texture that re-samples blurry on repaint
+     during interaction. `zoom` scales the render pipeline and all of the
+     element's lengths (incl. width/height/top), so the offsets below are
+     authored unscaled and zoom multiplies them. */
+  zoom: var(--iframe-scale, 1);
+  top: calc(-1 * var(--header-crop, 64px));
   left: 0;
   inset: auto;
   width: var(--iframe-native-w, 1280px);
   height: var(--iframe-native-h, 100%);
-  transform: scale(var(--iframe-scale, 1));
-  transform-origin: top left;
 }
 
 /* pAIwares: widen the text panel so longer step titles fit on two lines. */

@@ -89,8 +89,10 @@ const sections = {
               <li>Which inputs depended on earlier selections</li>
               <li>Where users were most likely to hesitate</li>
             </ul>
-            <p>This collaboration shaped both the flow structure and screen hierarchy.</p>
           `,
+          callouts: [
+            { body: 'Collaboration shaped both the flow structure and screen hierarchy.' },
+          ],
         },
       },
       {
@@ -109,8 +111,10 @@ const sections = {
               <li>Documentation</li>
               <li>Confirmation</li>
             </ul>
-            <p>This created smaller decision points and helped merchants move through onboarding progressively instead of confronting the entire system at once.</p>
           `,
+          callouts: [
+            { body: 'This created smaller decision points and helped merchants move through onboarding progressively instead of confronting the entire system at once.' },
+          ],
         },
       },
     ],
@@ -167,7 +171,6 @@ const sections = {
           `,
           callouts: [
             { body: 'Iteration wasn&rsquo;t a final polish pass, it was a crucial part of the process &mdash; helping align business requirements, user clarity, and implementation feasibility in real time.' },
-            { body: 'Turning completion into reassurance.' },
           ],
         },
       },
@@ -192,12 +195,9 @@ const sections = {
               <li>Adjust sequencing as logic evolved</li>
               <li>Align interface decisions with operational needs</li>
             </ul>
-            <p>This helped the onboarding flow function as both a user experience and a shared implementation reference for the team.</p>
           `,
           callouts: [
-            { body: 'Confirm requirements in real time' },
-            { body: 'Adjust sequencing as logic evolved' },
-            { body: 'Align interface decisions with operational needs' },
+            { body: 'This helped the onboarding flow function as both a user experience and a shared implementation reference for the team.' },
           ],
         },
       },
@@ -231,13 +231,9 @@ const sections = {
               <li>Equipment selection designed for comparison decisions</li>
               <li>Confirmation states that clarified next steps</li>
             </ul>
-            <p>The project transformed fragmented onboarding documentation into a cohesive user experience stakeholders could align around and move toward implementation with confidence.</p>
           `,
           callouts: [
-            { body: 'A structured step-based onboarding flow' },
-            { body: 'Organized requirements aligned with system logic' },
-            { body: 'Equipment selection designed for comparison decisions' },
-            { body: 'Confirmation states that clarified next steps' },
+            { body: 'The project transformed fragmented onboarding documentation into a cohesive user experience stakeholders could align around and move toward implementation with confidence.' },
           ],
         },
       },
