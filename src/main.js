@@ -122,7 +122,7 @@ router
     view.innerHTML = '';
     activeSection = null;
     view.appendChild(createCaseStudy(santosData));
-    setTitle('Dropping Wisdom with Santos');
+    setTitle('Santos Podcast');
   })
   .add('/dev', () => {
     const view = ensureCaseStudyShell(solaceData.sidebar);

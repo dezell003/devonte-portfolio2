@@ -576,7 +576,7 @@ function buildHeader(header) {
     ` : ''}
 
     ${header.hero ? `
-      <figure class="cs-hero">
+      <figure class="cs-hero${header.hero.flicker ? ' cs-hero--flicker' : ''}">
         <div class="cs-hero__frame"></div>
       </figure>
     ` : ''}

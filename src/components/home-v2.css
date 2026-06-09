@@ -100,7 +100,7 @@
   transition:
     opacity var(--duration-base) var(--ease-out),
     color var(--duration-base) var(--ease-out);
-  white-space: nowrap;
+  white-space: normal;
   pointer-events: none;
 }
 
@@ -124,6 +124,8 @@
   color: var(--color-text);
   text-transform: uppercase;
   text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  max-width: 130px;
+  overflow-wrap: break-word;
   margin-top: 2px;
 }
 
@@ -207,6 +209,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-v2__orbital .orbital__ring {
+    animation: none;
+  }
+  .cs-hero--flicker .cs-hero__media,
+  .cs-hero--flicker .cs-hero__frame::after {
     animation: none;
   }
 }
@@ -368,6 +374,60 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* ── Hero "flicker" — ported from the Lovable prototype ───
+   Candlelit brightness/contrast pulse on the image, plus a
+   breathing accent glow overlay. Opt-in via hero.flicker. */
+@keyframes hero-flicker {
+  0%, 100% { filter: brightness(1)      contrast(1); }
+  8%       { filter: brightness(1.035)  contrast(1.01); }
+  12%      { filter: brightness(.985)   contrast(.995); }
+  20%      { filter: brightness(1.02)   contrast(1.005); }
+  28%      { filter: brightness(.9775)  contrast(.9925); }
+  34%      { filter: brightness(1.01)   contrast(1.004); }
+  42%      { filter: brightness(.99); }
+  55%      { filter: brightness(1.045)  contrast(1.0125); }
+  62%      { filter: brightness(.98); }
+  74%      { filter: brightness(1.0225) contrast(1.0075); }
+  83%      { filter: brightness(.9875); }
+  91%      { filter: brightness(1.015); }
+}
+
+@keyframes hero-glow {
+  0%, 100% { opacity: .06;  transform: scale(1); }
+  7%  { opacity: .12;  transform: scale(1.0075); }
+  14% { opacity: .05;  transform: scale(.995); }
+  23% { opacity: .105; transform: scale(1.005); }
+  31% { opacity: .055; }
+  44% { opacity: .135; transform: scale(1.01); }
+  52% { opacity: .065; transform: scale(.9975); }
+  66% { opacity: .11;  transform: scale(1.0075); }
+  78% { opacity: .055; }
+  88% { opacity: .12;  transform: scale(1.005); }
+}
+
+.cs-hero--flicker .cs-hero__media {
+  will-change: filter;
+  animation: 7.5s ease-in-out infinite hero-flicker;
+}
+
+/* Warm glow anchored to the candle flames in the photo: the
+   prominent flame held bottom-right (~78% 84%) and the cluster
+   center-right (~59% 81%). Slower than the flicker so the light
+   breathes rather than strobes. */
+.cs-hero--flicker .cs-hero__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: 72% 83%;
+  background:
+    radial-gradient(36% 46% at 78% 84%, rgba(255, 178, 82, .55), transparent 70%),
+    radial-gradient(30% 40% at 59% 81%, rgba(255, 168, 72, .38), transparent 72%);
+  mix-blend-mode: screen;
+  will-change: opacity, transform;
+  animation: 6.5s ease-in-out infinite hero-glow;
 }
 
 .cs-hero__lottie {
@@ -924,7 +984,7 @@
    Both columns scroll together — no sticky pinning. */
 .home-v2__step {
   display: grid;
-  grid-template-columns: minmax(0, 340px) 1fr;
+  grid-template-columns: minmax(0, 440px) 1fr;
   gap: 48px;
   align-items: stretch;
 }
