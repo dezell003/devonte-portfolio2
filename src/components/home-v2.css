@@ -362,6 +362,8 @@
 .cs-hero__frame {
   position: relative;
   aspect-ratio: 16 / 9;
+  width: 80%;
+  margin-inline: 0 auto;
   background: transparent;
   overflow: hidden;
   display: flex;
@@ -879,12 +881,6 @@
   color: var(--color-warning-orange);
   text-transform: uppercase;
   margin-bottom: 14px;
-}
-.cs-outcomes__label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--color-warning-orange), transparent);
 }
 
 .cs-outcomes__grid {

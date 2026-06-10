@@ -12,6 +12,17 @@
   min-height: 100%;
 }
 
+/* Desktop: keep page contents off the window edges with a small
+   perimeter gutter. The fixed sidebar is inset to match (sidebar.css). */
+@media (min-width: 768px) {
+  .shell__main {
+    margin-left: 285px;
+    margin-right: 5px;
+    padding-top: 39px;
+    padding-bottom: 39px;
+  }
+}
+
 /* Below the mobile breakpoint the sidebar is gone and a fixed top bar
    takes over — drop the side margin and reserve room for the bar. */
 @media (max-width: 767px) {

@@ -98,7 +98,7 @@ const sections = {
     summary: 'Designing for the new listener when there&rsquo;s no data on the old one.',
     steps: [
       {
-        image: '/assets/santos-index.webp',
+        lottie: '/assets/santos-index.json',
         imageAlt: 'Episode index screen: featured episode up front, episodes grouped by theme rather than date',
         panel: {
           title: 'STRUCTURING CONTENT FOR DISCOVERY',
@@ -115,7 +115,6 @@ const sections = {
       },
       {
         lottie: '/assets/santos-mobile.json',
-        lottieLoop: true,
         imageAlt: 'Mobile prototype of the podcast site, designed for thumb-reach and one-handed use',
         panel: {
           title: 'DESIGNING FOR MOBILE FIRST',
