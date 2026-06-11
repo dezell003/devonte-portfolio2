@@ -154,12 +154,18 @@ body.is-landing {
 }
 
 .landing__portrait {
+  /* Pinned to the hero's top-left; headline/subhead/CTA keep their
+     flex-end position at the hero bottom. */
+  position: absolute;
+  inset: 40px auto auto 24px;
+  margin: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  flex-shrink: 0;
-  width: 100%;
-  margin-top: 10px;
+  gap: 16px;
+  width: 280px;
+  transform: scale(0.9);   /* shrink the whole composition to clear the headline */
+  transform-origin: top left;
 }
 
 .landing__portrait-component {
@@ -593,7 +599,7 @@ body.is-landing {
 
 /* ══════════════════════ MOBILE TOP NAV BAR ══════════════════════ */
 .landing__top-nav {
-  display: none;
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
@@ -685,8 +691,9 @@ body.is-landing {
 }
 .landing__nav-drawer a.active { color: var(--baby-blue); }
 
-/* ══════════════════════ TABLET (768–1023px) ══════════════════════ */
-@media (max-width: 1535px) {
+/* ══════════════════════ DESKTOP (≥768px) — top-nav layout is now the
+   default at all desktop widths (was max-width:1535px) ══════════════ */
+@media (min-width: 768px) {
   body.is-landing { overflow-y: auto; overflow-x: hidden; }
 
   .landing {
@@ -735,6 +742,8 @@ body.is-landing {
 
   .landing__top-nav-links { display: none; }
   .landing__nav-toggle { display: flex; }
+
+  .landing__portrait { display: none; } /* keep mobile unchanged */
 
   .landing__main-hero {
     width: 100%;

@@ -2,6 +2,7 @@ import './shell.css';
 import { createBackground } from './background.js';
 import { createSidebar } from './sidebar.js';
 import { createMobileShell } from './mobile-shell.js';
+import { createTopNav } from './top-nav.js';
 
 /**
  * Mount the persistent page shell into `root` and return the
@@ -29,6 +30,7 @@ export function mountShell(root, { sidebar } = {}) {
 
   root.appendChild(createSidebar(sidebar));
   root.appendChild(createMobileShell(sidebar));
+  root.appendChild(createTopNav());
 
   return view;
 }

@@ -3,7 +3,7 @@
    from two adjacent borders on a small empty box. */
 .frame {
   position: fixed;
-  top: 24px;
+  top: 61px; /* clear the fixed 56px top nav bar */
   right: 24px;
   bottom: 24px;
   left: 296px; /* aligns with chapter rail nodes */

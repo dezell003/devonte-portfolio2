@@ -66,6 +66,19 @@
   gap: 22px 28px;
 }
 
+/* Desktop: clear the fixed 56px top nav bar so the grid isn't clipped. */
+@media (min-width: 768px) {
+  .about-root {
+    box-sizing: border-box;
+    padding-top: 56px;
+  }
+  .about,
+  .about__aside,
+  .about__main {
+    height: 100%;
+  }
+}
+
 .about__col { display: contents; }
 
 .about-profile          { grid-area: profile; }

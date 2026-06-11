@@ -44,44 +44,7 @@ export function createLanding() {
     <div class="landing">
       <div class="landing__canvas" aria-hidden="true"></div>
 
-      <aside class="landing__aside-left">
-        <div class="landing__role-label">DEVONTE EZELL</div>
-
-        <div class="landing__attr-list">
-          <div class="landing__attr-row">
-            <span class="landing__attr-val">INTENTIONAL</span>
-          </div>
-          <div class="landing__attr-row">
-            <span class="landing__attr-val">USER-CENTERED</span>
-          </div>
-          <div class="landing__attr-row">
-            <span class="landing__attr-val">MEDIA EXPERIENCES</span>
-          </div>
-        </div>
-
-        <nav class="landing__nav">
-          <ul class="landing__nav-list">
-            <li class="landing__nav-item">
-              <a href="#/home" class="landing__nav-link">
-                <span class="landing__nav-bracket">[ ]</span>
-                <span class="landing__nav-label landing__nav-label--active">HOME</span>
-              </a>
-            </li>
-            <li class="landing__nav-item">
-              <a href="#/about" class="landing__nav-link">
-                <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
-                <span class="landing__nav-label">ABOUT</span>
-              </a>
-            </li>
-            <li class="landing__nav-item">
-              <a href="#contact" class="landing__nav-link">
-                <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
-                <span class="landing__nav-label">CONTACT</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-
+      <main class="landing__main-hero">
         <div class="landing__portrait">
           <div class="landing__portrait-component">
             <img class="landing__pc-wave-top" src="https://framerusercontent.com/images/oiemIjYaSI8UxUixhRmFYAecBI.gif" alt="" />
@@ -120,9 +83,7 @@ export function createLanding() {
             <div class="br br-12 br-br"></div>
           </div>
         </div>
-      </aside>
 
-      <main class="landing__main-hero">
         <div class="landing__hero-attribution">
           <div class="landing__hero-line"></div>
           <span class="landing__hero-attr-text">Devonte Ezell // Product Designer</span>
@@ -262,22 +223,6 @@ export function createLanding() {
     };
     if (wave.complete && wave.naturalWidth > 0) freeze();
     else wave.addEventListener('load', freeze, { once: true });
-  }
-
-  // ── Align portrait top with hero eyebrow ────────────────
-  const portrait = root.querySelector('.landing__portrait');
-  const eyebrow = root.querySelector('.landing__hero-attribution');
-  if (portrait && eyebrow) {
-    const alignPortrait = () => {
-      portrait.style.marginTop = '0px';
-      const dy = eyebrow.getBoundingClientRect().top - portrait.getBoundingClientRect().top;
-      portrait.style.marginTop = `${Math.max(0, dy)}px`;
-    };
-    requestAnimationFrame(alignPortrait);
-    window.addEventListener('resize', alignPortrait);
-    if ('ResizeObserver' in window) {
-      new ResizeObserver(alignPortrait).observe(eyebrow);
-    }
   }
 
   // ── Three.js scene mount (lazy) ─────────────────────────

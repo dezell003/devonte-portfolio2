@@ -1,6 +1,6 @@
 .sidebar {
   position: fixed;
-  top: 5px;
+  top: 61px; /* clear the fixed 56px top nav bar */
   left: 5px;
   bottom: 5px;
   width: 280px;

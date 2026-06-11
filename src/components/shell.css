@@ -18,7 +18,7 @@
   .shell__main {
     margin-left: 285px;
     margin-right: 5px;
-    padding-top: 39px;
+    padding-top: 72px; /* clear the fixed 56px top nav bar */
     padding-bottom: 39px;
   }
 }
