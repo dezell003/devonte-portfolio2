@@ -109,8 +109,8 @@ function processPipeline() {
           <span class="about-step__numframe" aria-hidden="true"></span>
           <span class="about-step__num">${p.n}</span>
         </div>
+        <h3 class="about-step__title">${p.title}</h3>
       </header>
-      <h3 class="about-step__title">${p.title}</h3>
       <p class="about-step__body">${p.body}</p>
     </article>
   `).join('');
