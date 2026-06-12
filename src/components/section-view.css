@@ -220,6 +220,15 @@
   content: ' ⚠';
 }
 
+/* Info: cyan treatment (matches the testing-chapter callout style). */
+.section-callout--info {
+  background: rgba(95, 221, 229, 0.05);
+  border-left: 3px solid var(--color-cyan);
+}
+.section-callout--info .section-callout__label {
+  color: var(--color-cyan);
+}
+
 /* ── Methodology meta strip beneath callouts ────────────── */
 .section-meta {
   margin: 22px 0 0;

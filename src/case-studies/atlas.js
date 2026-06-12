@@ -64,9 +64,9 @@ const sections = {
             { body: 'Listeners don&rsquo;t explore randomly, they explore with intent.' },
           ],
           meta: [
-            { label: 'Methods', body: 'User Interviews &amp; Lightweight Surveys' },
-            { label: 'Participants', body: '5 music lovers varying in depth of discovery' },
-            { label: 'Focus', body: 'Understand users&rsquo; discovery methods, goals, &amp; frustrations' },
+            { label: 'Who',  body: '5 music lovers varying in depth of discovery' },
+            { label: 'What', body: 'Understand users&rsquo; discovery methods, goals, &amp; frustrations' },
+            { label: 'How',  body: 'User Interviews &amp; Lightweight Surveys' },
           ],
         },
       },
@@ -108,11 +108,9 @@ const sections = {
         panel: {
           title: 'THE DISCOVERY MODEL',
           body: `
-            <p>Most streaming apps start with playlists, feeds, or a search. Atlas starts with:</p>
-            <p>Playlists reduce effort by letting users choose containers instead of individual tracks, however this relies heavily on trust in the systems curating them.</p>
-            <p>Algorithmic feeds go even further by removing decisions almost entirely. This enables speed but at the cost of transparency.</p>
-            <p>When listeners don&rsquo;t understand why recommendations appear or how to adjust them, discovery starts to feel arbitrary, and they fall back on skipping or familiar music.</p>
-            <p>Atlas starts earlier in the process by asking context, reducing ambiguity before exploration even begins and shifting discovery from filtering results to setting direction.</p>
+            <p>Most streaming apps start with a playlist, a feed, or a search box. Atlas starts with a question:</p>
+            <p>Playlists lean on trust in whoever curated them. Algorithmic feeds go further and remove the decision almost entirely, trading transparency for speed. When listeners can&rsquo;t tell why a track surfaced, discovery starts to feel arbitrary and they fall back on skipping or replaying the familiar.</p>
+            <p>Atlas moves the first decision earlier. Instead of filtering results after the fact, it asks for context up front, so discovery begins by setting direction rather than reacting to a feed.</p>
           `,
           callouts: [
             { body: '&ldquo;What kind of discovery session are you in?&rdquo;' },
@@ -128,16 +126,13 @@ const sections = {
         panel: {
           title: 'RESTRUCTURING DISCOVERY',
           body: `
-            <p>Traditional discovery flows often look like this:<br>browse &rarr; browse &rarr; browse &rarr; &hellip;maybe play</p>
-            <p>This works when listeners already trust recommendations. But when they don&rsquo;t, browsing becomes hesitation disguised as exploration.</p>
-            <p>Instead, I reframed discovery as a sequence of decisions:</p>
-            <p>Most streaming interfaces treat playback as the moment evaluation begins. Atlas treats playback as the moment evaluation ends.</p>
-            <p>That shift moves discovery earlier in the interaction.</p>
-            <p>Instead of asking users to commit to a full track just to learn whether it fits, Atlas helps them compare options quickly, understand relevance sooner, and decide with less risk.</p>
-            <p>This changed what the interface needed to do and made Atlas less about navigating a catalog and more about supporting confident decisions <strong>before</strong> play.</p>
+            <p>Traditional discovery loops look like this:<br>browse &rarr; browse &rarr; browse &rarr; &hellip;maybe play.</p>
+            <p>That works when listeners already trust the recommendations. When they don&rsquo;t, browsing turns into hesitation disguised as exploration.</p>
+            <p>So I reframed discovery as a sequence of decisions instead of a place to wander. Most interfaces treat pressing play as the moment evaluation begins; Atlas treats it as the moment evaluation ends. That shift moves the work earlier: instead of committing to a full track to find out if it fits, listeners compare options, read relevance quickly, and decide with less risk.</p>
+            <p>Atlas became less about navigating a catalog and more about supporting a confident decision <strong>before</strong> play.</p>
           `,
           callouts: [
-            { body: 'Curiosity &rarr; Intent &rarr; Test &rarr; Decide &rarr; Play &rarr; Save' },
+            { body: 'Play is the reward for a good decision, not the tool you use to make one.' },
           ],
         },
       },
@@ -147,15 +142,15 @@ const sections = {
         panel: {
           title: 'INTERACTION THAT IMPROVED CONFIDENCE',
           body: `
-            <p>Once discovery became a decision flow, the interface had to help listeners evaluate options quickly.</p>
-            <p>These core features were implemented:</p>
-            <p>Together, these shift discovery from browsing to confident evaluation.</p>
+            <p>Once discovery became a decision flow, the interface had to make options easy to evaluate. Five features carry that weight:</p>
           `,
           callouts: [
-            { label: 'Intent Cards', body: 'Starts discovery with context; reducing ambiguity, preventing aimless browsing, and allowing listeners to steer recommendations from the start.' },
-            { label: 'Novelty Controls', body: 'Turning discovery into something adjustable rather than unpredictable, making exploration feel safer without making it repetitive.' },
-            { label: 'Highlight Previews', body: 'Shorten the evaluation window and helps listeners decide faster without committing to a full listen.' },
-            { label: 'Element Tags', body: 'Surface the musical character of a track at a glance.' },
+            { variant: 'info', label: 'Intent Cards',      body: 'Open a session with context, so recommendations have direction from the first tap.' },
+            { variant: 'info', label: 'Novelty Controls',  body: 'Make exploration adjustable, letting listeners dial how familiar or new a session feels.' },
+            { variant: 'info', label: 'Highlight Previews', body: 'Jump straight to a track&rsquo;s key moments, shrinking the evaluation window.' },
+            { variant: 'info', label: 'Element Tags',       body: 'Surface a track&rsquo;s musical character at a glance.' },
+            { variant: 'info', label: 'Temporary Saves',    body: 'Collect possibilities without committing to keep them.' },
+            { body: 'None of these are about finding more music. They&rsquo;re about trusting a choice sooner.' },
           ],
         },
         defaultVariant: 'intent-cards',
@@ -193,9 +188,9 @@ const sections = {
             { label: 'Preview Labels Needed Stronger Familiarity', variant: 'warning', body: 'Users expected recognizable labels for clear song navigation.' },
           ],
           meta: [
-            { label: 'Methods', body: 'Moderated remote usability tests' },
-            { label: 'Participants', body: '5 users with varying levels of streaming platform experience' },
-            { label: 'Focus', body: 'Validating clarity and confident path to first-play' },
+            { label: 'Who',  body: '5 users with varying levels of streaming platform experience' },
+            { label: 'What', body: 'Validating clarity and a confident path to first-play' },
+            { label: 'How',  body: 'Moderated remote usability tests' },
           ],
         },
         defaultVariant: 'screen-1',
@@ -263,7 +258,9 @@ const sections = {
 
       // Step 2, Designing for the moment before play
       {
-        image: '/assets/atlas-moment-before-play.webp',
+        lottie: '/assets/atlas-moment-before-play.json',
+        lottieLoop: true,
+        lottieFill: true,
         imageAlt: 'Closing reflection panel for the Atlas case study',
         panel: {
           title: 'DESIGNING FOR THE MOMENT BEFORE PLAY',
@@ -288,19 +285,18 @@ export default {
     title: 'ATLAS',
     subtitle: 'Confident music discovery, helping listeners reach a worthwhile first play, faster.',
     context: `
-      <p><em>[Placeholder]</em> A short context blurb explaining the Atlas project, what it is, who it is for, and the core problem it solves. Replace this copy in <code>src/case-studies/atlas.js</code>.</p>
-      <p><em>[Placeholder]</em> A second sentence framing scope: research, design, testing, and outcomes across the project.</p>
+      <p>Atlas is a music-discovery concept built around one question: how do you help someone reach a confident first play, faster? Listeners skip, second-guess, and lose promising tracks because they can&rsquo;t tell what&rsquo;s worth trying before they commit.</p>
+      <p>Over eight weeks I led research, design, and testing to reframe discovery from an endless browsing surface into a short sequence of confident decisions: starting with intent, evaluating faster, and capturing options without pressure.</p>
     `,
     hero: {
-      type: 'video',
-      src: '/assets/atlas-hero.webm',
-      poster: '',
+      type: 'lottie',
+      src: '/assets/atlas-hero.json',
       caption: '[ FIG_00 // FINAL_PROTOTYPE ]',
     },
     outcomes: [
-      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome, replace in atlas.js', caption: '// metric pending' },
-      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome, replace in atlas.js', caption: '// metric pending' },
-      { figure: 'TBD', unit: '',   descriptor: 'Placeholder outcome, replace in atlas.js', caption: '// metric pending' },
+      { figure: 'Faster',  unit: 'FIRST PLAY',   implication: 'Intent cards and previews shorten the path to a confident play' },
+      { figure: 'Less',    unit: 'SKIP FATIGUE', implication: 'Listeners evaluate key moments before committing to a track' },
+      { figure: 'Clearer', unit: 'SIGNALS',      implication: 'Tags and novelty controls explain why a track fits' },
     ],
   },
   phases: [

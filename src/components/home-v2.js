@@ -12,7 +12,7 @@ function renderCallouts(callouts) {
   return `
     <ul class="section-callouts">
       ${callouts.map((c) => `
-        <li class="section-callout ${c.variant === 'warning' ? 'section-callout--warning' : ''}">
+        <li class="section-callout ${c.variant ? `section-callout--${c.variant}` : ''}">
           ${c.label ? `<div class="section-callout__label">${c.label}</div>` : ''}
           <div class="section-callout__body">${c.body}</div>
         </li>
@@ -127,7 +127,7 @@ function buildStep(step, ctx = {}) {
           loop: !!step.lottieLoop,
           autoplay: false,
           path: step.lottie,
-          rendererSettings: { preserveAspectRatio: 'xMidYMid meet' },
+          rendererSettings: { preserveAspectRatio: step.lottieFill ? 'xMidYMid slice' : 'xMidYMid meet' },
         });
         anim.addEventListener('DOMLoaded', () => {
           hideSkeleton();
@@ -556,7 +556,7 @@ function buildHeader(header) {
     .map((o) => `
       <div class="cs-stat">
         <div class="cs-stat__figure">${o.figure || ''}${o.unit ? `<span class="cs-stat__unit">${o.unit}</span>` : ''}</div>
-        <div class="cs-stat__descriptor">${o.descriptor || ''}</div>
+        ${o.descriptor ? `<div class="cs-stat__descriptor">${o.descriptor}</div>` : ''}
         ${o.implication ? `<div class="cs-stat__implication">${o.implication}</div>` : ''}
       </div>
     `).join('');
