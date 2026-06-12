@@ -1,0 +1,166 @@
+.contact-root {
+  position: relative;
+  min-height: 100dvh;
+  background: #030509;
+  color: #fff;
+  overflow-x: hidden;
+}
+body.is-contact { overflow-y: auto; overflow-x: hidden; }
+
+/* Centered stage; padding clears the fixed 56px top nav bar. */
+.contact__stage {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 20px;
+}
+
+/* Slowly rotating dashed ring behind the form. SVG so the dash pattern is
+   exact; rotating the inner <circle> (not the element box) keeps the layout
+   box fixed, so the spin never spawns a scrollbar / shifts the form. */
+.contact__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(760px, 86vmin);
+  height: min(760px, 86vmin);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+.contact__ring circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 2;
+  stroke-dasharray: 16 16;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: contact-ring-spin 220s linear infinite;
+}
+@keyframes contact-ring-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact__ring circle { animation: none; }
+}
+
+/* Form card. */
+.contact__card {
+  position: relative;
+  z-index: 1;
+  width: 420px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 32px;
+  background: rgba(3, 5, 9, 0.85);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid var(--cyan);
+  box-shadow: 0 0 30px rgba(74, 226, 242, 0.1);
+}
+
+/* Form / confirmation panels share the card box; one is shown at a time. */
+.contact__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.contact__panel[hidden] { display: none; }
+
+.contact__panel--sent {
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 8px 0;
+}
+.contact__sent-msg {
+  margin: 0;
+  font-family: var(--font-sora);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+}
+.contact__again { align-self: stretch; }
+
+/* Spam honeypot — hidden from real users. */
+.contact__hp {
+  display: none !important;
+}
+
+/* Inline error line (empty unless a submit fails). */
+.contact__status {
+  min-height: 1em;
+  margin: -4px 0 0;
+  font-family: var(--font-sora);
+  font-size: 10.4px;
+  letter-spacing: 1.56px;
+  text-transform: uppercase;
+  color: #ff6b6b;
+}
+
+.contact__eyebrow {
+  margin: 0 0 6px;
+  font-family: var(--font-sora);
+  font-size: 10.4px;
+  letter-spacing: 1.56px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-align: center;
+}
+
+.contact__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact__label {
+  font-family: var(--font-sora);
+  font-size: 10.4px;
+  letter-spacing: 1.56px;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.contact__input {
+  width: 100%;
+  padding: 13px;
+  background: rgba(74, 226, 242, 0.05);
+  border: 1px solid rgba(74, 226, 242, 0.4);
+  color: #fff;
+  font-family: var(--font-sora);
+  font-size: 12.8px;
+  transition: border-color 0.15s ease;
+}
+.contact__input::placeholder { color: #757575; }
+.contact__input:focus {
+  border-color: var(--cyan);
+  outline: none;
+}
+
+.contact__textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.contact__send {
+  margin-top: 4px;
+  padding: 13px;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: var(--font-zen);
+  font-size: 11.2px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.contact__send:hover { background: rgba(74, 226, 242, 0.08); }
+.contact__send:disabled { opacity: 0.6; cursor: default; }

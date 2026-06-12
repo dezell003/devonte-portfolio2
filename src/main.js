@@ -5,6 +5,7 @@ import { createPlayground } from './components/playground.js';
 import { createCaseStudy } from './components/home-v2.js';
 import { createLanding } from './components/landing.js';
 import { createAbout } from './components/about.js';
+import { createContact } from './components/contact.js';
 import solaceData from './case-studies/solace.js';
 import atlasData from './case-studies/atlas.js';
 import paiwaresData from './case-studies/paiwares.js';
@@ -28,6 +29,7 @@ let currentWorld = null;            // 'landing' | 'about' | 'solace'
 let currentShellKey = null;          // identifies the active sidebar config
 let landingInstance = null;          // { element, destroy } from createLanding
 let aboutInstance = null;            // { element, destroy } from createAbout
+let contactInstance = null;          // { element, destroy } from createContact
 let solaceView = null;               // inner view returned by mountShell
 let activeSection = null;            // current cached section component (for /solace/:slug/:step)
 
@@ -40,6 +42,10 @@ function teardown() {
   if (aboutInstance) {
     aboutInstance.destroy();
     aboutInstance = null;
+  }
+  if (contactInstance) {
+    contactInstance.destroy();
+    contactInstance = null;
   }
   // Solace shell uses no animation/listeners we need to abort here —
   // its contents are managed via solaceView.innerHTML. Just drop refs.
@@ -83,6 +89,14 @@ function mountAbout() {
   currentWorld = 'about';
 }
 
+/* Mount the contact page. */
+function mountContact() {
+  teardown();
+  contactInstance = createContact();
+  app.appendChild(contactInstance.element);
+  currentWorld = 'contact';
+}
+
 router
   .add('/', () => router.go('#/home'))
   .add('/home', () => {
@@ -92,6 +106,10 @@ router
   .add('/about', () => {
     mountAbout();
     setTitle('About');
+  })
+  .add('/contact', () => {
+    mountContact();
+    setTitle('Contact');
   })
   // Legacy URLs redirect to the canonical Solace case-study path.
   .add('/solace', () => router.go('#/solace-v2'))

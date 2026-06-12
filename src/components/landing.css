@@ -505,7 +505,7 @@ body.is-landing {
   align-items: stretch;
   padding: 0;
   background: var(--white-02);
-  border: 1px solid var(--cyan-15);
+  border: 1px solid transparent; /* invisible until hover; reserves space */
   cursor: pointer;
   text-decoration: none;
   color: inherit;
@@ -527,9 +527,22 @@ body.is-landing {
   opacity: 0.55;
 }
 .landing__project-card--soon:hover {
-  border-color: var(--cyan-15);
+  border-color: transparent;
   background: var(--white-02);
   transform: none;
+}
+
+/* Corner brackets: hidden by default, revealed with the border on hover.
+   (Coming-soon cards stay inert — no brackets.) */
+.landing__project-card .br {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.landing__project-card:hover .br {
+  opacity: 1;
+}
+.landing__project-card--soon:hover .br {
+  opacity: 0;
 }
 
 .landing__project-thumb {

@@ -124,7 +124,7 @@ function topNav() {
       <ul class="landing__top-nav-links">
         <li><a href="#/home">Home</a></li>
         <li><a href="#/about" class="active">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#/contact">Contact</a></li>
       </ul>
       <button class="landing__nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -134,7 +134,7 @@ function topNav() {
     <nav class="landing__nav-drawer" aria-hidden="true">
       <a href="#/home">Home</a>
       <a href="#/about" class="active">About</a>
-      <a href="#contact">Contact</a>
+      <a href="#/contact">Contact</a>
     </nav>
   `;
 }
@@ -171,7 +171,7 @@ function aside() {
             </a>
           </li>
           <li class="landing__nav-item">
-            <a href="#contact" class="landing__nav-link">
+            <a href="#/contact" class="landing__nav-link">
               <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
               <span class="landing__nav-label">CONTACT</span>
             </a>
