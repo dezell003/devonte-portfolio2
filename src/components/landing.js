@@ -118,8 +118,8 @@ export function createLanding() {
 
         <div class="landing__project-list">
 
-          <!-- Atlas (coming soon) -->
-          <div class="landing__project-card landing__project-card--soon" title="Coming soon" aria-disabled="true">
+          <!-- Atlas (live) -->
+          <a class="landing__project-card" href="#/atlas">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="Atlas" src="/assets/atlas-card.webp" loading="lazy" decoding="async" />
@@ -129,11 +129,10 @@ export function createLanding() {
               <div class="landing__project-tags">
                 <span class="landing__tag">Music Discovery</span>
                 <span class="landing__tag">Mobile</span>
-                <span class="landing__tag landing__tag--soon">Soon</span>
               </div>
             </div>
             <div class="br br-br"></div>
-          </div>
+          </a>
 
           <!-- Solace (live) -->
           <a class="landing__project-card" href="#/solace-v2">
