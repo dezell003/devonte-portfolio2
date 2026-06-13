@@ -155,12 +155,13 @@ const sections = {
         },
         defaultVariant: 'intent-cards',
         variantControl: 'TabStrip',
+        lottieIndependent: true,
         variants: [
-          { id: 'intent-cards',       label: 'Intent Cards',       image: '/assets/confidence-intent-cards.webp',       imageAlt: 'Atlas Discovery Mode screen with the Intent Cards feature highlighted' },
-          { id: 'novelty-slider',     label: 'Novelty Slider',     image: '/assets/confidence-novelty-slider.webp',     imageAlt: 'Atlas Discovery Mode screen with the Familiar,Brand New novelty slider highlighted' },
-          { id: 'highlight-previews', label: 'Highlight Previews', image: '/assets/confidence-highlight-previews.webp', imageAlt: 'Atlas Discovery Mode screen with the Highlight Previews feature highlighted' },
-          { id: 'element-tags',       label: 'Element Tags',       image: '/assets/confidence-element-tags.webp',       imageAlt: 'Atlas Discovery Mode screen with the Element Tags feature highlighted' },
-          { id: 'temporary-save',     label: 'Temporary Save',     image: '/assets/confidence-temporary-save.webp',     imageAlt: 'Atlas Discovery Mode screen with the Temporary Save feature highlighted' },
+          { id: 'intent-cards',       label: 'Intent Cards',       lottie: '/assets/confidence-intent-cards.json',       imageAlt: 'Atlas Discovery Mode screen with the Intent Cards feature highlighted' },
+          { id: 'novelty-slider',     label: 'Novelty Slider',     lottie: '/assets/confidence-novelty-slider.json',     imageAlt: 'Atlas Discovery Mode screen with the Familiar,Brand New novelty slider highlighted' },
+          { id: 'highlight-previews', label: 'Highlight Previews', lottie: '/assets/confidence-highlight-previews.json', imageAlt: 'Atlas Discovery Mode screen with the Highlight Previews feature highlighted' },
+          { id: 'element-tags',       label: 'Element Tags',       lottie: '/assets/confidence-element-tags.json',       imageAlt: 'Atlas Discovery Mode screen with the Element Tags feature highlighted' },
+          { id: 'temporary-save',     label: 'Temporary Save',     lottie: '/assets/confidence-temporary-save.json',     imageAlt: 'Atlas Discovery Mode screen with the Temporary Save feature highlighted' },
         ],
       },
     ],
@@ -279,6 +280,7 @@ const sections = {
 };
 
 export default {
+  modifier: 'atlas',
   title: 'Atlas, Confident Music Discovery (scroll layout)',
   header: {
     eyebrow: 'P02 // CASE_STUDY // PRJ.AX-99',

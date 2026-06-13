@@ -995,6 +995,31 @@
   flex: 1;
 }
 
+/* Long text panels (feature/findings lists) scroll inside the step
+   instead of out-growing the viewport, with a thin cyan scrollbar
+   matching the about page. Desktop only — mobile stacks and scrolls
+   normally. Applies to every case study. */
+@media (min-width: 768px) {
+  .home-v2__step .hud-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 96px);
+  }
+  .home-v2__step .hud-panel__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(74, 226, 242, 0.3) transparent;
+  }
+  .home-v2__step .hud-panel__body::-webkit-scrollbar {
+    width: 3px;
+  }
+  .home-v2__step .hud-panel__body::-webkit-scrollbar-thumb {
+    background: rgba(74, 226, 242, 0.3);
+  }
+}
+
 
 /* ── Insight reveal button (one per step) ───────────────── */
 .insight-toggle {

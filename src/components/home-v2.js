@@ -39,6 +39,34 @@ function buildPanelBody(panelCfg) {
   return [panelCfg.body || '', renderCallouts(panelCfg.callouts), renderMeta(panelCfg.meta)].join('');
 }
 
+/* Play a Lottie once, the first time its wrap is fully inside the viewport. */
+function playLottieWhenVisible(anim, wrap) {
+  let played = false;
+  const cleanup = () => {
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+  };
+  const tryPlay = () => {
+    if (played) return;
+    if (!wrap.isConnected) { cleanup(); return; }
+    const r = wrap.getBoundingClientRect();
+    if (r.height > 0 && r.top >= 0 && r.bottom <= window.innerHeight) {
+      played = true;
+      anim.play();
+      cleanup();
+    }
+  };
+  let pending = false;
+  function onScroll() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; tryPlay(); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  tryPlay(); // in case it's already fully visible
+}
+
 /* Each image-wrap with carousel variants gets registered here so the
    shared zoom overlay can drive it (and stay in sync with its dots). */
 const variantBindings = new WeakMap();
@@ -135,31 +163,7 @@ function buildStep(step, ctx = {}) {
             anim.goToAndStop(Math.max(0, anim.totalFrames - 1), true);
             return;
           }
-          // Play once, the first time the whole wrap is inside the viewport.
-          let played = false;
-          const cleanup = () => {
-            window.removeEventListener('scroll', onScroll);
-            window.removeEventListener('resize', onScroll);
-          };
-          const tryPlay = () => {
-            if (played) return;
-            if (!imgWrap.isConnected) { cleanup(); return; }
-            const r = imgWrap.getBoundingClientRect();
-            if (r.height > 0 && r.top >= 0 && r.bottom <= window.innerHeight) {
-              played = true;
-              anim.play();
-              cleanup();
-            }
-          };
-          let pending = false;
-          const onScroll = () => {
-            if (pending) return;
-            pending = true;
-            requestAnimationFrame(() => { pending = false; tryPlay(); });
-          };
-          window.addEventListener('scroll', onScroll, { passive: true });
-          window.addEventListener('resize', onScroll, { passive: true });
-          tryPlay(); // in case it's already fully visible on load
+          playLottieWhenVisible(anim, imgWrap);
         });
       })
       .catch(hideSkeleton);
@@ -236,27 +240,38 @@ function buildStep(step, ctx = {}) {
       }
       imgWrap.style.cursor = variant.lottie ? 'default' : '';
 
-      // Looping Lottie variant — seek to the shared playhead and play.
+      // Lottie variant. Two modes:
+      //  - default: one continuous animation across tabs — loops and seeks
+      //    to the shared playhead so toggling feels seamless.
+      //  - independent (step.lottieIndependent): each tab is a distinct clip
+      //    that plays once, no loop, only when scrolled into view.
       if (variant.lottie) {
         const mount = document.createElement('div');
         mount.className = 'section-view__lottie';
         imgWrap.appendChild(mount);
         const token = ++lottieToken;
         const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        const independent = !!step.lottieIndependent;
         import('lottie-web')
           .then(({ default: lottie }) => {
             if (token !== lottieToken || !mount.isConnected) return;
             const anim = lottie.loadAnimation({
               container: mount,
               renderer: 'svg',
-              loop: true,
-              autoplay: !reduced,
+              loop: independent ? false : true,
+              autoplay: independent ? false : !reduced,
               path: variant.lottie,
               rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
             });
             variantLottie = anim;
             anim.addEventListener('DOMLoaded', () => {
               hideSkeleton();
+              if (independent) {
+                if (reduced) { anim.goToAndStop(Math.max(0, anim.totalFrames - 1), true); return; }
+                anim.goToAndStop(0, true);
+                playLottieWhenVisible(anim, imgWrap);
+                return;
+              }
               const start = lottieProgress * (anim.totalFrames || 0);
               if (reduced) anim.goToAndStop(start, true);
               else anim.goToAndPlay(start, true);
