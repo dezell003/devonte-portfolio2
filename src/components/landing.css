@@ -617,7 +617,9 @@ body.is-landing {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  /* Above the case-study chrome (sidebar 200, chapter-rail 201) so the shared
+     nav is top-most on every page; nothing on the homepage exceeds 100. */
+  z-index: 300;
   height: 56px;
   background: rgba(3, 5, 9, 0.92);
   backdrop-filter: blur(8px);
@@ -643,15 +645,26 @@ body.is-landing {
 
 .landing__top-nav-links {
   display: flex;
+  align-items: center;
   gap: 24px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* Center every item's content so the Work button and the text links share the
+   same baseline on the bar (links would otherwise sit low in their line-box). */
+.landing__top-nav-links > li {
+  display: flex;
+  align-items: center;
+}
+
 .landing__top-nav-links a {
+  display: flex;
+  align-items: center;
   font-family: var(--font-zen);
   font-size: 11px;
+  line-height: 1.5;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--white-40);
@@ -660,6 +673,112 @@ body.is-landing {
 }
 .landing__top-nav-links a.active { color: var(--baby-blue); }
 .landing__top-nav-links a:hover  { color: var(--cyan); }
+
+/* "Work" dropdown — opens on hover or keyboard focus. */
+.landing__work-dropdown { position: relative; display: flex; align-items: center; }
+
+.landing__work-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: var(--font-zen);
+  font-size: 11px;
+  line-height: 1.5; /* match the sibling <a> links so text aligns on the bar */
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--white-40);
+  transition: color 0.2s;
+}
+.landing__work-btn:hover,
+.landing__work-dropdown:focus-within .landing__work-btn { color: var(--cyan); }
+.landing__work-btn.active { color: var(--baby-blue); }
+.landing__work-panel a.active { color: var(--baby-blue); }
+
+.landing__work-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(3, 5, 9, 0.96);
+  border: 1px solid var(--cyan-15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  z-index: 1;
+}
+.landing__work-dropdown.is-open .landing__work-panel,
+.landing__work-dropdown:focus-within .landing__work-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+/* Hover-to-open only where the device actually has a hover pointer — keeps
+   touch tablets collapsed (no sticky :hover) until "Work" is tapped. */
+@media (hover: hover) and (pointer: fine) {
+  .landing__work-dropdown:hover .landing__work-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.landing__work-panel a {
+  padding: 9px 12px;
+  white-space: nowrap;
+  font-family: var(--font-zen);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--white-40);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+.landing__work-panel a:hover { color: var(--cyan); background: rgba(74, 226, 242, 0.06); }
+
+/* Drawer "Work" — collapsible <details> dropdown (mobile/tablet). */
+.landing__drawer-work-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-zen);
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--white-40);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cyan-15);
+}
+.landing__drawer-work-summary::-webkit-details-marker { display: none; }
+.landing__drawer-work-summary:hover { color: var(--baby-blue); }
+
+.landing__drawer-work-caret { transition: transform 0.2s; font-size: 14px; }
+.landing__drawer-work[open] .landing__drawer-work-caret { transform: rotate(180deg); }
+
+.landing__drawer-work-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0 4px 16px;
+}
+/* Sub-links sit slightly smaller than the top-level drawer items. */
+.landing__drawer-work-links a {
+  font-size: 15px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
 
 .landing__nav-toggle {
   display: none;
@@ -683,7 +802,9 @@ body.is-landing {
   display: none;
   position: fixed;
   inset: 56px 0 0 0;
-  z-index: 99;
+  /* Just under the top bar (300) but above all case-study chrome, so the open
+     drawer covers the sidebar/chapter-rail just like it does on the homepage. */
+  z-index: 299;
   background: rgba(3, 5, 9, 0.96);
   flex-direction: column;
   padding: 32px 24px;
@@ -791,4 +912,19 @@ body.is-landing {
 
   .landing__project-card { width: 100%; }
   .landing__project-list { overflow-y: visible; }
+}
+
+/* ══════════ SHORT ROW-LAYOUT VIEWPORTS (≥768px, short height) ══════════
+   On a short desktop/laptop window the absolutely-pinned portrait collides
+   with the bottom-aligned hero text, so hide it. Lock page scroll and let
+   only the Work list scroll (it already has overflow-y:auto; flex:1). */
+@media (min-width: 768px) and (max-height: 860px) {
+  .landing__portrait { display: none; }
+
+  body.is-landing { overflow: hidden; }
+  .landing {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .landing__main-hero { min-height: 0; }
 }

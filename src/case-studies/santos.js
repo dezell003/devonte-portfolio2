@@ -229,6 +229,6 @@ export default {
   ],
   sections,
   sidebar: { wordmark: 'Santos Podcast', meta: META, nav: NAV },
-  prev: { label: 'pAIwares', href: '#/paiwares' },
-  next: { label: 'Atlas',    href: '#/atlas'    },
+  prev: { label: 'pAIwares', href: '#/paiwares'  },
+  next: { label: 'Solace',   href: '#/solace-v2' },
 };

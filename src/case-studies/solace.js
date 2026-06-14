@@ -60,6 +60,6 @@ export default {
   ],
   sections,
   sidebar: { wordmark: 'SOLACE', meta: META, nav: NAV },
-  prev: { label: 'Atlas',    href: '#/atlas'    },
-  next: { label: 'Paiwares', href: '#/paiwares' },
+  prev: { label: 'Santos', href: '#/santos' },
+  next: { label: 'Atlas',  href: '#/atlas'  },
 };

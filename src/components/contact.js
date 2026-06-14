@@ -1,5 +1,6 @@
 import './contact.css';
 import { createBackground } from './background.js';
+import { createSiteNav } from './site-nav.js';
 
 /* Web3Forms access key — public by design (delivery is filtered server-side
    + honeypot). Tied to dezell003@gmail.com; swap to change the recipient. */
@@ -17,26 +18,12 @@ export function createContact() {
   // Faint glowing starfield + nebulas (shared site background).
   root.appendChild(createBackground());
 
+  // Shared top nav + drawer (identical across the site).
+  const nav = createSiteNav();
+  root.appendChild(nav.element);
+
   const content = document.createElement('div');
   content.innerHTML = `
-    <header class="landing__top-nav">
-      <a class="landing__top-nav-brand" href="#/home">Devonte Ezell</a>
-      <ul class="landing__top-nav-links">
-        <li><a href="#/home">Home</a></li>
-        <li><a href="#/about">About</a></li>
-        <li><a href="#/contact" class="active">Contact</a></li>
-      </ul>
-      <button class="landing__nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </header>
-
-    <nav class="landing__nav-drawer" aria-hidden="true">
-      <a href="#/home">Home</a>
-      <a href="#/about">About</a>
-      <a href="#/contact" class="active">Contact</a>
-    </nav>
-
     <div class="contact__stage">
       <svg class="contact__ring" viewBox="0 0 760 760" aria-hidden="true">
         <circle cx="380" cy="380" r="376"></circle>
@@ -83,23 +70,6 @@ export function createContact() {
   while (content.firstChild) root.appendChild(content.firstChild);
 
   document.body.classList.add('is-contact');
-
-  // ── Mobile drawer toggle ────────────────────────────────
-  const toggle = root.querySelector('.landing__nav-toggle');
-  const drawer = root.querySelector('.landing__nav-drawer');
-  const onToggle = () => {
-    const open = drawer.classList.toggle('open');
-    drawer.setAttribute('aria-hidden', String(!open));
-    toggle.setAttribute('aria-expanded', String(open));
-  };
-  toggle.addEventListener('click', onToggle);
-  drawer.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => {
-      drawer.classList.remove('open');
-      drawer.setAttribute('aria-hidden', 'true');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
 
   // ── Form → Web3Forms (real delivery) + confirmation ─────
   const form = root.querySelector('.contact__card');
@@ -163,7 +133,7 @@ export function createContact() {
   againBtn.addEventListener('click', onAgain);
 
   function destroy() {
-    toggle.removeEventListener('click', onToggle);
+    nav.destroy();
     form.removeEventListener('submit', onSubmit);
     againBtn.removeEventListener('click', onAgain);
     document.body.classList.remove('is-contact');

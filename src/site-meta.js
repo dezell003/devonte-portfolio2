@@ -12,3 +12,12 @@ export const NAV = [
   { num: '02', label: 'ABOUT',   href: '#/about' },
   { num: '03', label: 'CONTACT', href: '#/contact' },
 ];
+
+/* Canonical project order — drives the homepage cards, case-study prev/next,
+   and the "Work" nav dropdown. */
+export const PROJECTS = [
+  { label: 'Solace',             href: '#/solace-v2' },
+  { label: 'Atlas',              href: '#/atlas'     },
+  { label: 'pAIwares',           href: '#/paiwares'  },
+  { label: 'The Santos Podcast', href: '#/santos'    },
+];

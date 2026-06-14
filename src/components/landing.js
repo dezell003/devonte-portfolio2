@@ -1,4 +1,5 @@
 import './landing.css';
+import { createSiteNav } from './site-nav.js';
 // Three.js is heavy — load it asynchronously so Solace routes don't
 // include it in the initial bundle.
 
@@ -23,24 +24,6 @@ export function createLanding() {
   const root = document.createElement('div');
   root.className = 'landing-root';
   root.innerHTML = `
-    <header class="landing__top-nav">
-      <a class="landing__top-nav-brand" href="#/home">Devonte Ezell</a>
-      <ul class="landing__top-nav-links">
-        <li><a href="#/home" class="active">Home</a></li>
-        <li><a href="#/about">About</a></li>
-        <li><a href="#/contact">Contact</a></li>
-      </ul>
-      <button class="landing__nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </header>
-
-    <nav class="landing__nav-drawer" aria-hidden="true">
-      <a href="#/home" class="active">Home</a>
-      <a href="#/about">About</a>
-      <a href="#/contact">Contact</a>
-    </nav>
-
     <div class="landing">
       <div class="landing__canvas" aria-hidden="true"></div>
 
@@ -91,12 +74,12 @@ export function createLanding() {
 
         <h1 class="landing__hero-headline">
           ARCHITECTING<br />
-          <span class="white">Discovery</span> systems
+          <span class="white">Dynamic</span> systems
         </h1>
 
         <div class="landing__hero-subhead-wrap">
           <p class="landing__hero-subhead">
-            Translating complex requirements into frictionless, high-fidelity user experiences.
+            Translating complex, technical, and messy requirements into clean, frictionless, high-quality user experiences for web and mobile platforms.
           </p>
         </div>
 
@@ -118,22 +101,6 @@ export function createLanding() {
 
         <div class="landing__project-list">
 
-          <!-- Atlas (live) -->
-          <a class="landing__project-card" href="#/atlas">
-            <div class="br br-tl"></div>
-            <div class="landing__project-thumb">
-              <img alt="Atlas" src="/assets/atlas-card.webp" loading="lazy" decoding="async" />
-            </div>
-            <div class="landing__project-info">
-              <div class="landing__project-name">Atlas</div>
-              <div class="landing__project-tags">
-                <span class="landing__tag">Music Discovery</span>
-                <span class="landing__tag">Mobile</span>
-              </div>
-            </div>
-            <div class="br br-br"></div>
-          </a>
-
           <!-- Solace (live) -->
           <a class="landing__project-card" href="#/solace-v2">
             <div class="br br-tl"></div>
@@ -150,17 +117,17 @@ export function createLanding() {
             <div class="br br-br"></div>
           </a>
 
-          <!-- The Santos Podcast (live) -->
-          <a class="landing__project-card" href="#/santos">
+          <!-- Atlas (live) -->
+          <a class="landing__project-card" href="#/atlas">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
-              <img alt="The Santos Podcast" src="/assets/santos-card.webp" loading="lazy" decoding="async" />
+              <img alt="Atlas" src="/assets/atlas-card.webp" loading="lazy" decoding="async" />
             </div>
             <div class="landing__project-info">
-              <div class="landing__project-name">The Santos Podcast</div>
+              <div class="landing__project-name">Atlas</div>
               <div class="landing__project-tags">
-                <span class="landing__tag">Podcast</span>
-                <span class="landing__tag">Website</span>
+                <span class="landing__tag">Music Discovery</span>
+                <span class="landing__tag">Mobile</span>
               </div>
             </div>
             <div class="br br-br"></div>
@@ -182,28 +149,30 @@ export function createLanding() {
             <div class="br br-br"></div>
           </a>
 
+          <!-- The Santos Podcast (live) -->
+          <a class="landing__project-card" href="#/santos">
+            <div class="br br-tl"></div>
+            <div class="landing__project-thumb">
+              <img alt="The Santos Podcast" src="/assets/santos-card.webp" loading="lazy" decoding="async" />
+            </div>
+            <div class="landing__project-info">
+              <div class="landing__project-name">The Santos Podcast</div>
+              <div class="landing__project-tags">
+                <span class="landing__tag">Podcast</span>
+                <span class="landing__tag">Website</span>
+              </div>
+            </div>
+            <div class="br br-br"></div>
+          </a>
+
         </div>
       </aside>
     </div>
   `;
 
-  // ── Mobile drawer toggle ────────────────────────────────
-  const toggle = root.querySelector('.landing__nav-toggle');
-  const drawer = root.querySelector('.landing__nav-drawer');
-  const onToggle = () => {
-    const open = drawer.classList.toggle('open');
-    drawer.setAttribute('aria-hidden', String(!open));
-    toggle.setAttribute('aria-expanded', String(open));
-  };
-  toggle.addEventListener('click', onToggle);
-  // Tapping any link in the drawer closes it.
-  drawer.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => {
-      drawer.classList.remove('open');
-      drawer.setAttribute('aria-hidden', 'true');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
+  // ── Shared top nav + drawer (identical across the site) ──
+  const nav = createSiteNav();
+  root.prepend(nav.element);
 
 // ── Freeze the TRANSMITTING wave GIF to its first frame ──
   const wave = root.querySelector('.landing__pc-wave-top');
@@ -310,6 +279,7 @@ export function createLanding() {
     typewriterStopped = true;
     timers.forEach((id) => clearTimeout(id));
     timers.clear();
+    nav.destroy();
     three?.destroy();
     document.body.classList.remove('is-landing');
   }

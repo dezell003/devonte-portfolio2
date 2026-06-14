@@ -164,3 +164,22 @@ body.is-contact { overflow-y: auto; overflow-x: hidden; }
 }
 .contact__send:hover { background: rgba(74, 226, 242, 0.08); }
 .contact__send:disabled { opacity: 0.6; cursor: default; }
+
+/* ── Short viewports: scale the card down so it fits without scrolling ── */
+@media (max-height: 720px) {
+  .contact__stage { padding: 56px 20px 20px; }
+  .contact__card { padding: 22px; gap: 12px; }
+  .contact__panel { gap: 12px; }
+  .contact__textarea { min-height: 64px; }
+  .contact__eyebrow { margin-bottom: 2px; }
+}
+
+/* ── Mobile: lock to the viewport, no page scroll; the scaled card fits. ── */
+@media (max-width: 767px) {
+  body.is-contact { overflow: hidden; }
+  .contact-root { height: 100dvh; min-height: 0; }
+  .contact__stage { height: 100dvh; min-height: 0; }
+  .contact__card { padding: 22px; gap: 12px; }
+  .contact__panel { gap: 12px; }
+  .contact__textarea { min-height: 64px; }
+}

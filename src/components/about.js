@@ -1,4 +1,5 @@
 import './about.css';
+import { createSiteNav } from './site-nav.js';
 
 const TOOL_GROUPS = [
   { label: 'Interface Design', items: ['Figma', 'Framer', 'Sketch'] },
@@ -117,28 +118,6 @@ function processPipeline() {
   return panel('Process', `<div class="about-pipeline">${steps}</div>`, 'about-panel--pipeline');
 }
 
-function topNav() {
-  return `
-    <header class="landing__top-nav">
-      <a class="landing__top-nav-brand" href="#/home">Devonte Ezell</a>
-      <ul class="landing__top-nav-links">
-        <li><a href="#/home">Home</a></li>
-        <li><a href="#/about" class="active">About</a></li>
-        <li><a href="#/contact">Contact</a></li>
-      </ul>
-      <button class="landing__nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </header>
-
-    <nav class="landing__nav-drawer" aria-hidden="true">
-      <a href="#/home">Home</a>
-      <a href="#/about" class="active">About</a>
-      <a href="#/contact">Contact</a>
-    </nav>
-  `;
-}
-
 function aside() {
   return `
     <aside class="landing__aside-left about__aside">
@@ -191,7 +170,6 @@ export function createAbout() {
   const root = document.createElement('div');
   root.className = 'about-root';
   root.innerHTML = `
-    ${topNav()}
     <div class="about__canvas" aria-hidden="true"></div>
     <div class="about">
       ${aside()}
@@ -211,23 +189,9 @@ export function createAbout() {
     </div>
   `;
 
-  // ── Mobile drawer toggle (mirrors landing.js) ───────────
-  const toggle = root.querySelector('.landing__nav-toggle');
-  const drawer = root.querySelector('.landing__nav-drawer');
-  if (toggle && drawer) {
-    toggle.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
-      drawer.setAttribute('aria-hidden', String(!open));
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    drawer.querySelectorAll('a').forEach((a) => {
-      a.addEventListener('click', () => {
-        drawer.classList.remove('open');
-        drawer.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
+  // ── Shared top nav + drawer (identical across the site) ──
+  const nav = createSiteNav();
+  root.prepend(nav.element);
 
   // Lazy-load the Three.js scene so it stays out of the initial bundle.
   const canvas = root.querySelector('.about__canvas');
@@ -242,6 +206,7 @@ export function createAbout() {
 
   function destroy() {
     cancelled = true;
+    nav.destroy();
     if (three) { three.destroy(); three = null; }
   }
 
