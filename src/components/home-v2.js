@@ -159,6 +159,11 @@ function buildStep(step, ctx = {}) {
         });
         anim.addEventListener('DOMLoaded', () => {
           hideSkeleton();
+          // Keep the SVG sized to the frame on container resizes (not just
+          // window resizes) so it scales smoothly across breakpoints.
+          if ('ResizeObserver' in window) {
+            new ResizeObserver(() => { try { anim.resize(); } catch { /* not ready */ } }).observe(imgWrap);
+          }
           if (reduced) {
             anim.goToAndStop(Math.max(0, anim.totalFrames - 1), true);
             return;
@@ -261,11 +266,16 @@ function buildStep(step, ctx = {}) {
               loop: independent ? false : true,
               autoplay: independent ? false : !reduced,
               path: variant.lottie,
-              rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
+              rendererSettings: { preserveAspectRatio: step.lottieFill ? 'xMidYMid slice' : 'xMidYMid meet' },
             });
             variantLottie = anim;
             anim.addEventListener('DOMLoaded', () => {
               hideSkeleton();
+              // Keep the SVG sized to the frame even when the frame changes
+              // without a window resize (panel cap, breakpoint, layout settle).
+              if (variantRO) variantRO.disconnect();
+              variantRO = new ResizeObserver(() => { try { anim.resize(); } catch { /* not ready */ } });
+              variantRO.observe(imgWrap);
               if (independent) {
                 if (reduced) { anim.goToAndStop(Math.max(0, anim.totalFrames - 1), true); return; }
                 anim.goToAndStop(0, true);

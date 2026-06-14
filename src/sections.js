@@ -159,6 +159,7 @@ export const sections = {
         },
         defaultVariant: 'wireframes',
         variantControl: 'TogglePills',
+        lottieFill: true,
         variants: [
           {
             id: 'wireframes',
