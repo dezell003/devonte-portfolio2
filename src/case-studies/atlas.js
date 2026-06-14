@@ -309,6 +309,6 @@ export default {
   ],
   sections,
   sidebar: { wordmark: 'ATLAS', meta: META, nav: NAV },
-  prev: { label: 'Solace',   href: '#/solace-v2' },
-  next: { label: 'Paiwares', href: '#/paiwares'  },
+  prev: { label: 'Solace',   href: '/solace-v2' },
+  next: { label: 'Paiwares', href: '/paiwares'  },
 };

@@ -85,7 +85,7 @@ export function createLanding() {
 
         <div class="landing__cta-wrap">
           <div class="br br-tl"></div>
-          <a class="landing__cta-btn" href="#/solace-v2">
+          <a class="landing__cta-btn" href="/solace-v2">
             Explore Work
             <img src="${ARROW_SVG_DATA_URI}" alt="" />
           </a>
@@ -102,7 +102,7 @@ export function createLanding() {
         <div class="landing__project-list">
 
           <!-- Solace (live) -->
-          <a class="landing__project-card" href="#/solace-v2">
+          <a class="landing__project-card" href="/solace-v2">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="Solace" src="/assets/solace-card.webp" loading="lazy" decoding="async" />
@@ -118,7 +118,7 @@ export function createLanding() {
           </a>
 
           <!-- Atlas (live) -->
-          <a class="landing__project-card" href="#/atlas">
+          <a class="landing__project-card" href="/atlas">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="Atlas" src="/assets/atlas-card.webp" loading="lazy" decoding="async" />
@@ -134,7 +134,7 @@ export function createLanding() {
           </a>
 
           <!-- Paiwares (live) -->
-          <a class="landing__project-card" href="#/paiwares">
+          <a class="landing__project-card" href="/paiwares">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="pAIwares" src="/assets/paiwares-card.webp" loading="lazy" decoding="async" />
@@ -150,7 +150,7 @@ export function createLanding() {
           </a>
 
           <!-- The Santos Podcast (live) -->
-          <a class="landing__project-card" href="#/santos">
+          <a class="landing__project-card" href="/santos">
             <div class="br br-tl"></div>
             <div class="landing__project-thumb">
               <img alt="The Santos Podcast" src="/assets/santos-card.webp" loading="lazy" decoding="async" />

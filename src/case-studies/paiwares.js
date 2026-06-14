@@ -378,6 +378,6 @@ export default {
   ],
   sections,
   sidebar: { wordmark: 'PAIWARES', meta: META, nav: NAV },
-  prev: { label: 'Atlas',  href: '#/atlas'  },
-  next: { label: 'Santos', href: '#/santos' },
+  prev: { label: 'Atlas',  href: '/atlas'  },
+  next: { label: 'Santos', href: '/santos' },
 };

@@ -121,7 +121,7 @@ function processPipeline() {
 function aside() {
   return `
     <aside class="landing__aside-left about__aside">
-      <a href="#/home" class="landing__role-label about__home-link">DEVONTE EZELL</a>
+      <a href="/home" class="landing__role-label about__home-link">DEVONTE EZELL</a>
 
       <div class="landing__attr-list">
         <div class="landing__attr-row">
@@ -138,19 +138,19 @@ function aside() {
       <nav class="landing__nav">
         <ul class="landing__nav-list">
           <li class="landing__nav-item">
-            <a href="#/home" class="landing__nav-link">
+            <a href="/home" class="landing__nav-link">
               <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
               <span class="landing__nav-label">HOME</span>
             </a>
           </li>
           <li class="landing__nav-item">
-            <a href="#/about" class="landing__nav-link">
+            <a href="/about" class="landing__nav-link">
               <span class="landing__nav-bracket">[ ]</span>
               <span class="landing__nav-label landing__nav-label--active">ABOUT</span>
             </a>
           </li>
           <li class="landing__nav-item">
-            <a href="#/contact" class="landing__nav-link">
+            <a href="/contact" class="landing__nav-link">
               <span class="landing__nav-bracket" style="opacity:0">[ ]</span>
               <span class="landing__nav-label">CONTACT</span>
             </a>

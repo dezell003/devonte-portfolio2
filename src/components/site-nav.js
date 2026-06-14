@@ -23,7 +23,7 @@ export function createSiteNav() {
 
   wrap.innerHTML = `
     <header class="landing__top-nav">
-      <a class="landing__top-nav-brand" href="#/home">Devonte Ezell</a>
+      <a class="landing__top-nav-brand" href="/home">Devonte Ezell</a>
       <ul class="landing__top-nav-links">
         <li class="landing__work-dropdown">
           <button type="button" class="landing__work-btn" aria-haspopup="true" aria-expanded="false">Work <span aria-hidden="true">▾</span></button>
@@ -31,8 +31,8 @@ export function createSiteNav() {
             ${panelLinks}
           </div>
         </li>
-        <li><a href="#/about" data-href="#/about">About</a></li>
-        <li><a href="#/contact" data-href="#/contact">Contact</a></li>
+        <li><a href="/about" data-href="/about">About</a></li>
+        <li><a href="/contact" data-href="/contact">Contact</a></li>
       </ul>
       <button class="landing__nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -46,8 +46,8 @@ export function createSiteNav() {
           ${panelLinks}
         </div>
       </details>
-      <a href="#/about" data-href="#/about">About</a>
-      <a href="#/contact" data-href="#/contact">Contact</a>
+      <a href="/about" data-href="/about">About</a>
+      <a href="/contact" data-href="/contact">Contact</a>
     </nav>
   `;
 
@@ -71,10 +71,10 @@ export function createSiteNav() {
   // ── Work dropdown (tap/click to toggle) ─────────────────
   const teardownWork = wireWorkDropdown(wrap);
 
-  // ── Active state (derived from the current hash) ────────
+  // ── Active state (derived from the current path) ────────
   const projectHrefs = PROJECTS.map((p) => p.href);
   const refreshActive = () => {
-    const cur = window.location.hash || '#/';
+    const cur = window.location.pathname || '/';
     wrap.querySelectorAll('[data-href]').forEach((a) => {
       a.classList.toggle('active', a.dataset.href === cur);
     });
@@ -85,12 +85,12 @@ export function createSiteNav() {
       .forEach((a) => a.classList.toggle('active', a.getAttribute('href') === cur));
   };
   refreshActive();
-  window.addEventListener('hashchange', refreshActive);
+  window.addEventListener('routechange', refreshActive);
 
   function destroy() {
     toggle.removeEventListener('click', onToggle);
     teardownWork();
-    window.removeEventListener('hashchange', refreshActive);
+    window.removeEventListener('routechange', refreshActive);
   }
 
   return { element: wrap, destroy };

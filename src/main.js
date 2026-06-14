@@ -1,5 +1,6 @@
 import './style.css';
 import { router } from './router.js';
+import { applyMeta } from './seo.js';
 import { mountShell } from './components/shell.js';
 import { createPlayground } from './components/playground.js';
 import { createCaseStudy } from './components/home-v2.js';
@@ -98,49 +99,53 @@ function mountContact() {
 }
 
 router
-  .add('/', () => router.go('#/home'))
+  // Home is reachable at both "/" (canonical) and "/home".
+  .add('/', () => {
+    mountLanding();
+    applyMeta('home');
+  })
   .add('/home', () => {
     mountLanding();
-    setTitle();
+    applyMeta('home');
   })
   .add('/about', () => {
     mountAbout();
-    setTitle('About');
+    applyMeta('about');
   })
   .add('/contact', () => {
     mountContact();
-    setTitle('Contact');
+    applyMeta('contact');
   })
   // Legacy URLs redirect to the canonical Solace case-study path.
-  .add('/solace', () => router.go('#/solace-v2'))
-  .add('/solace/:slug/:step', () => router.go('#/solace-v2'))
+  .add('/solace', () => router.go('/solace-v2'))
+  .add('/solace/:slug/:step', () => router.go('/solace-v2'))
   .add('/solace-v2', () => {
     const view = ensureCaseStudyShell(solaceData.sidebar);
     view.innerHTML = '';
     activeSection = null;
     view.appendChild(createCaseStudy(solaceData));
-    setTitle('Solace');
+    applyMeta('solace-v2');
   })
   .add('/atlas', () => {
     const view = ensureCaseStudyShell(atlasData.sidebar);
     view.innerHTML = '';
     activeSection = null;
     view.appendChild(createCaseStudy(atlasData));
-    setTitle('Atlas');
+    applyMeta('atlas');
   })
   .add('/paiwares', () => {
     const view = ensureCaseStudyShell(paiwaresData.sidebar);
     view.innerHTML = '';
     activeSection = null;
     view.appendChild(createCaseStudy(paiwaresData));
-    setTitle('pAIwares');
+    applyMeta('paiwares');
   })
   .add('/santos', () => {
     const view = ensureCaseStudyShell(santosData.sidebar);
     view.innerHTML = '';
     activeSection = null;
     view.appendChild(createCaseStudy(santosData));
-    setTitle('Santos Podcast');
+    applyMeta('santos');
   })
   .add('/dev', () => {
     const view = ensureCaseStudyShell(solaceData.sidebar);
@@ -150,8 +155,8 @@ router
     setTitle('Component playground');
   })
   .add('*', () => {
-    // Any other unmatched hash → land on the home page.
-    router.go('#/home');
+    // Any other unmatched path → land on the home page.
+    router.go('/home');
   })
   .start();
 
@@ -162,9 +167,9 @@ document.addEventListener('keydown', (e) => {
   const tag = document.activeElement?.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
-  const hash = window.location.hash || '#/home';
+  const path = window.location.pathname || '/';
 
-  if (hash === '#/about') {
-    router.go('#/home');
+  if (path === '/about') {
+    router.go('/home');
   }
 });

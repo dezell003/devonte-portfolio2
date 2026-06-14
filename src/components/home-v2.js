@@ -906,17 +906,19 @@ export function createCaseStudy(data) {
   // re-evaluate a few times until everything settles.
   [50, 250, 800, 1800].forEach((d) => setTimeout(updateSpy, d));
 
-  // Tear down listeners when this view leaves the DOM.
+  // Tear down listeners when this view leaves the DOM. Fires on every client
+  // navigation via the router's custom `routechange` event (the app uses the
+  // History API now, so there is no `hashchange`).
   const teardown = () => {
     if (!root.isConnected) {
       window.removeEventListener('scroll', onScroll);
       document.removeEventListener('scroll', onScroll, { capture: true });
       window.removeEventListener('resize', onScroll);
-      window.removeEventListener('hashchange', teardown);
+      window.removeEventListener('routechange', teardown);
       rail.remove(); // rail lives on <body> — drop it when the route changes
     }
   };
-  window.addEventListener('hashchange', teardown);
+  window.addEventListener('routechange', teardown);
 
   return root;
 }
