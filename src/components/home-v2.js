@@ -636,7 +636,12 @@ function buildHeader(header) {
             loop: false,
             autoplay: false,
             path: header.hero.src,
-            rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
+            rendererSettings: {
+              // 'contain' (meet) fits the whole animation inside the frame
+              // without cropping; default 'cover' (slice) fills the frame.
+              preserveAspectRatio:
+                header.hero.fit === 'contain' ? 'xMidYMid meet' : 'xMidYMid slice',
+            },
           });
           anim.addEventListener('DOMLoaded', () => {
             // The exported scene carries a near-white full-canvas backdrop.

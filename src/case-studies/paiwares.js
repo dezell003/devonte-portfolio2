@@ -363,6 +363,7 @@ export default {
       type: 'lottie',
       src: '/assets/paiwares-design2.json',
       keepBackground: true,
+      fit: 'contain',
     },
     outcomes: [
       { figure: '05', unit: 'STAGES', descriptor: 'Step-based onboarding flow', implication: 'Smaller decision points reduce cognitive load' },
