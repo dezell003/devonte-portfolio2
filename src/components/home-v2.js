@@ -88,6 +88,7 @@ function buildImageCarousel(imgWrap, slides, { activeIndex = 0, onIndexChange, o
     img.alt = s.imageAlt || '';
     img.decoding = 'async';
     img.loading = i === 0 ? 'eager' : 'lazy';
+    img.draggable = false; // native image-drag would fight the swipe gesture
     if (i === 0 && onLoad) {
       if (img.complete && img.naturalWidth > 0) onLoad();
       else { img.addEventListener('load', onLoad, { once: true }); img.addEventListener('error', onLoad, { once: true }); }
