@@ -995,6 +995,49 @@
   flex: 1;
 }
 
+/* ── Swipeable image carousel ──────────────────────────────
+   The wrap becomes a horizontal scroll-snap container; a flex track holds
+   one full-width slide per screen. Touch swipe is native; mouse drag is
+   added in JS. Vertical page scroll is preserved via touch-action: pan-x. */
+.section-view__image-wrap.is-carousel { overflow: hidden; cursor: grab; }
+.section-view__image-wrap.is-carousel:active { cursor: grabbing; }
+
+/* Transform-based slider: a flex row of full-width slides translated by
+   whole-slide steps. touch-action: pan-y keeps vertical page scroll working;
+   horizontal drags are handled in JS. */
+.section-view__image-wrap.is-carousel .section-view__carousel-track {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  transform: translateX(0);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  touch-action: pan-y;
+}
+.section-view__image-wrap.is-carousel .section-view__carousel-track.is-dragging {
+  transition: none;
+}
+
+.section-view__carousel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Slide images fill their slide (not absolutely stacked like single images). */
+.section-view__image-wrap.is-carousel .section-view__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-view__image-wrap.is-carousel .section-view__carousel-track { transition: none; }
+}
+
 /* Long text panels (feature/findings lists) scroll inside the step
    instead of out-growing the viewport, with a thin cyan scrollbar
    matching the about page. Desktop only — mobile stacks and scrolls

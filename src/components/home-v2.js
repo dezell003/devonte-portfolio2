@@ -71,6 +71,93 @@ function playLottieWhenVisible(anim, wrap) {
    shared zoom overlay can drive it (and stay in sync with its dots). */
 const variantBindings = new WeakMap();
 
+/* Build a swipeable, scroll-snap carousel of image slides inside an
+   image-wrap. Touch swipe is native (overflow-x); pointer-drag is layered on
+   for mouse users. The active index also updates as the user scrolls/swipes
+   (via onIndexChange). Returns { getIndex, setIndex }. */
+function buildImageCarousel(imgWrap, slides, { activeIndex = 0, onIndexChange, onLoad } = {}) {
+  imgWrap.classList.add('is-carousel');
+  const track = document.createElement('div');
+  track.className = 'section-view__carousel-track';
+  slides.forEach((s, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'section-view__carousel-slide';
+    const img = document.createElement('img');
+    img.className = 'section-view__image';
+    img.src = s.image || '';
+    img.alt = s.imageAlt || '';
+    img.decoding = 'async';
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    if (i === 0 && onLoad) {
+      if (img.complete && img.naturalWidth > 0) onLoad();
+      else { img.addEventListener('load', onLoad, { once: true }); img.addEventListener('error', onLoad, { once: true }); }
+    }
+    slide.appendChild(img);
+    track.appendChild(slide);
+  });
+  imgWrap.appendChild(track);
+
+  // Transform-based slider: translate the track by whole-slide steps. This is
+  // independent of native scroll (which misbehaved inside the grid/flex step
+  // layout) and gives a reliable swipe/drag feel on touch and mouse.
+  const last = slides.length - 1;
+  let current = Math.max(0, Math.min(last, activeIndex));
+  const widthPx = () => track.clientWidth || imgWrap.clientWidth || 1;
+
+  const place = (animate) => {
+    track.classList.toggle('is-dragging', !animate);
+    track.style.transform = `translateX(${-current * widthPx()}px)`;
+  };
+  const goTo = (i, animate = true) => {
+    const next = Math.max(0, Math.min(last, i));
+    const changed = next !== current;
+    current = next;
+    place(animate);
+    if (changed) onIndexChange?.(current);
+  };
+  requestAnimationFrame(() => place(false));
+
+  // Pointer drag (covers touch + mouse). touch-action: pan-y lets vertical
+  // gestures scroll the page; we only claim clearly-horizontal drags.
+  let down = false, decided = false, horiz = false, startX = 0, startY = 0, base = 0, dx = 0;
+  track.addEventListener('pointerdown', (e) => {
+    down = true; decided = false; horiz = false; dx = 0;
+    startX = e.clientX; startY = e.clientY; base = -current * widthPx();
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (!down) return;
+    const ddx = e.clientX - startX, ddy = e.clientY - startY;
+    if (!decided && (Math.abs(ddx) > 8 || Math.abs(ddy) > 8)) {
+      decided = true;
+      horiz = Math.abs(ddx) > Math.abs(ddy);
+      if (horiz) { try { track.setPointerCapture(e.pointerId); } catch { /* ignore */ } }
+    }
+    if (decided && horiz) {
+      dx = ddx;
+      track.classList.add('is-dragging');
+      track.style.transform = `translateX(${base + dx}px)`;
+    }
+  });
+  const endDrag = (e) => {
+    if (!down) return;
+    down = false;
+    if (horiz) { try { track.releasePointerCapture(e.pointerId); } catch { /* ignore */ } }
+    if (!horiz) return;
+    const threshold = widthPx() * 0.18;
+    if (dx <= -threshold) goTo(current + 1);
+    else if (dx >= threshold) goTo(current - 1);
+    else goTo(current); // snap back
+  };
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(() => place(false)).observe(imgWrap);
+  }
+
+  return { getIndex: () => current, setIndex: (i) => goTo(i, true) };
+}
+
 function buildStep(step, ctx = {}) {
   let activeSrc = step.image;
   let activeAlt = step.imageAlt;
@@ -208,6 +295,32 @@ function buildStep(step, ctx = {}) {
     const variants = step.variants;
     let currentIndex = variants.findIndex((v) => v.id === activeVariantId);
     if (currentIndex < 0) currentIndex = 0;
+
+    // Image-only carousels (every variant is a plain image) render a swipeable
+    // scroll-snap track; everything else keeps the swap-on-change path below.
+    const imageOnly = variants.every((v) => v.image && !v.lottie && !v.iframe && !v.figmaEmbed);
+    if (imageOnly && step.variantControl === 'CarouselDots') {
+      imgWrap.querySelector('.section-view__image')?.remove();
+      let reflect = null;
+      const carousel = buildImageCarousel(imgWrap, variants, {
+        activeIndex: currentIndex,
+        onLoad: hideSkeleton,
+        onIndexChange: (i) => { currentIndex = i; reflect?.(i); },
+      });
+      const dots = createCarouselDots({
+        count: variants.length,
+        activeIndex: currentIndex,
+        labels: variants.map((v) => v.label),
+        onChange: (i) => { currentIndex = i; carousel.setIndex(i); },
+      });
+      // Sync the dots when the active slide changes from a swipe/scroll.
+      reflect = (i) => {
+        const target = dots.querySelectorAll('[data-index]')[i];
+        if (target && !target.classList.contains('is-active')) target.click();
+      };
+      el.querySelector('.section-view__image-col').appendChild(dots);
+      variantBindings.set(imgWrap, { variants, getIndex: () => currentIndex, setIndex: carousel.setIndex });
+    } else {
 
     let externalUpdate = null; // set by carousel/tabs/pills to reflect index changes
 
@@ -386,6 +499,53 @@ function buildStep(step, ctx = {}) {
       getIndex: () => currentIndex,
       setIndex,
     });
+    }
+  }
+
+  // Nested "toggle + carousel": a fidelity toggle (e.g. Wireframes/Prototype)
+  // over a swipeable carousel of that group's screens.
+  if (step.groups?.length) {
+    imgWrap.querySelector('.section-view__image')?.remove();
+    const groups = step.groups;
+    const col = el.querySelector('.section-view__image-col');
+    let gi = groups.findIndex((g) => g.id === (step.defaultGroup || groups[0].id));
+    if (gi < 0) gi = 0;
+    let dots = null;
+
+    const renderGroup = () => {
+      imgWrap.querySelector('.section-view__carousel-track')?.remove();
+      imgWrap.classList.remove('is-carousel');
+      dots?.remove();
+      const screens = groups[gi].screens || [];
+      let reflect = null;
+      const carousel = buildImageCarousel(imgWrap, screens, {
+        activeIndex: 0,
+        onLoad: hideSkeleton,
+        onIndexChange: (i) => reflect?.(i),
+      });
+      dots = createCarouselDots({
+        count: screens.length,
+        activeIndex: 0,
+        labels: screens.map((s, i) => s.label || `Screen ${i + 1}`),
+        onChange: (i) => carousel.setIndex(i),
+      });
+      reflect = (i) => {
+        const target = dots.querySelectorAll('[data-index]')[i];
+        if (target && !target.classList.contains('is-active')) target.click();
+      };
+      col.appendChild(dots);
+    };
+
+    const toggle = createTogglePills({
+      variants: groups,
+      activeId: groups[gi].id,
+      onChange: (g) => {
+        const i = groups.indexOf(g);
+        if (i >= 0 && i !== gi) { gi = i; renderGroup(); }
+      },
+    });
+    col.appendChild(toggle);
+    renderGroup();
   }
 
   const panel = createHUDPanel({

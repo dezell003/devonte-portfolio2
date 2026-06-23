@@ -26,7 +26,6 @@ export const sections = {
     label: 'P01_01 // RESEARCH',
     phaseTitle: 'EXPLORING MENTAL HEALTH',
     summary: 'User interviews on how people choose coping techniques under stress, and why most apps overwhelm them.',
-    tradeoff: 'Chose to move the entry point from technique-first to emotion-first, deferring catalog browsing until the guided flow earns trust.',
     steps: [
       // Step 1, Too many options
       {
@@ -101,7 +100,6 @@ export const sections = {
     label: 'P01_02 // DESIGN',
     phaseTitle: 'CRAFTING THE SOLUTION',
     summary: 'Designing an emotion-first flow that reduces decision overhead in the moment of need.',
-    tradeoff: 'Chose one guided check-in → recommend → guide flow over power-user branching, deferring custom playlists and filters to a later version.',
     steps: [
       // Step 1, Tension between guidance and control
       {
@@ -143,7 +141,7 @@ export const sections = {
         },
       },
 
-      // Step 3, From concept to interaction (variants: wireframes ↔ prototype)
+      // Step 3, From concept to interaction (toggle fidelity + swipe carousel)
       {
         panel: {
           title: 'FROM CONCEPT TO INTERACTION',
@@ -157,25 +155,31 @@ export const sections = {
             { body: 'Prioritize clarity over complexity.' },
           ],
         },
-        defaultVariant: 'wireframes',
-        variantControl: 'TogglePills',
-        lottieFill: true,
-        variants: [
+        defaultGroup: 'wireframes',
+        groups: [
           {
             id: 'wireframes',
             label: 'Wireframes',
-            image: '/assets/from-concept-to-interaction1.webp',
-            lottie: '/assets/wireframes.json',
-            imageAlt:
-              'Five low-fidelity wireframe screens showing the check-in flow from welcome through technique completion',
+            screens: [
+              { label: 'Home',               image: '/assets/fcti-wireframes-1.webp', imageAlt: 'Low-fidelity wireframe: check-in home screen' },
+              { label: 'Emotional Check-in',  image: '/assets/fcti-wireframes-2.webp', imageAlt: 'Low-fidelity wireframe: emotional check-in' },
+              { label: 'Mood Slider',         image: '/assets/fcti-wireframes-3.webp', imageAlt: 'Low-fidelity wireframe: mood slider' },
+              { label: 'Check-in Complete',   image: '/assets/fcti-wireframes-4.webp', imageAlt: 'Low-fidelity wireframe: check-in complete, curating menu' },
+              { label: 'Relief Menu',         image: '/assets/fcti-wireframes-5.webp', imageAlt: 'Low-fidelity wireframe: relief technique menu' },
+              { label: 'Body Scan',           image: '/assets/fcti-wireframes-6.webp', imageAlt: 'Low-fidelity wireframe: body scan technique' },
+            ],
           },
           {
             id: 'prototype',
             label: 'Prototype',
-            image: '/assets/from-concept-to-interaction2.webp',
-            lottie: '/assets/prototype.json',
-            imageAlt:
-              'The same five screens rendered as a high-fidelity prototype with the Solace visual design',
+            screens: [
+              { label: 'Home',               image: '/assets/fcti-prototype-1.webp', imageAlt: 'High-fidelity prototype: check-in home screen' },
+              { label: 'Emotional Check-in',  image: '/assets/fcti-prototype-2.webp', imageAlt: 'High-fidelity prototype: emotional check-in' },
+              { label: 'Mood Slider',         image: '/assets/fcti-prototype-3.webp', imageAlt: 'High-fidelity prototype: mood slider' },
+              { label: 'Check-in Complete',   image: '/assets/fcti-prototype-4.webp', imageAlt: 'High-fidelity prototype: check-in complete, curating menu' },
+              { label: 'Relief Menu',         image: '/assets/fcti-prototype-5.webp', imageAlt: 'High-fidelity prototype: relief technique menu' },
+              { label: 'Body Scan',           image: '/assets/fcti-prototype-6.webp', imageAlt: 'High-fidelity prototype: body scan technique' },
+            ],
           },
         ],
       },
@@ -189,7 +193,6 @@ export const sections = {
     label: 'P01_03 // TESTING',
     phaseTitle: 'FEEDBACK & REVISION',
     summary: 'Five usability tests surfaced four targeted improvements, each tightening clarity without adding complexity.',
-    tradeoff: 'Chose moderated qualitative testing with five users for directional signal over an underpowered A/B test.',
     steps: [
       // Step 1, Reality check (variants: 3 screens via CarouselDots)
       {
@@ -291,7 +294,6 @@ export const sections = {
     label: 'P01_04 // NEXT STEPS',
     phaseTitle: 'MOVING FORWARD',
     summary: 'Outcomes, lessons, and what the next iteration of Solace would look like.',
-    tradeoff: 'Chose to deepen the emotion-first signal and personalization over social features that would dilute the calm, supportive tone.',
     steps: [
       // Step 1, A calmer path to support
       {
@@ -313,13 +315,8 @@ export const sections = {
         },
       },
 
-      // Step 2, Designing for human moments
+      // Step 2, Designing for human moments (swipeable carousel of screens)
       {
-        image: '/assets/designing-for-human-moments.webp',
-        lottie: '/assets/designing-for-human-moments.json',
-        lottieLoop: true,
-        imageAlt:
-          'Three Solace mobile screens shown in 3D perspective: Mood Check, Emotional Symptoms, and Physical Symptoms',
         panel: {
           title: 'DESIGNING FOR HUMAN MOMENTS',
           body: `
@@ -330,6 +327,19 @@ export const sections = {
             <p>Sometimes it&rsquo;s about recognizing when to take some of that weight off their shoulders.</p>
           `,
         },
+        variantControl: 'CarouselDots',
+        variants: [
+          { id: 'hm-1',  label: 'Welcome',            image: '/assets/human-moments-1.webp',  imageAlt: 'Solace welcome and check-in home screen' },
+          { id: 'hm-2',  label: 'Mood Check',         image: '/assets/human-moments-2.webp',  imageAlt: 'Mood Check, step 1 of 4, with an emotion slider' },
+          { id: 'hm-3',  label: 'Physical Symptoms',  image: '/assets/human-moments-3.webp',  imageAlt: 'Physical Symptoms check-in, step 3 of 4' },
+          { id: 'hm-4',  label: 'Mental Symptoms',    image: '/assets/human-moments-4.webp',  imageAlt: 'Mental Symptoms check-in, step 4 of 4' },
+          { id: 'hm-5',  label: 'Check-in Complete',  image: '/assets/human-moments-5.webp',  imageAlt: 'Check-in complete screen curating a personal relief technique menu' },
+          { id: 'hm-6',  label: 'Relief Menu',        image: '/assets/human-moments-6.webp',  imageAlt: 'Relief Technique Menu with Movement, Breathing, and Mindfulness options' },
+          { id: 'hm-7',  label: 'Movement',           image: '/assets/human-moments-7.webp',  imageAlt: 'Movement Techniques screen' },
+          { id: 'hm-8',  label: 'Body Scan',          image: '/assets/human-moments-8.webp',  imageAlt: 'Body Scan technique screen' },
+          { id: 'hm-9',  label: 'Mindfulness',        image: '/assets/human-moments-9.webp',  imageAlt: 'Mindfulness and Meditations screen' },
+          { id: 'hm-10', label: 'Technique Complete', image: '/assets/human-moments-10.webp', imageAlt: 'Technique Complete screen with a rating prompt' },
+        ],
       },
     ],
   },
