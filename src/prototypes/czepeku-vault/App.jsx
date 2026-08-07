@@ -120,7 +120,9 @@ function MapCanvas({ variant, gridOn, onMove, onLeave }) {
           style={{ backgroundImage: `url(${variant.image})` }}
           initial={{ opacity: 0, scale: 1.06, filter: 'blur(12px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, scale: 1.02, filter: 'blur(6px)' }}
+          // The outgoing layer holds full opacity underneath while the new one
+          // dissolves over it — fading both at once dips the canvas to black.
+          exit={{ opacity: 1, scale: 1.02 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         />
       </AnimatePresence>
@@ -259,7 +261,7 @@ function PanelHeader({ active }) {
             {tag}
           </span>
         ))}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.span
             key={active.id}
             initial={{ opacity: 0, y: 4 }}
@@ -357,7 +359,7 @@ function AudioSection({
       <div className="flex items-center gap-3">
         <Waveform playing={isPlaying} volume={volume} />
         <div className="min-w-0 flex-1">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             <motion.p
               key={active.track}
               initial={{ opacity: 0, y: 6 }}
