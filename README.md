@@ -86,6 +86,22 @@ control type:
 The active variant is reflected in the URL as `?v=<id>` so deep links
 work.
 
+## Prototypes
+
+Standalone, self-contained prototypes live under `src/prototypes/` with
+their own HTML entry at the repo root (registered in
+[`vite.config.js`](vite.config.js) as extra Rollup inputs). They are
+built alongside the site but share none of its runtime.
+
+| Route | Source | Stack |
+| --- | --- | --- |
+| `/czepeku-vault` | `src/prototypes/czepeku-vault/` | React, Tailwind v4, Framer Motion, Lucide |
+
+**Czepeku Vault Companion** — a battlemap console for tabletop game
+masters: variant switching (Day / Night / Rain) with a crossfading
+canvas, ambience sync that follows the active variant, and a CSS grid
+overlay derived from the map's 22 × 30 grid with live cell coordinates.
+
 ## Deploy
 
 Configured for Vercel via [`vercel.json`](vercel.json), which rewrites
