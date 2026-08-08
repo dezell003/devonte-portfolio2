@@ -25,6 +25,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         'czepeku-vault': resolve(__dirname, 'czepeku-vault.html'),
+        'czepeku-vault-alt': resolve(__dirname, 'czepeku-vault-alt.html'),
       },
     },
   },
