@@ -1,0 +1,14 @@
+/* Bare Tailwind — no theme overrides, so VaultCompanion.jsx renders exactly
+   as written against stock Tailwind defaults. */
+@import 'tailwindcss';
+
+html,
+body,
+#vault-alt-root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #09090b;
+}

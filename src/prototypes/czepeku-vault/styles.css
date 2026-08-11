@@ -1,0 +1,159 @@
+@import 'tailwindcss';
+
+/**
+ * Palette and type taken from the Czepeku Fantasy site: a deep desaturated
+ * navy ground with a blurred battlemap behind it, amber as the single accent
+ * (nav active state, primary button), white high-contrast serif for display,
+ * rounded portrait cards with centred labels beneath.
+ */
+@theme {
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-ui: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+  --color-navy-980: #060a12;
+  --color-navy-950: #0b1220;
+  --color-navy-900: #101a2b;
+  --color-navy-800: #17233a;
+  --color-navy-700: #24314a;
+  --color-slate-200: #c9d1dc;
+  --color-slate-400: #8a94a6;
+  --color-slate-600: #5b6678;
+  --color-amber-300: #f6d06b;
+  --color-amber-400: #f0c040;
+  --color-amber-500: #d9a72c;
+}
+
+@layer base {
+  html,
+  body,
+  #vault-root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-navy-950);
+    color: #fff;
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-amber-400) 45%, transparent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber-400);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Panel surface — flat navy with a hairline, matching the site's cards and
+     search field rather than heavy glass. */
+  .panel {
+    background: rgb(16 26 43 / 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.8);
+  }
+
+  .rule {
+    height: 1px;
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  /* Wide-tracked caps, as used across the site's wordmark and labels. */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-slate-400);
+  }
+}
+
+/* Grid overlay, sized to the map's own cells — not the viewport. */
+.vault-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.32) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.32) 1px, transparent 1px);
+  background-size: calc(100% / var(--cols)) calc(100% / var(--rows));
+  mix-blend-mode: overlay;
+}
+
+/* Volume slider. Vendor track selectors stay in separate rules — one unknown
+   pseudo-element invalidates the whole selector list. */
+.vault-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.vault-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-amber-400) 0%,
+    var(--color-amber-400) var(--fill),
+    rgb(255 255 255 / 0.14) var(--fill),
+    rgb(255 255 255 / 0.14) 100%
+  );
+}
+
+.vault-range::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-amber-400) 0%,
+    var(--color-amber-400) var(--fill),
+    rgb(255 255 255 / 0.14) var(--fill),
+    rgb(255 255 255 / 0.14) 100%
+  );
+}
+
+.vault-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-top: -5px;
+  border-radius: 999px;
+  background: var(--color-amber-300);
+  transition: transform 0.15s ease;
+}
+
+.vault-range::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-amber-300);
+}
+
+.vault-range:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
