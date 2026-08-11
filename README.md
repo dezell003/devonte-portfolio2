@@ -98,9 +98,17 @@ built alongside the site but share none of its runtime.
 | `/czepeku-vault` | `src/prototypes/czepeku-vault/` | React, Tailwind v4, Framer Motion, Lucide |
 
 **Czepeku Vault Companion** — a battlemap console for tabletop game
-masters: variant switching (Day / Night / Rain) with a crossfading
-canvas, ambience sync that follows the active variant, and a CSS grid
-overlay derived from the map's 22 × 30 grid with live cell coordinates.
+masters: switching between the five lighting variants of one scene with
+a crossfading canvas, ambience sync that follows the active variant, and
+a CSS grid overlay derived from the map's own grid with live cell
+coordinates.
+
+Map art lives in `public/assets/maps/` (`dragon`, `fireflies`,
+`inferno`, `bloodwater`, `astral`). **The committed files are placeholder
+plates at the correct 889×1920 ratio, not the real artwork** — drop the
+real `.webp` files over them, keeping the filenames, and nothing else
+needs to change. Scene metadata (title, tags, grid, tracks) is all in
+`src/prototypes/czepeku-vault/data.js`.
 
 ## Deploy
 
