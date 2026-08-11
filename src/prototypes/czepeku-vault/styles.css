@@ -1,27 +1,26 @@
 @import 'tailwindcss';
 
 /**
- * Palette is pulled from the artwork itself rather than a brand guide — warm
- * ink ground, aged vellum type, antique gold for anything interactive. The
- * chrome deliberately stays desaturated so the map is the only saturated
- * thing on screen.
+ * Palette and type taken from the Czepeku Fantasy site: a deep desaturated
+ * navy ground with a blurred battlemap behind it, amber as the single accent
+ * (nav active state, primary button), white high-contrast serif for display,
+ * rounded portrait cards with centred labels beneath.
  */
 @theme {
-  --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
-  --font-ui: 'Barlow', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-ui: 'Poppins', ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink-950: #0b0908;
-  --color-ink-900: #100d0a;
-  --color-ink-800: #17130f;
-  --color-ink-700: #221c15;
-  --color-vellum-100: #ede3d0;
-  --color-vellum-300: #cfc2a8;
-  --color-vellum-500: #a79c88;
-  --color-vellum-700: #6b6252;
-  --color-gold-400: #e4c57e;
-  --color-gold-500: #c8a45c;
-  --color-gold-600: #9c7d3f;
+  --color-navy-980: #060a12;
+  --color-navy-950: #0b1220;
+  --color-navy-900: #101a2b;
+  --color-navy-800: #17233a;
+  --color-navy-700: #24314a;
+  --color-slate-200: #c9d1dc;
+  --color-slate-400: #8a94a6;
+  --color-slate-600: #5b6678;
+  --color-amber-300: #f6d06b;
+  --color-amber-400: #f0c040;
+  --color-amber-500: #d9a72c;
 }
 
 @layer base {
@@ -33,76 +32,61 @@
 
   body {
     margin: 0;
-    background: var(--color-ink-950);
-    color: var(--color-vellum-100);
+    background: var(--color-navy-950);
+    color: #fff;
     font-family: var(--font-ui);
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-gold-500) 40%, transparent);
+    background: color-mix(in oklab, var(--color-amber-400) 45%, transparent);
     color: #fff;
   }
 
   :focus-visible {
-    outline: 1px solid var(--color-gold-400);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-amber-400);
+    outline-offset: 2px;
   }
 }
 
 @layer components {
-  /* Smoked vellum panel — warm, matte, closer to a plate of glass over parchment
-     than the cold sci-fi glass this started as. */
+  /* Panel surface — flat navy with a hairline, matching the site's cards and
+     search field rather than heavy glass. */
   .panel {
-    background:
-      linear-gradient(
-        180deg,
-        rgb(237 227 208 / 0.055) 0%,
-        rgb(237 227 208 / 0.02) 40%,
-        rgb(237 227 208 / 0.04) 100%
-      ),
-      rgb(11 9 8 / 0.82);
-    backdrop-filter: blur(20px) saturate(115%);
-    -webkit-backdrop-filter: blur(20px) saturate(115%);
-    border: 1px solid rgb(200 164 92 / 0.16);
-    box-shadow:
-      0 30px 70px -24px rgb(0 0 0 / 0.9),
-      inset 0 1px 0 0 rgb(237 227 208 / 0.06);
+    background: rgb(16 26 43 / 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.8);
   }
 
-  /* Gold hairline that fades at both ends. */
   .rule {
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgb(200 164 92 / 0.3) 15%,
-      rgb(200 164 92 / 0.3) 85%,
-      transparent
-    );
+    background: rgb(255 255 255 / 0.08);
   }
 
+  /* Wide-tracked caps, as used across the site's wordmark and labels. */
   .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.26em;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--color-vellum-700);
+    color: var(--color-slate-400);
   }
 }
 
-/* Grid overlay, sized to the map's own 22 x 48 cells — not the viewport. */
+/* Grid overlay, sized to the map's own cells — not the viewport. */
 .vault-grid {
   background-image:
-    linear-gradient(to right, rgb(237 227 208 / 0.34) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(237 227 208 / 0.34) 1px, transparent 1px);
+    linear-gradient(to right, rgb(255 255 255 / 0.32) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.32) 1px, transparent 1px);
   background-size: calc(100% / var(--cols)) calc(100% / var(--rows));
   mix-blend-mode: overlay;
 }
 
-/* Volume slider. */
+/* Volume slider. Vendor track selectors stay in separate rules — one unknown
+   pseudo-element invalidates the whole selector list. */
 .vault-range {
   -webkit-appearance: none;
   appearance: none;
@@ -110,50 +94,47 @@
   cursor: pointer;
 }
 
-/* These two MUST stay separate: one unknown vendor pseudo-element invalidates
-   the whole selector list, which silently drops the track entirely. */
 .vault-range::-webkit-slider-runnable-track {
-  height: 2px;
+  height: 3px;
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    var(--color-gold-500) 0%,
-    var(--color-gold-500) var(--fill),
-    rgb(237 227 208 / 0.16) var(--fill),
-    rgb(237 227 208 / 0.16) 100%
+    var(--color-amber-400) 0%,
+    var(--color-amber-400) var(--fill),
+    rgb(255 255 255 / 0.14) var(--fill),
+    rgb(255 255 255 / 0.14) 100%
   );
 }
 
 .vault-range::-moz-range-track {
-  height: 2px;
+  height: 3px;
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    var(--color-gold-500) 0%,
-    var(--color-gold-500) var(--fill),
-    rgb(237 227 208 / 0.16) var(--fill),
-    rgb(237 227 208 / 0.16) 100%
+    var(--color-amber-400) 0%,
+    var(--color-amber-400) var(--fill),
+    rgb(255 255 255 / 0.14) var(--fill),
+    rgb(255 255 255 / 0.14) 100%
   );
 }
 
 .vault-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   margin-top: -5px;
   border-radius: 999px;
-  background: var(--color-vellum-100);
-  border: 1px solid var(--color-gold-500);
+  background: var(--color-amber-300);
   transition: transform 0.15s ease;
 }
 
 .vault-range::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
+  border: 0;
   border-radius: 999px;
-  background: var(--color-vellum-100);
-  border: 1px solid var(--color-gold-500);
+  background: var(--color-amber-300);
 }
 
 .vault-range:active::-webkit-slider-thumb {

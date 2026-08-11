@@ -7,7 +7,6 @@ import {
   Loader2,
   Pause,
   Play,
-  Ruler,
   SkipBack,
   SkipForward,
   Volume2,
@@ -59,7 +58,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-ink-950 text-vellum-100">
+    <div className="relative h-screen w-screen overflow-hidden bg-navy-950 text-white">
       <MapCanvas
         variant={active}
         gridOn={gridOn}
@@ -68,8 +67,6 @@ export default function App() {
       />
 
       <TopBar exporting={exporting} onExport={handleExport} />
-
-      <CoordinateReadout cell={cursorCell} visible={gridOn} />
 
       <ControlPanel
         active={active}
@@ -83,6 +80,7 @@ export default function App() {
         onVolume={setVolume}
         elapsed={elapsed}
         onScrub={setElapsed}
+        cursorCell={cursorCell}
       />
     </div>
   );
@@ -91,10 +89,11 @@ export default function App() {
 /* ─────────────────────────── Main canvas ─────────────────────────── */
 
 /**
- * The scene art is tall portrait (889 x 1920), so it is letterboxed and
- * centred rather than cropped to fill — cover would throw away most of the
- * map. The ink field around it picks up a bloom in the variant's own colour,
- * so switching variants relights the whole room.
+ * The scene art is tall portrait, so the plate is letterboxed rather than
+ * cropped. Behind it sits the same art blown up, blurred and dimmed to near
+ * navy — the treatment the Czepeku site uses behind its own map pages, and it
+ * means the field relights itself from the active variant's real colours
+ * instead of a synthetic tint.
  */
 function MapCanvas({ variant, gridOn, cursorCell, onCursorCell }) {
   const mapRef = useRef(null);
@@ -114,23 +113,28 @@ function MapCanvas({ variant, gridOn, cursorCell, onCursorCell }) {
   return (
     <div
       className="absolute inset-0 flex items-center justify-center"
-      // Centre the plate in the space the panel leaves, not the whole viewport.
-      style={{ paddingRight: 'calc(380px + 3rem)' }}
+      style={{ paddingRight: 'calc(380px + 3rem)', paddingTop: '3.5rem' }}
       onMouseMove={handleMove}
       onMouseLeave={() => onCursorCell(null)}
     >
-      {/* Ambient bloom — the room takes the map's light. */}
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        animate={{
-          background: `radial-gradient(60% 50% at 45% 40%, ${variant.accent}2e 0%, transparent 70%)`,
-        }}
-        transition={{ duration: 1 }}
-      />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={variant.id}
+            className="absolute inset-0 scale-125 bg-cover bg-center blur-3xl"
+            style={{ backgroundImage: `url(${variant.image})` }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.42 }}
+            exit={{ opacity: 0.42 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-navy-950/80" />
+      </div>
 
       <div
         ref={mapRef}
-        className="relative h-[calc(100vh-7rem)] overflow-hidden rounded-sm shadow-[0_40px_120px_-30px_rgba(0,0,0,0.95)] ring-1 ring-gold-500/20"
+        className="relative h-[calc(100vh-8rem)] overflow-hidden rounded-xl shadow-[0_30px_90px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10"
         style={{ aspectRatio: MAP.aspect }}
       >
         <AnimatePresence initial={false}>
@@ -139,7 +143,7 @@ function MapCanvas({ variant, gridOn, cursorCell, onCursorCell }) {
             src={variant.image}
             alt={`${MAP.title} — ${variant.name} variant`}
             className="absolute inset-0 h-full w-full object-cover"
-            initial={{ opacity: 0, scale: 1.04 }}
+            initial={{ opacity: 0, scale: 1.03 }}
             animate={{ opacity: 1, scale: 1 }}
             // Outgoing frame holds underneath so the cut never dips to black.
             exit={{ opacity: 1, scale: 1.01 }}
@@ -159,41 +163,24 @@ function MapCanvas({ variant, gridOn, cursorCell, onCursorCell }) {
             />
           )}
         </AnimatePresence>
+
+        {/* Cell readout rides the plate itself, so it can't be mistaken for
+            chrome that belongs to the surrounding page. */}
+        <AnimatePresence>
+          {gridOn && cursorCell && (
+            <motion.span
+              className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-navy-980/85 px-3 py-1 text-xs font-semibold tracking-[0.15em] text-amber-300"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.15 }}
+            >
+              {cursorCell}
+            </motion.span>
+          )}
+        </AnimatePresence>
       </div>
-
-      {/* Scene caption, set in the display face against the ink field. */}
-      <AnimatePresence mode="popLayout">
-        <motion.p
-          key={variant.id}
-          className="pointer-events-none absolute bottom-7 left-8 max-w-[15rem] font-display text-lg italic leading-snug text-vellum-500"
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.4 }}
-        >
-          {cursorCell ? '' : variant.note}
-        </motion.p>
-      </AnimatePresence>
     </div>
-  );
-}
-
-function CoordinateReadout({ cell, visible }) {
-  return (
-    <AnimatePresence>
-      {visible && cell && (
-        <motion.div
-          className="panel pointer-events-none absolute bottom-6 left-7 z-20 flex items-center gap-2 rounded px-3 py-2"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 8 }}
-          transition={{ duration: 0.18 }}
-        >
-          <Ruler className="h-3.5 w-3.5 text-gold-500" />
-          <span className="font-mono text-xs tracking-[0.2em] text-vellum-300">{cell}</span>
-        </motion.div>
-      )}
-    </AnimatePresence>
   );
 }
 
@@ -201,10 +188,10 @@ function CoordinateReadout({ cell, visible }) {
 
 function TopBar({ exporting, onExport }) {
   return (
-    <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-7 py-5">
+    <header className="absolute inset-x-0 top-0 z-30 flex h-14 items-center justify-between border-b border-white/8 bg-navy-980/85 px-6 backdrop-blur-md">
       <button
         type="button"
-        className="group flex items-center gap-2 text-sm font-medium tracking-wide text-vellum-500 transition-colors hover:text-vellum-100"
+        className="group flex items-center gap-1.5 text-sm font-medium text-slate-200 transition-colors hover:text-white"
       >
         <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
         Back to Vault
@@ -214,13 +201,12 @@ function TopBar({ exporting, onExport }) {
         type="button"
         onClick={onExport}
         disabled={exporting}
-        className="group relative flex items-center gap-2 overflow-hidden rounded-sm border border-gold-500/50 bg-gold-500/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-gold-400 transition-all hover:border-gold-400 hover:bg-gold-500/20 hover:text-vellum-100 disabled:cursor-progress"
+        className="flex items-center gap-2 rounded-full bg-amber-300 px-5 py-2 text-sm font-semibold text-navy-980 transition-colors hover:bg-amber-400 disabled:cursor-progress"
       >
-        <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-vellum-100/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
         {exporting ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
-          <Download className="h-3.5 w-3.5" />
+          <Download className="h-4 w-4" />
         )}
         {exporting ? 'Packaging' : 'Export VTT'}
       </button>
@@ -247,8 +233,8 @@ function ControlPanel({
     <motion.aside
       initial={{ opacity: 0, x: 32 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
-      className="panel no-scrollbar absolute bottom-6 right-6 top-[4.5rem] z-20 flex w-[380px] flex-col gap-5 overflow-y-auto rounded-sm p-6"
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+      className="panel no-scrollbar absolute bottom-5 right-5 top-[4.75rem] z-20 flex w-[380px] flex-col gap-5 overflow-y-auto rounded-xl p-6"
     >
       <PanelHeader active={active} />
       <div className="rule" />
@@ -271,16 +257,16 @@ function ControlPanel({
 
 function PanelHeader({ active }) {
   return (
-    <div className="flex flex-col gap-3">
-      <span className="eyebrow">{MAP.collection}</span>
-      <h1 className="font-display text-[2.1rem] font-semibold leading-none tracking-tight text-vellum-100">
+    <div className="flex flex-col gap-2.5">
+      <span className="eyebrow text-amber-400">{MAP.collection}</span>
+      <h1 className="font-display text-3xl font-bold leading-none text-white">
         {MAP.title}
       </h1>
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
         {MAP.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-sm border border-gold-500/25 px-2.5 py-1 text-[11px] font-medium tracking-wide text-vellum-300"
+            className="rounded-full border border-white/12 px-2.5 py-1 text-[11px] font-medium text-slate-200"
           >
             {tag}
           </span>
@@ -292,12 +278,7 @@ function PanelHeader({ active }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.22 }}
-            className="rounded-sm px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em]"
-            style={{
-              color: active.accent,
-              border: `1px solid ${active.accent}44`,
-              background: `${active.accent}14`,
-            }}
+            className="rounded-full bg-amber-300/15 px-2.5 py-1 text-[11px] font-semibold text-amber-300"
           >
             {active.lighting}
           </motion.span>
@@ -312,12 +293,11 @@ function VariantSection({ activeId, onSelect }) {
     <section className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between">
         <span className="eyebrow">Variants</span>
-        <span className="font-mono text-[10px] text-vellum-700">
-          {VARIANTS.length} in pack
-        </span>
+        <span className="text-[11px] text-slate-400">{VARIANTS.length} in pack</span>
       </div>
 
-      {/* Thumbnails mirror the map's portrait orientation. */}
+      {/* Rounded portrait cards with the label centred beneath — the site's
+          own map-tile treatment. */}
       <div className="no-scrollbar -mx-1 flex gap-2.5 overflow-x-auto px-1 pb-1">
         {VARIANTS.map((variant) => {
           const isActive = variant.id === activeId;
@@ -331,12 +311,11 @@ function VariantSection({ activeId, onSelect }) {
               className="group relative shrink-0"
             >
               <div
-                className={`relative h-[92px] w-[46px] overflow-hidden rounded-[2px] transition-all duration-300 ${
+                className={`relative h-[96px] w-[52px] overflow-hidden rounded-lg transition-all duration-300 ${
                   isActive
-                    ? 'opacity-100 ring-1 ring-offset-2 ring-offset-ink-950'
-                    : 'opacity-45 ring-1 ring-vellum-100/10 group-hover:opacity-80'
+                    ? 'opacity-100 ring-2 ring-amber-300'
+                    : 'opacity-60 ring-1 ring-white/10 group-hover:opacity-95'
                 }`}
-                style={isActive ? { '--tw-ring-color': variant.accent } : undefined}
               >
                 <img
                   src={variant.image}
@@ -346,8 +325,8 @@ function VariantSection({ activeId, onSelect }) {
                 />
               </div>
               <span
-                className={`mt-1.5 block text-center text-[10px] font-medium tracking-wide transition-colors ${
-                  isActive ? 'text-vellum-100' : 'text-vellum-700 group-hover:text-vellum-300'
+                className={`mt-1.5 block text-center text-[11px] font-medium transition-colors ${
+                  isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'
                 }`}
               >
                 {variant.name}
@@ -372,25 +351,23 @@ function AudioSection({
   const progress = (elapsed / active.duration) * 100;
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-3.5">
       <div className="flex items-baseline justify-between">
         <span className="eyebrow">Ambience</span>
-        <span className="flex items-center gap-1.5 font-mono text-[10px] text-vellum-700">
+        <span className="flex items-center gap-1.5 text-[11px] text-slate-400">
           <span
-            className={`h-1 w-1 rounded-full ${
-              isPlaying ? 'animate-pulse bg-gold-400' : 'bg-vellum-700'
+            className={`h-1.5 w-1.5 rounded-full ${
+              isPlaying ? 'animate-pulse bg-amber-300' : 'bg-slate-600'
             }`}
           />
-          {isPlaying ? 'PLAYING' : 'PAUSED'}
+          {isPlaying ? 'Playing' : 'Paused'}
         </span>
       </div>
 
       <div className="flex items-center gap-3">
-        <Waveform playing={isPlaying} volume={volume} accent={active.accent} />
+        <Waveform playing={isPlaying} volume={volume} />
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-vellum-700">
-            Now playing
-          </p>
+          <p className="text-[11px] text-slate-400">Now playing</p>
           <AnimatePresence mode="popLayout">
             <motion.p
               key={active.track}
@@ -398,7 +375,7 @@ function AudioSection({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
-              className="truncate font-display text-lg leading-tight text-vellum-100"
+              className="truncate text-[15px] font-semibold text-white"
             >
               {active.track}
             </motion.p>
@@ -407,14 +384,14 @@ function AudioSection({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <div className="relative h-px w-full bg-vellum-100/15">
+        <div className="relative h-1 w-full overflow-hidden rounded-full bg-white/12">
           <motion.div
-            className="absolute inset-y-0 left-0 bg-gold-500"
+            className="absolute inset-y-0 left-0 rounded-full bg-amber-300"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4, ease: 'linear' }}
           />
         </div>
-        <div className="flex justify-between font-mono text-[10px] text-vellum-700">
+        <div className="flex justify-between text-[11px] tabular-nums text-slate-400">
           <span>{formatTime(elapsed)}</span>
           <span>{formatTime(active.duration)}</span>
         </div>
@@ -425,9 +402,9 @@ function AudioSection({
           type="button"
           onClick={() => onScrub(Math.max(0, elapsed - 15))}
           aria-label="Back 15 seconds"
-          className="rounded p-1.5 text-vellum-700 transition-colors hover:text-vellum-100"
+          className="rounded-full p-1.5 text-slate-400 transition-colors hover:text-white"
         >
-          <SkipBack className="h-3.5 w-3.5" />
+          <SkipBack className="h-4 w-4" />
         </button>
 
         <motion.button
@@ -435,7 +412,7 @@ function AudioSection({
           onClick={onTogglePlay}
           whileTap={{ scale: 0.92 }}
           aria-label={isPlaying ? 'Pause ambience' : 'Play ambience'}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/60 text-gold-400 transition-colors hover:border-gold-400 hover:bg-gold-500/15 hover:text-vellum-100"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-300 text-navy-980 transition-colors hover:bg-amber-400"
         >
           {isPlaying ? (
             <Pause className="h-4 w-4 fill-current" />
@@ -448,16 +425,16 @@ function AudioSection({
           type="button"
           onClick={() => onScrub(Math.min(active.duration - 1, elapsed + 15))}
           aria-label="Forward 15 seconds"
-          className="rounded p-1.5 text-vellum-700 transition-colors hover:text-vellum-100"
+          className="rounded-full p-1.5 text-slate-400 transition-colors hover:text-white"
         >
-          <SkipForward className="h-3.5 w-3.5" />
+          <SkipForward className="h-4 w-4" />
         </button>
 
         <div className="ml-1 flex flex-1 items-center gap-2.5">
           {volume === 0 ? (
-            <VolumeX className="h-3.5 w-3.5 shrink-0 text-vellum-700" />
+            <VolumeX className="h-4 w-4 shrink-0 text-slate-600" />
           ) : (
-            <Volume2 className="h-3.5 w-3.5 shrink-0 text-vellum-500" />
+            <Volume2 className="h-4 w-4 shrink-0 text-slate-400" />
           )}
           <input
             type="range"
@@ -475,27 +452,26 @@ function AudioSection({
   );
 }
 
-/** Bars idle flat and rise while the bed plays, tinted to the active variant. */
-function Waveform({ playing, volume, accent }) {
+/** Bars idle flat and rise while the bed plays. */
+function Waveform({ playing, volume }) {
   const bars = useMemo(() => Array.from({ length: 10 }, (_, i) => i), []);
   const amplitude = volume / 100;
 
   return (
-    <div className="flex h-8 w-9 shrink-0 items-end gap-[3px]">
+    <div className="flex h-9 w-9 shrink-0 items-end gap-[3px]">
       {bars.map((i) => (
         <motion.span
           key={i}
-          className="w-[2px] rounded-full"
-          style={{ backgroundColor: accent, opacity: 0.85 }}
+          className="w-[2px] rounded-full bg-amber-300"
           animate={{
             height: playing
               ? [
                   3 + amplitude * (5 + ((i * 7) % 12)),
-                  3 + amplitude * (12 + ((i * 5) % 17)),
+                  3 + amplitude * (12 + ((i * 5) % 18)),
                   3 + amplitude * (5 + ((i * 11) % 10)),
                 ]
               : 2,
-            opacity: playing ? 0.85 : 0.3,
+            opacity: playing ? 0.9 : 0.35,
           }}
           transition={{
             duration: 0.8 + (i % 4) * 0.18,
@@ -518,18 +494,18 @@ function GridSection({ gridOn, onToggleGrid }) {
 
   return (
     <section className="flex flex-col gap-3">
-      <span className="eyebrow">Export Specs</span>
+      <span className="eyebrow">Export specs</span>
 
       <dl className="flex flex-col">
         {specs.map((spec, i) => (
           <div
             key={spec.label}
             className={`flex items-center justify-between py-2 ${
-              i > 0 ? 'border-t border-vellum-100/8' : ''
+              i > 0 ? 'border-t border-white/8' : ''
             }`}
           >
-            <dt className="text-[13px] text-vellum-500">{spec.label}</dt>
-            <dd className="font-mono text-[13px] tabular-nums text-vellum-100">
+            <dt className="text-[13px] text-slate-400">{spec.label}</dt>
+            <dd className="text-[13px] font-medium tabular-nums text-white">
               {spec.value}
             </dd>
           </div>
@@ -540,34 +516,36 @@ function GridSection({ gridOn, onToggleGrid }) {
         type="button"
         onClick={onToggleGrid}
         aria-pressed={gridOn}
-        className={`mt-1 flex items-center justify-between rounded-sm border px-4 py-3 text-[13px] font-medium transition-all duration-300 ${
+        className={`mt-1 flex items-center justify-between rounded-lg border px-4 py-3 text-sm font-medium transition-all duration-300 ${
           gridOn
-            ? 'border-gold-500/60 bg-gold-500/10 text-vellum-100'
-            : 'border-vellum-100/10 text-vellum-300 hover:border-gold-500/40 hover:text-vellum-100'
+            ? 'border-amber-300/60 bg-amber-300/10 text-white'
+            : 'border-white/10 text-slate-200 hover:border-white/25 hover:text-white'
         }`}
       >
         <span className="flex items-center gap-2.5">
           <Grid3x3
             className={`h-4 w-4 transition-colors ${
-              gridOn ? 'text-gold-400' : 'text-vellum-700'
+              gridOn ? 'text-amber-300' : 'text-slate-400'
             }`}
           />
           Grid overlay
         </span>
         <span
-          className={`relative h-4 w-8 rounded-full transition-colors duration-300 ${
-            gridOn ? 'bg-gold-500/70' : 'bg-vellum-100/12'
+          className={`relative h-5 w-9 rounded-full transition-colors duration-300 ${
+            gridOn ? 'bg-amber-300' : 'bg-white/15'
           }`}
         >
           <motion.span
-            className="absolute top-0.5 h-3 w-3 rounded-full bg-vellum-100"
+            className={`absolute top-0.5 h-4 w-4 rounded-full ${
+              gridOn ? 'bg-navy-980' : 'bg-white'
+            }`}
             animate={{ left: gridOn ? 18 : 2 }}
             transition={{ type: 'spring', stiffness: 500, damping: 32 }}
           />
         </span>
       </button>
 
-      <p className="font-mono text-[10px] leading-relaxed tracking-wide text-vellum-700">
+      <p className="text-[11px] leading-relaxed text-slate-400">
         {gridOn
           ? 'Hover the map for cell coordinates.'
           : 'Export ships aligned grid data either way.'}
